@@ -1,0 +1,40 @@
+name: ci
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  pins:
+    name: pins (${{ matrix.os }}, node ${{ matrix.node }})
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 10
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        node: ['22', '24']
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: ${{ matrix.node }}
+      - name: pins
+        run: npm test
+      - name: the staging receipt's self-test
+        run: node bin/verify-staged.mjs --self-test
+      - name: publish gate (informational while private)
+        run: npm run check:publish
+      - name: the tarball carries the plugin at its root
+        run: npm pack --dry-run 2>&1 | tee pack.txt && grep -q ".claude-plugin/plugin.json" pack.txt
+        shell: bash

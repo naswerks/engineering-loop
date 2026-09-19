@@ -1,0 +1,15 @@
+{
+  "name": "engineering-loop",
+  "owner": { "name": "naswerks" },
+  "metadata": {
+    "description": "The engineering loop as a Claude Code plugin: docs-* (knowledge), spec-* (execution), init."
+  },
+  "plugins": [
+    {
+      "name": "naswerks",
+      "description": "The engineering loop: docs-* knowledge loop, spec-* execution loop, and init for a fresh repository.",
+      "version": "0.1.0",
+      "source": "./"
+    }
+  ]
+}
