@@ -27,7 +27,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/naswerks/engineering-loop.git"
+    "url": "git+https://github.com/naswerks/engineering-loop.git"
   },
   "publishConfig": {
     "access": "public"
