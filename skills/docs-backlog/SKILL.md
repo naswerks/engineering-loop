@@ -20,7 +20,7 @@ Capture ideas as research docs. `docs/research/` is the idea inbox — the folde
    **The research doc must be self-contained.** It's the durable jump-off point; assume everything else
    from this session disappears. Inline the substance — plans, code sketches, config, command output,
    findings — directly into the doc. Do **not** point at ephemeral artifacts as the source of truth: a
-   scratch plan file (`~/.claude/plans/*`), a chat transcript, a subagent's report, a temp file, or
+   scratch plan file (Claude Code: `~/.claude/plans/*`), a chat transcript, a subagent's report, a temp file, or
    "see the plan above." Those vanish; the research doc stays. Cross-links to *other durable docs*
    (living docs, sibling research docs) are fine — links to throwaway state are not. If the idea came
    from a plan or long exploration, copy the load-bearing content in (an Appendix is fine) rather than

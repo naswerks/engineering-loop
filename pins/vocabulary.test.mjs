@@ -31,7 +31,7 @@ test('CONTROL: the build-path regex flags the shipped text and passes the ruled 
 
 const MarkerToken = 'v1 PLANE (still running)';
 const V1Word = /\b(chains?|child(?:ren)?)\b/i;
-const ExemptTokens = /spec-child|spec-chain|spec-pipeline|chain-\d+|child·|chain_rows|chainDefaultTransport|chain_complete|nas\/chain-/gi;
+const ExemptTokens = /spec-child|spec-chain|spec-pipeline|chain-\d+|child·|chain_rows|chainDefaultTransport|chain_complete/gi;
 const Heading = /^#{2,3}\s/;
 const CodeSpan = /`[^`]*`/g;
 

@@ -22,7 +22,7 @@ and the **corrected living doc**.
 
 **One doc or many.** Pass a single doc, a group, or a folder — e.g.
 `docs-audit-feature auth signalr postgres` or `docs-audit-feature docs/features/`. Apply the Steps
-below to **each doc in turn** — one full read→verify→report→fix pass per doc, never batching the
+below to **each doc in turn** — one full read, verify, report, fix pass per doc, never batching the
 writes across docs. End with a one-line-per-doc summary (stale-count / added-count / clean).
 
 ## Steps (per doc)
@@ -48,7 +48,7 @@ writes across docs. End with a one-line-per-doc summary (stale-count / added-cou
    allowed here only because you just did the full doc-vs-code pass; the meta `verified` obeys the same
    anti-fabrication rule as the blockquote date (the two always move together). **Verify the `## Lineage`
    footer** — check every link resolves; flag any dead breadcrumb into `## Open Issues` (or the audit report)
-   and recompute `lineage=N` to match. **Soft-check `Spec`↔`Built` symmetry** — for a spec-driven feature, a
+   and recompute `lineage=N` to match. **Soft-check `Spec` / `Built` symmetry** — for a spec-driven feature, a
 `Built` session whose per-slice spec is absent from `Spec` (or vice-versa) is usually an under-scoped row;
 note it and complete it *unless* the doc is deliberately scoped tighter than the effort (judgment, not a hard
 fail — see the Lineage rules in `docs-workflow.md`). **Reconcile its `## Open Issues` section** — add any real, code-verified
@@ -59,10 +59,10 @@ fail — see the Lineage rules in `docs-workflow.md`). **Reconcile its `## Open 
 
 If pointed at a folder rather than named docs, first **list it and diff against the code** so nothing
 is missed:
-- **In code, no doc** → a real feature/subsystem with no living doc. Create the doc (Steps 1-5 against
+- **In code, no doc**: a real feature/subsystem with no living doc. Create the doc (Steps 1-5 against
   the code), or at minimum flag it in the summary.
-- **Doc, no code** → the thing it documents is gone. Flag for archiving/deleting the doc.
-- **Both exist** → run the per-doc audit above.
+- **Doc, no code**: the thing it documents is gone. Flag for archiving/deleting the doc.
+- **Both exist**: run the per-doc audit above.
 
 For `docs/features/`, the folder (one doc per feature) IS the inventory — there is no separate
 catalog. Build the real list from `Features/` + the frontend feature folders/routes via actual

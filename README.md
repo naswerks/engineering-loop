@@ -52,7 +52,13 @@ structure the skills read, the two method documents, a `CLAUDE.md` pointer and t
 | `init` | — | make a repository ready for both loops |
 
 `references/` carries the two method documents a repository copies into `docs/_meta/`;
-`bin/verify-staged` is the staging receipt the seats run between `git add` and `git commit`.
+`bin/verify-staged` is the staging receipt the seats run between `git add` and `git commit`. A
+marketplace install puts nothing on PATH: `npm i -g @naswerks/engineering-loop` does, and the skills
+carry the fallback `node <pack root>/bin/verify-staged.mjs`.
+
+Running a skill through a child `claude -p` from inside another Claude Code session: scrub the
+`CLAUDE_CODE_*` variables from the child's environment and name the repository root in the prompt,
+or the child may resolve `docs/` paths against the parent session's workspace.
 
 ## Does it work
 

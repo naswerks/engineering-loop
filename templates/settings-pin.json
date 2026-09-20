@@ -1,0 +1,10 @@
+{
+  "extraKnownMarketplaces": {
+    "engineering-loop": {
+      "source": { "source": "github", "repo": "naswerks/engineering-loop" }
+    }
+  },
+  "enabledPlugins": {
+    "naswerks@engineering-loop": true
+  }
+}

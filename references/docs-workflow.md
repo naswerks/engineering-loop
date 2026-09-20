@@ -10,13 +10,13 @@
 
 ```
 research/          the running tab of ideas to do — search a topic, file it     (docs-backlog)
-   ↓  pick one up: plan + implement
+   |  pick one up: plan + implement
 working/           per-session handoff doc(s). A multi-session effort chains several —
                    each `Builds on` the last, all tagged `Source:` the research doc
-   ↓  docs-write at each session's end — doc(s) STAY in working/ (the queue)
+   |  docs-write at each session's end — doc(s) STAY in working/ (the queue)
 docs-process       finalizer (effort done): patch living docs, then archive the
                    research doc + ALL its working docs together into archive/{topic}/
-   ↓
+   |
 living docs        guides/ · patterns/ · infrastructure/ · features/  (current state)
 ```
 
@@ -64,18 +64,18 @@ is usually a code problem to flag, not a doc to rewrite (unless the rule itself 
 
 ## The archive convention
 
-A multi-session effort becomes a **topic folder** under `archive/` (e.g. `archive/code-graph/`).
+A multi-session effort becomes a **topic folder** under `archive/` (e.g. `archive/{topic}/`).
 Docs are **not numbered** — they use descriptive names and chain via a header link:
 
 ```markdown
 # GraphRAG Hardening — Part 2
 
-> Composite ranking and deterministic Louvain. Builds on [graphrag-hardening](graphrag-hardening.md).
-> Completed 2026-05-31 on branch `feature/x`.
+> {One-line summary}. Builds on [{prior}]({prior}.md).
+> Completed {date} on branch `{branch}`.
 ```
 
-Each archived doc carries the full narrative: Research & Decisions (the plan) → Implementation →
-Change shape → Verification → Watch-Outs. The chain (`Builds on …`) is how a reader replays the
+Each archived doc carries the full narrative: Research & Decisions (the plan), Implementation,
+Change shape, Verification, Watch-Outs. The chain (`Builds on …`) is how a reader replays the
 effort across sessions.
 
 If the effort began as a research idea, its **research doc is filed into the same topic folder** by
@@ -89,23 +89,23 @@ one** (via `spec-pipeline`). The trigger for the layout is simply *"does this ef
 
 - **Flat (no specs)** — the default. A small/single-session effort is just its working doc(s) (plus
   any `Source:` research doc) at the topic-folder root, chained by `Builds on`. This is how the legacy
-  topic folders look (`code-graph/`, `saga/`, …).
+  topic folders look.
 - **Split (has specs)** — when the effort used `spec-pipeline`, separate the two halves so the folder stays
   navigable as it grows:
 
   ```
   archive/{topic}/
-    project-status.md        ← the tracker/index — root, "read me first" (spans both halves)
-    live-checks.md           ← the human's verification rows, accumulated as the chain ran
-    specs/                   ← the spec pipeline: 00-ignition-brief · 01 umbrella · 02..NN slices
-    implementation/          ← the per-session working docs that built it
-    sessions/                ← THE CHAIN'S CONVERSATION, archived intact:
+    project-status.md        <- the tracker/index — root, "read me first" (spans both halves)
+    live-checks.md           <- the human's verification rows, accumulated as the pipeline ran
+    specs/                   <- the spec pipeline: 00-ignition-brief · 01 umbrella · 02..NN slices
+    implementation/          <- the per-session working docs that built it
+    sessions/                <- THE PIPELINE'S CONVERSATION, archived intact:
                                  {spec-slug}/plan.md  + {spec-slug}/tldr.md  per build session
                                    (TWO files — questions ride the PLAN TLDR, and there are no
                                     status snapshots, because the tracker is committed live and
                                     its git history carries every revision)
                                  code-review.md            the review seat's outside look, if
-                                                           the chain had a review row
+                                                           the pipeline had a review row
                                  parent-retrospective.md   the parent's inside look
                                These are TESTIMONY: an archive pass repairs links elsewhere and
                                leaves sessions/** byte-untouched. Older archived sessions may
@@ -113,24 +113,21 @@ one** (via `spec-pipeline`). The trigger for the layout is simply *"does this ef
                                record, not the convention.
   ```
 
-  `living-docs-graph/` is the worked example.
-
 **Follow-on pipelines (multi-round families).** *(Renamed at the v2 cutover — this section was
 `Follow-on chains`; skills citing the old heading mean this one.)* A second (third, …) spec pipeline that continues an
-already-archived effort gets its **own sibling topic folder**, never filed inside the frozen one —
-`archive/agent-network-engine/` (round 1) and `archive/agent-network-telemetry-views/` (round 2) is
-the worked example. Rules: (a) name the new topic `{family-prefix}-{subtopic}` so the family groups
+already-archived effort gets its **own sibling topic folder**, never filed inside the frozen one.
+Rules: (a) name the new topic `{family-prefix}-{subtopic}` so the family groups
 alphabetically; (b) each folder keeps the full split shape (own `project-status.md` at root); (c) the
 **family index is the living feature doc's `## Lineage`** — it accumulates Idea/Spec/Built rows from
-every round; (d) the new chain's umbrella/tracker back-link to the prior round's archive (allowed —
+every round; (d) the new pipeline's umbrella/tracker back-link to the prior round's archive (allowed —
 cross-effort links into archives are historical record). Never reopen a frozen topic folder to add
 a round.
 
-**Fix the intra-chain links the move breaks.** Moving files changes relative depths, so on archive
+**Fix the intra-effort links the move breaks.** Moving files changes relative depths, so on archive
 `docs-process` repairs the links *within* the effort (and the live feature doc that points at it):
-working docs' `Source:` → the spec's new path (`../specs/NN-*.md`), spec↔`project-status` links, the
-index's links into `specs/`, and the feature doc's `## Lineage` rows (`Spec`→`specs/…`,
-`Built`→`implementation/…`). **Pre-existing cross-effort links** in archived docs (to *other* topic
+working docs' `Source:` to the spec's new path (`../specs/NN-*.md`), the spec / `project-status` links, the
+index's links into `specs/`, and the feature doc's `## Lineage` rows (`Spec` to `specs/…`,
+`Built` to `implementation/…`). **Pre-existing cross-effort links** in archived docs (to *other* topic
 folders / research chains) are **left as historical record** — don't chase those.
 
 **`archive/audit/` is the one exception to topic-folder grouping.** Audit reports mirror the *living-doc
@@ -144,8 +141,8 @@ report sits beside the docs it audits. The cross-cutting `health-report-{date}.m
 
 Two additive machine layers wrap a doc's unchanged human content: an invisible **header meta-comment**
 (greppable status/identity) and a visible **`## Lineage` footer** (the clickable provenance breadcrumb).
-Both render cleanly in the `marked`-based workbench with zero frontend work, and both have an Obsidian
-(frontmatter + `[[wikilink]]`) equivalent so imported vaults work too.
+Both render cleanly in any markdown viewer, and both have an Obsidian (frontmatter + `[[wikilink]]`)
+equivalent so imported vaults work too.
 
 ### The header meta-comment
 
@@ -154,8 +151,8 @@ One line, directly **below** the blockquote (which stays exactly as-is), the com
 ```markdown
 # Knowledge Ingestion Feature
 
-> Multi-format content ingestion… Last verified 2026-05-31.
-<!-- meta: type=feature; status=current; verified=2026-05-31; lineage=3 -->
+> Multi-format content ingestion… Last verified {date}.
+<!-- meta: type=feature; status=current; verified={date}; lineage=3 -->
 ```
 
 **Grammar:** `<!-- meta: key=value; key=value; … -->` — one line, `;`-separated, `key=value`. Invisible in
@@ -165,7 +162,7 @@ on `;` then `=`. Keep it **one line** — multi-line comments grep badly.
 | Key | Values | Notes |
 |-----|--------|-------|
 | `type` | `feature` \| `infrastructure` \| `pattern` \| `guide` \| `research` \| `spec` \| `working` | mirrors the folder |
-| `status` | `current` \| `wip` \| `draft` \| `stale` \| `shipped` | descriptive docs are `current`; specs go `draft`→`shipped` |
+| `status` | `current` \| `wip` \| `draft` \| `stale` \| `shipped` | descriptive docs are `current`; specs go `draft` then `shipped` |
 | `verified` | `YYYY-MM-DD` | **equals** the blockquote's `Last verified` date — the two move together |
 | `lineage` | integer | count of `## Lineage` links — a quick "how grounded is this doc" signal |
 
@@ -174,18 +171,18 @@ working through any transition. `type`/`status`/`verified` map 1:1 to Obsidian f
 
 ### The `## Lineage` footer
 
-The visible `Idea → Spec → Built → Related` breadcrumb. It **supersedes `## Related Docs`** — the old peer
+The visible `Idea / Spec / Built / Related` breadcrumb. It **supersedes `## Related Docs`** — the old peer
 links become the `Related` row:
 
 ```markdown
 ## Lineage
-- **Idea**    — [knowledge-feature-decomposition](../archive/knowledge/knowledge-feature-decomposition.md)
-- **Spec**    — [04-mcp-front-door](../archive/agent-network-engine/specs/04-mcp-front-door.md)
-- **Built**   — [knowledgebase-refactor](../archive/knowledge/knowledgebase-refactor.md)
-- **Related** — [graphrag](graphrag.md) · [knowledge-explorer](knowledge-explorer.md)
+- **Idea**    — [{research doc}](../archive/{topic}/{research-doc}.md)
+- **Spec**    — [{NN-slice}](../archive/{topic}/specs/{NN-slice}.md)
+- **Built**   — [{working doc}](../archive/{topic}/{working-doc}.md)
+- **Related** — [{peer}]({peer}.md) · [{peer}]({peer}.md)
 ```
 
-| Row | Points at | Edge type ([doc-graph](../features/doc-graph.md)) |
+| Row | Points at | Edge type (for a doc-graph tool, if the repo has one) |
 |-----|-----------|------------------------------|
 | `Idea` | the `research/` (or archived research) doc the idea came from | `SOURCE_OF` |
 | `Spec` | the spec doc(s) it was built from (if the effort used the spec stage) | `SPEC_OF` |
@@ -204,23 +201,21 @@ links become the `Related` row:
   missing from `Spec` (or vice-versa) is the smell. Don't silently drop chain members because they feel
   "adjacent" — the chain that built the doc *is* its lineage.
 
-### `related_files` — the doc↔code bridge (derived, no authoring)
+### `related_files` — the doc-to-code bridge (derived, no authoring)
 
 Most feature/infra docs already list code paths in their `## Key Files` table (plus inline `path/File.cs:line`
-mentions). The [doc-graph](../features/doc-graph.md) track reverse-indexes those into a `related_files` set per
-doc — which becomes a `COVERS` edge from the doc to the matching code file. **No new field, no new authoring** —
-just keep `## Key Files` accurate.
+mentions). A doc-graph tool can reverse-index those into a `related_files` set per doc — a `COVERS` edge
+from the doc to the matching code file. **No new field, no new authoring** — just keep `## Key Files` accurate.
 
 ### Obsidian interop (two encodings of the same fields)
 
-The format is two encodings of one set of fields, treated as equivalent by the [doc-graph](../features/doc-graph.md) parser:
+The format is two encodings of one set of fields, which a doc-graph parser treats as equivalent:
 - **Native:** `<!-- meta -->` (status/identity) + `## Lineage` relative links (edges).
 - **Imported (Obsidian):** YAML frontmatter keys `type/status/verified` + `[[wikilinks]]` anywhere.
 
-Native is the default because `marked` renders the HTML comment invisibly and relative links cleanly, whereas
-frontmatter shows as a stray paragraph + `<hr>` and `[[ ]]` as literal text in a default `marked` view. The
-doc-viewer now strips frontmatter and resolves `[[wikilinks]]` (a viewer-scoped transform — see
-[doc-graph](../features/doc-graph.md)). We embrace-and-extend Obsidian; we don't imitate it.
+Native is the default because a plain markdown renderer shows the HTML comment invisibly and relative links
+cleanly, whereas frontmatter shows as a stray paragraph + `<hr>` and `[[ ]]` as literal text. Embrace-and-extend
+Obsidian; don't imitate it.
 
 ---
 
@@ -235,7 +230,7 @@ doc-viewer now strips frontmatter and resolves `[[wikilinks]]` (a viewer-scoped 
 > Source: [{research-doc}](../research/{x}.md) (if idea-driven).
 > Completed {date} on branch `{branch}`.
 <!-- meta: type=working; status={wip|shipped}; verified={date}; lineage=N -->
-<!-- session: claude-session-id={the session's CLAUDE_CODE_SESSION_ID}; name={window name, only if one exists} -->
+<!-- session: claude-session-id={the harness's session id}; name={window name, only if one exists} -->
 
 ## The Problem
 {what was wrong or missing}
@@ -348,29 +343,30 @@ Each per-session spec uses this template (carries `Builds on`/`Source:` so the c
 ```
 
 Specs stay physically in `research/{topic}/` through the build; when the effort ships, `docs-process` archives
-the umbrella + chain + working docs together into `archive/{topic}/` — a spec-driven effort splits into
+the umbrella + specs + working docs together into `archive/{topic}/` — a spec-driven effort splits into
 `specs/` + `implementation/` with `project-status.md` at the root (see "Two topic-folder shapes" above). The
-chain *is* the design history; `living-docs-graph/` is the worked example.
+spec set *is* the design history.
 
 ---
 
 ## The skills — two loops, two prefixes
 
-**`docs-*` = the knowledge loop** (what the platform knows: capture → compile → audit).
-**`spec-*` = the execution loop** (how big work gets built: graduate a plan → parent seat →
-child nodes). They hand off at both ends: research docs feed `spec-pipeline`; every build session
-closes with `docs-write`; `docs-process` compiles the results back into living docs.
+**`docs-*` = the knowledge loop** (what the repo knows: capture, compile, audit).
+**`spec-*` = the execution loop** (how big work gets built: graduate a plan, a coordinator seat,
+build seats). They hand off at both ends: research docs feed `spec-pipeline`; every build session
+closes with `docs-write`; `docs-process` compiles the results back into living docs. A seat prompt
+never restates a rule a skill holds — the prompt points, the skill holds it.
 
 | Skill | When | What it does |
 |-------|------|-------------|
 | `docs-backlog` | Have an idea | Capture it as a research doc in `research/` |
 | `spec-pipeline` | A research idea is graduating into a real plan | Explode the plan into a numbered spec pipeline (umbrella + one self-contained spec per session + `project-status`) in `research/{topic}/`; the plan becomes ephemeral |
-| `spec-parent` | Right after `spec-pipeline` (same session, context-loaded) or to resume a chain fresh | Assume the parent-coordinator seat: cut child prompts (one per spec), review/verify TLDRs, give commit calls, own `project-status.md` — the human-run version of the Agent Network orchestrator loop |
-| `spec-seat` | **Every** seat a chain parent arms — invoked FIRST, before the job skill | The CONTRACT, not a seat: the shared half of every seat's procedure — beliefs, plain-text PLAN TLDR, numbered questions w/ recommendations, six-section FINAL TLDR, commit only on the relayed call |
+| `spec-parent` | Right after `spec-pipeline` (same session, context-loaded) or to resume an effort fresh | Assume the coordinator seat: cut seat prompts (one per spec), review/verify TLDRs, give commit calls, own `project-status.md` — the same loop hand-cranked or hosted |
+| `spec-seat` | **Every** seat a coordinator arms — invoked FIRST, before the job skill | The CONTRACT, not a seat: the shared half of every seat's procedure — beliefs, plain-text PLAN TLDR, numbered questions w/ recommendations, six-section FINAL TLDR, commit only on the relayed call |
 | `spec-child` | Igniting a build or fixit seat — manually or platform-spawned, after `spec-seat` | The BUILD JOB only: one spec, the role's reading list, the pin taxonomy, the suite protocol; `fixit` variant for no-spec defect sessions. Its ceremony comes from `spec-seat` |
-| `spec-witness` | A chain looks wedged, actors' claims conflict, or you want a substrate-verified state report | The read-only fourth seat: DB/transcripts/buffers/endpoints, zero writes, zero rulings — the seats act, the human judges, the witness testifies |
-| `spec-ignite` | Right after `spec-pipeline` when the chain runs ON THE RAILS (vs `spec-parent` for hand-cranked) | The ignition copilot: commit the chain → stage card (the human clicks Create in the app) → north-star for parent review → "kick it" → a rails-parent runs the chain; two verbal gates, everything announced, every UI gap recorded as an Igniter requirement |
-| `spec-review` | A chain's builds are done and the chain has a review row | The outside look, before the retro and before the PR: code + patterns + composition across session seams + the loop's own comms, in two independent passes. Files `sessions/code-review.md` and classifies which findings earn a fixit. **Its value is having none of the chain's context** |
+| `spec-witness` | A pipeline looks wedged, actors' claims conflict, or you want a substrate-verified state report | The read-only fourth seat: the control plane's read lanes, transcripts, git; zero writes, zero rulings — the seats act, the human judges, the witness testifies |
+| `spec-ignite` | Right after `spec-pipeline` when the pipeline runs HOSTED (vs `spec-parent` for hand-cranked) | The ignition copilot: verify the committed brief, derive the stage card (the human clicks Create), "kick it", a hosted coordinator runs the pipeline; two verbal gates, everything announced, every UI gap a named finding |
+| `spec-review` | A pipeline's builds are done and it has a review row | The outside look, before the retro and before the PR: code + patterns + composition across session seams + the loop's own comms, in two independent passes. Files `sessions/code-review.md` and classifies which findings earn a fixit. **Its value is having none of the pipeline's context** |
 | `spec-retro` | The parent's LAST act, after any review and any fixit | The inside look: a substrate-verified grade, the ceremony audit (did the acts the seat believes it performed actually write rows?), the ledger reconciliation, the true economics, the blindnesses, and the ranked fixit backlog |
 | `docs-status` | Session start | Report what's recently archived, what's in `working/`, what's in `research/`; sweep the meta-comments for the condensed status table |
 | `docs-write` | End of a session | Finalize the working doc; it stays in `working/` (records its `## Archive` target) |
@@ -404,7 +400,7 @@ closes with `docs-write`; `docs-process` compiles the results back into living d
     wrong answer a reader might otherwise pick. The test: would the reader plausibly choose the other side
     today? If yes it is clarification; if the other side is gone, it is archaeology.
   - Incident receipts belong in `archive/` — the retro, the session doc, the git history. A living
-    instruction cites a rule; the chain that earned it keeps the story.
+    instruction cites a rule; the effort that earned it keeps the story.
 - **Cite an artifact from `sessions/…` down, never from the effort root.** A receipt path belongs in the
   doc that reads it, but effort folder names carry ceremony words (`spec`, `chain`, `park`, `verdict`) and
   some shipped packages fail their own build when one appears in source. Writing

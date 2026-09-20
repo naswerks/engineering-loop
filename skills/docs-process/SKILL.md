@@ -16,26 +16,26 @@ Most of the time a human runs this cold, after a merge, and this section does no
 you have not. It carries the blackboard, the question lane, the PLAN TLDR, the verdict vocabulary, the
 six-section FINAL TLDR, and the close-out order. Two things are yours specifically:
 
-- 🔴 **You are handed a MANIFEST of this effort's working docs BY NAME. `docs/working/` is a SHARED QUEUE
+- **You are handed a MANIFEST of this effort's working docs BY NAME. `docs/working/` is a SHARED QUEUE
   — never infer membership from the folder.** A seat that archives a neighbouring effort's docs cannot
   undo it. If your prompt did not name them, ask before you move anything.
-- 🚫 **Do NOT run `/docs-write`.** You are that skill's CONSUMER, never its caller — a working doc from you
+- **Do NOT run `/docs-write`.** You are that skill's CONSUMER, never its caller — a working doc from you
   would be an orphan in the queue you just emptied, for an effort you just archived. Your artifacts are
   the patched living docs and the archive; go straight to the commit call.
 
-⚠ **In-pipeline, your living-doc patches are contingent on the merge** — you verify against the pipeline's
+**In-pipeline, your living-doc patches are contingent on the merge** — you verify against the pipeline's
 branch, which is the truth for that PR, and you say so at close.
 
 ## Steps
 
 1. **Read the session doc(s) for the effort** from `docs/working/` — that's where `docs-write` leaves
-   them (it does not archive). One effort may be a **SEQUENCE of working docs** across sessions (each
+   them (it does not archive). A folder's `README.md` is never a queue entry. One effort may be a **SEQUENCE of working docs** across sessions (each
    `Builds on` the prior, all sharing one `Source:` research doc); treat the sequence as one unit. The
    combined **Living Docs to Update** sections are your checklist; the `## Archive` line names the topic
    folder you'll file everything into in the last step. Run this when the effort is done (it's the
    finalizer) — mid-effort, just keep adding working docs and continue.
 
-   ⚠ **`docs/working/` is a SHARED QUEUE — it may hold other efforts' docs.** Invoked by hand you scope
+   **`docs/working/` is a SHARED QUEUE — it may hold other efforts' docs.** Invoked by hand you scope
    the effort yourself from the `Source:` / `Builds on` sequence. **Spawned as a pipeline seat you should have
    been handed the effort's working docs BY NAME, plus its archive target and its research/spec folder —
    if you were not, ask for the list rather than inferring membership from the folder.** Sweeping a
@@ -49,7 +49,7 @@ branch, which is the truth for that PR, and you say so at close.
    home is dropped, not deferred** — and the review's own classification (fixit candidate / deferred /
    documented / trivial) is its recommendation, not your ruling.
 
-   ⚠ **When you run as a seat INSIDE the pipeline** (before the PR merges) your living-doc patches describe
+   **When you run as a seat INSIDE the pipeline** (before the PR merges) your living-doc patches describe
    code that is *about to* land. That is fine and deliberate — docs and code ride one PR instead of
    drifting — but say so in your summary: **the patches are contingent on the merge.** Verify against the
    pipeline branch's code, which is the truth for that PR.
@@ -69,8 +69,8 @@ branch, which is the truth for that PR, and you say so at close.
    - **Write / update the meta-comment + `## Lineage`** (see "Doc metadata" in `docs-workflow.md`):
      - *Creating a doc from scratch* here: emit the `<!-- meta: type=…; status=current; verified={today};
        lineage=N -->` line (its `verified` = today, matching the blockquote you just set) **and** a
-       `## Lineage` footer. You already know the `Source:` research doc (→ `Idea`), any spec pipeline
-       (→ `Spec`), and the working-doc sequence / `## Archive` target (→ `Built`); derive `Related` from
+       `## Lineage` footer. You already know the `Source:` research doc (the `Idea` row), any spec pipeline
+       (the `Spec` row), and the working-doc sequence / `## Archive` target (the `Built` row); derive `Related` from
        existing peer links. Set `lineage=N` to the link count. **Keep `Spec` and `Built` symmetric** —
        list **every per-slice spec that a `Built` session implemented** (the umbrella + `00-operating-frame`
        go in `Idea`, not `Spec`); a `Built` session whose spec is missing from `Spec` is the smell (see the
@@ -99,18 +99,14 @@ branch, which is the truth for that PR, and you say so at close.
    (use the `## Archive` line; reuse the folder if it exists, create it if new; descriptive names, **no
    numeric prefixes on working docs** — `Builds on` is the ordering):
 
-   🔴 **FIRST, RECONCILE THE DESTINATIONS — `rg '^\s*`?docs/archive/' <every working doc in the effort>`.**
+   **FIRST, RECONCILE THE DESTINATIONS — `rg '^\s*`?docs/archive/' <every working doc in the effort>`.**
    This step says *"one topic folder"* and *"use the `## Archive` line"* — a singular read over a PLURAL
-   source, and until this rule existed there was no tie-break, no majority rule, and no conflict check.
-   **If the docs disagree, STOP and ask.** Do not pick the majority, do not pick the first, and do not
-   pick the one you happen to be reading.
-   ⚠ **Because the failure is not recoverable by you.** Measured (CK-174): five of an effort's six working
-   docs named `pipeline-b2-cockpit/` and one named `pipeline-cockpit-rebuild/` — **a real, populated,
-   DIFFERENT effort's folder.** Following the odd one out sweeps this effort's docs into a neighbour's
-   archive, which is the exact failure `:38-43` calls *"not reversible by the seat that does it"*, and
-   `:95` forbids you from repairing it because `archive/` is frozen history.
-   ⚠ **No seat could see it alone** — each seat wrote one working doc and each line was individually
-   plausible. The divergence exists only in the SET, which is why the check belongs here and not upstream.
+   source, so the set is checked before any move. **If the docs disagree, STOP and ask.** Do not pick the
+   majority, do not pick the first, and do not pick the one you happen to be reading. The failure is not
+   recoverable by you: one working doc naming a different, populated effort's folder is enough to sweep
+   this effort's docs into a neighbour's archive, and `archive/` is frozen history. No seat can see it
+   alone — each wrote one working doc and each line is individually plausible; the divergence exists only
+   in the SET, which is why the check belongs here and not upstream.
    - Move **every working doc** in the effort from `docs/working/` into the topic folder.
    - Move the **`Source:`** research/spec docs from `docs/research/` into the **same** topic folder — the
      idea and the work that delivered it are filed together. Do NOT delete and do NOT leave in `research/`
@@ -123,20 +119,18 @@ branch, which is the truth for that PR, and you say so at close.
        **`project-status.md` at the topic-folder root** as the index, plus any `live-checks.md`; a
        `sessions/` folder (**two files per session — the filed `plan.md` + `tldr.md`**; older archives may
        also hold `questions.md` / `status-after-*.md`, which is historical record, not the convention)
-       moves wholesale alongside them. ⚠ `git mv` STAGES immediately —
-       in a shared working tree, another session's commit can silently sweep your staged renames
-       (happened live, 2026-07-12: 29 renames rode a different session's commit). Commit promptly after
-       the moves, or announce the staged state before yielding the tree.
+       moves wholesale alongside them. `git mv` STAGES immediately — in a shared working tree, another
+       session's commit can silently sweep your staged renames. Commit promptly after the moves, or
+       announce the staged state before yielding the tree.
      - **Follow-on round** (the effort continues an already-archived family — e.g. a round-2 pipeline for
        a shipped feature): its own **sibling** topic folder with the full split shape, named
        `{family-prefix}-{subtopic}` — **never file into the frozen prior-round folder**. The family
        index is the living feature doc's `## Lineage` (append this round's Idea/Spec/Built rows beside
        the prior round's); the new round's back-links to the old archive stay as-is (historical
-       cross-effort links). See the section named `Follow-on pipelines` in `docs-workflow.md` — ✅ the
-       living docs went through the cutover 2026-08-15, so that heading now carries the v2 word.
+       cross-effort links). See the section named `Follow-on pipelines` in `docs-workflow.md`.
    - **Repair the intra-effort links the move breaks** (relative depths change). On a split, fix: each
-     working doc's `Source:` → `../specs/NN-*.md`; spec↔`project-status` links; and the **live feature
-     doc's `## Lineage`** rows (`Spec`→`…/specs/…`, `Built`→`…/implementation/…`). On a flat archive, a
+     working doc's `Source:` becomes `../specs/NN-*.md`; the spec / `project-status` links; and the **live feature
+     doc's `## Lineage`** rows (`Spec` to `…/specs/…`, `Built` to `…/implementation/…`). On a flat archive, a
      working doc's `Source: ../research/{topic}/x.md` becomes the now-sibling `x.md`. **Leave pre-existing
      cross-effort links** (to *other* topic folders / research folders) as historical record. Verify with a
      link-resolution pass before finishing.

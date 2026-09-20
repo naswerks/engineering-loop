@@ -71,23 +71,21 @@ catching what the other missed, each killing some of the other's false positives
 So: run **two independent passes** (subagents, same charter, **no shared context between them** — do not
 let the second see the first's findings), then **consolidate yourself**:
 
-- **Both passes found it** → a confirmed finding.
-- **One pass found it** → scrutinise it before filing; say in the report that it was single-sourced.
-- **They disagree** → say so, with both readings. A visible disagreement is worth more than a resolved
+- **Both passes found it**: a confirmed finding.
+- **One pass found it**: scrutinise it before filing; say in the report that it was single-sourced.
+- **They disagree**: say so, with both readings. A visible disagreement is worth more than a resolved
   one you can't show your work for.
 
 The consolidation is where the value is, not in either pass. **Correlated reviewers are the hazard** —
 passes that share framing agree for reasons that have nothing to do with the code.
 
-🔴 **THE NOTIFICATION IS THE ONLY ROUTE TO A PASS'S OUTPUT. READ IT WHEN IT ARRIVES.** Spawning the two
-passes flows freely; **`SendMessage` — the verb that would fetch a report you missed — is
-`walled-by-policy`, and it is not being unwalled.** It exists in the boundary set for cross-session
-influence, and nothing at the gate can tell "retrieving my own subagent's report" from that without a new
-discriminator; inventing one to save a relaunch would widen a publish boundary to fix an inconvenience.
-⚠ **Cost of learning this the hard way: ~344k tokens** — a review seat lost a notification and had to
-relaunch the pass from scratch, because there was no sanctioned second route to output it had already
-paid for. **So: do not start other work across a pass's completion, and if you do lose one, relaunching
-it is the supported path — say in the report that the pass was re-run.**
+**THE NOTIFICATION IS THE ONLY ROUTE TO A PASS'S OUTPUT. READ IT WHEN IT ARRIVES.** Spawning the two
+passes flows freely; **the verb that would fetch a subagent's report after the fact is a boundary tool**
+(`walled-by-policy`) — it sits in the boundary set for cross-session influence, and nothing at the gate
+can tell "retrieving my own subagent's report" from that without a new discriminator; inventing one to
+save a relaunch would widen a publish boundary to fix an inconvenience. A lost notification costs a full
+relaunch of the pass. **So: do not start other work across a pass's completion, and if you do lose one,
+relaunching it is the supported path — say in the report that the pass was re-run.**
 
 **State the pass count in the report, and when it is not two, state WHY.** *"Second pass dropped at the
 stated rail threshold"* and *"second pass refused by rate limits"* are different facts about how much
@@ -112,7 +110,7 @@ exhaustively.
 that **every departure is IDENTIFIED and its reason stated** — an intentional break with a recorded reason
 is fine; an unremarked one is a finding, because the next reader cannot tell which it was.
 
-🔴 **ACROSS ALL THREE LENSES: when you find a fact, SEARCH FOR THE CLAIMS IT FALSIFIES.** Finding a defect
+**ACROSS ALL THREE LENSES: when you find a fact, SEARCH FOR THE CLAIMS IT FALSIFIES.** Finding a defect
 and finding the sentence that says the defect cannot exist are **two different searches**, and the second
 is the one nobody performs. A review once found that a guard had a third blind spot — while the entry
 describing that guard said, in its headline, that it had exactly two. The review reported the defect,
@@ -156,23 +154,22 @@ Everything else is a finding with a home, and you name the home:
 | A loop/comms finding | `## Deferred findings log` + the retro's backlog |
 | Trivial or environmental — a config value, a one-line guard, "start the container" | **not a session.** Name it as a rider or a live-check row |
 
-🔴 **NAME THE PATH AND THE VERBATIM HEADING, NEVER A NICKNAME.** *"the deferred log"* is a name, not
+**NAME THE PATH AND THE VERBATIM HEADING, NEVER A NICKNAME.** *"the deferred log"* is a name, not
 a place — and you are the one seat that cannot resolve it, because your entire value is having none
-of the pipeline's context. One review filed 15 findings to that nickname; **fourteen never landed
-anywhere.** If the tracker does not carry the heading verbatim, that mismatch is itself a finding:
-report it, and file to the section that exists.
+of the pipeline's context. A finding filed to a nickname lands nowhere. If the tracker does not carry
+the heading verbatim, that mismatch is itself a finding: report it, and file to the section that exists.
 
-🔴 **YOU DO NOT MINT AN ID NAMESPACE.** The effort has ONE finding sequence, allocated by the coordinator
+**YOU DO NOT MINT AN ID NAMESPACE.** The effort has ONE finding sequence, allocated by the coordinator
 (`spec-pipeline`'s template says so). Number your findings **report-locally** and label them as such —
-`R-1`, `R-2`, … — and state plainly that the effort id is the coordinator's to assign at the ruling.
-**Receipt:** a review that minted `DEF-n` beside the coordinator's `CK-n` produced two different findings
-under one id; everything downstream cited the coordinator's, and the review's looked handled while it sat
-unread. A finding is not filed until it carries an effort id in the log.
+`R-1`, `R-2`, … — and state plainly that the effort id is the coordinator's to assign at the ruling. A
+second sequence beside the coordinator's produces two different findings under one id; everything
+downstream cites the coordinator's, and the review's looks handled while it sits unread. A finding is not
+filed until it carries an effort id in the log.
 
 **ONE fixit seat per pipeline, maximum.** If three findings qualify they go into **one** session with a
 named list. Anything that does not fit is a chartered follow-up, stated honestly with its reason — a
 pipeline that needs two fixit seats is telling you the remainder belongs to the next one. This bound is
-what stops a review→fix→review spiral.
+what stops a review-fix-review spiral.
 
 ## Asking questions
 
@@ -205,6 +202,7 @@ not a chat transcript, and it archives with the effort.
 
 ## Grades — from outside
 | Dimension | Grade | Evidence |
+|---|---|---|
 | Correctness & security | | |
 | Composition across seams | | |
 | Pattern conformance | | |
@@ -249,13 +247,13 @@ TLDR with beliefs and numbered questions, the question lane, the parked-call dis
 vocabulary, the six-section FINAL TLDR, and the close-out order. You commit `sessions/code-review.md` on
 your coordinator's call like any seat.
 
-⚠ **The close-out receipt's heading token is the literal `child·` for you too** — it is a protocol anchor,
+**The close-out receipt's heading token is the literal `child·` for you too** — it is a protocol anchor,
 not a description of your seat, and writing `[review·…]` stales your own acceptance. `spec-seat` carries
 the detail.
 
 Only your **seed** differs from other seats: it carries no coordinator beliefs, no provenance list, and no
 framing about what is already settled — **but it DOES carry an inventory**, and that inventory is your
-reading list. `SeatSeedComposer` composes it from the `review` branch: `spec-seat` first, then this skill,
+reading list. The control plane composes it for the `review` kind: `spec-seat` first, then this skill,
 and nothing else.
 
 Your baselines are reads, not builds: you run the suites to confirm the pipeline's reported numbers, and a
@@ -266,4 +264,3 @@ number you cannot reproduce is a finding.
   are reviewing) · `spec-retro` (the inside look) · `spec-witness` (the live read-only seat; its ledger, if
   one exists, is evidence like any other artifact) · `docs-process` (consumes this report and gives every
   finding a disposition)
-- `docs/research/agent-docs-processor.md` § The Reviewer — the design and the runs that earned it.

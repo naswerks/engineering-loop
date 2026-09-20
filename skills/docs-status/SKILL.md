@@ -11,7 +11,7 @@ just counts.
 ## Steps
 
 1. **`working/` — in flight.** List each doc in `docs/working/` with a one-line "what it's about /
-   how far along." These are active efforts; a non-empty queue means living docs may be going stale.
+   how far along." A folder's `README.md` is never a queue entry — skip it. These are active efforts; a non-empty queue means living docs may be going stale.
 
 2. **`research/` — waiting ideas.** List each doc in `docs/research/` (and topic subfolders) by name
    with a one-line hook. This is the backlog of things to pick up next.
@@ -26,7 +26,7 @@ just counts.
    - **missing-meta** — a living doc (`guides/ patterns/ infrastructure/ features/`) with no `<!-- meta:`
      comment. Read its blockquote `Last verified` instead (back-compat: read either, **prefer the
      comment**) and list it as a gap to fill.
-   - **stale** — `verified` older than ~14 days → candidate for `docs-audit-feature` (the existing nudge;
+   - **stale** — `verified` older than ~14 days, a candidate for `docs-audit-feature` (the existing nudge;
      note the harder 90-day line the future `docs_freshness` tool will use).
    - **dead lineage** — a `## Lineage` link whose target file no longer exists (a broken breadcrumb).
    - **low-lineage feature** — `lineage=0` on a `type=feature` doc = ungrounded; worth wiring its lineage.
@@ -36,10 +36,10 @@ just counts.
    rotting silently. These are candidates to fix, or to graduate into a `working/` effort.
 
 6. **Recommend a next action, escalating by scale:**
-   - Working queue non-empty → "process the working doc X" first.
-   - Clear → "pick up research idea Y" (with a one-line why).
-   - A few stale docs → `docs-audit-feature` on those specific docs.
-   - **Many stale docs, or a long absence (~30+ days of no doc activity)** → recommend `docs-audit-full`
+   - Working queue non-empty: "process the working doc X" first.
+   - Clear: "pick up research idea Y" (with a one-line why).
+   - A few stale docs: `docs-audit-feature` on those specific docs.
+   - **Many stale docs, or a long absence (~30+ days of no doc activity)**: recommend `docs-audit-full`
      to get a prioritized re-verify plan instead of one-off audits.
 
 ## Notes
