@@ -3,10 +3,13 @@
   "version": "0.1.0",
   "description": "The engineering loop as a Claude Code plugin: a knowledge loop (docs-*), an execution loop (spec-*), and init for a fresh repository. The package root is the plugin root.",
   "license": "MIT",
-  "private": true,
   "type": "module",
-  "engines": { "node": ">=22" },
-  "bin": { "verify-staged": "bin/verify-staged.mjs" },
+  "engines": {
+    "node": ">=22"
+  },
+  "bin": {
+    "verify-staged": "bin/verify-staged.mjs"
+  },
   "files": [
     ".claude-plugin/",
     "skills/",
@@ -22,6 +25,11 @@
     "check:publish": "node pins/publish-gate.mjs",
     "verify-staged": "node bin/verify-staged.mjs"
   },
-  "repository": { "type": "git", "url": "https://github.com/naswerks/engineering-loop.git" },
-  "publishConfig": { "access": "public" }
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/naswerks/engineering-loop.git"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
 }
