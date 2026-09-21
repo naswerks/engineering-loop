@@ -102,9 +102,12 @@ other; an identity or authorization plane that is trustworthy per-slice and forg
 ordinary correctness: null and error paths, concurrency, data loss, exception swallowing.
 
 **Lens 2 — the patterns, and the language.** Read the diff against `patterns/backend-patterns.md`,
-`patterns/frontend-patterns.md`, `patterns/vertical-slice-anatomy.md`, `patterns/testing.md`,
-`patterns/codegen.md` — and against ordinary good practice in the language, which no pattern doc covers
-exhaustively.
+`patterns/frontend-patterns.md`, `patterns/code-organization.md`, `patterns/testing.md`, and every
+standard doc the repository has (`patterns/codegen.md`, `patterns/state-management.md`,
+`patterns/ui-style-guide.md`, `patterns/design-tokens.md`, `infrastructure/realtime-events.md`,
+`infrastructure/background-work.md`, `patterns/long-running-workflows.md` — those that exist) plus the
+rows in `docs/_meta/doc-index.md` § Role reading lists — and against ordinary good practice in the
+language, which no pattern doc covers exhaustively.
 
 **A pattern break is not automatically a defect.** There are legitimate reasons to depart. Your job is
 that **every departure is IDENTIFIED and its reason stated** — an intentional break with a recorded reason

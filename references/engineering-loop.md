@@ -1,4 +1,4 @@
-<!-- naswerks-loop: version=0.1.0 -->
+<!-- naswerks-loop: version=0.2.0 -->
 # The Engineering Loop — flow, seats, skills, and the ceremony
 
 > The quick intro to how work gets built with this loop: the two loops (`docs-*` knowledge, `spec-*`
@@ -170,7 +170,8 @@ diff.
    seat's own commit, so left alone it hands the NEXT seat a dirty tree. Goto 1.
 
 **Hard rules:** no commit/push without the relayed call; explicit staging, never `git add -A`, verified
-with `verify-staged`; codegen only through the command `patterns/codegen.md` names; component files as
+with `verify-staged`; codegen only through the command `patterns/codegen.md` names (when the repo has
+one); component files as
 `patterns/frontend-patterns.md` states; additive-only, never amend pushed commits; parallel sessions only
 when specs share no files — commits sequence regardless; seats run the pipeline's declared default model
 (allowlist-exact, set at creation), and an investigation-heavy seat may warrant a reasoning-heavier one.

@@ -5,6 +5,35 @@ version is the one in `package.json` and `.claude-plugin/plugin.json`, which mus
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-09-20
+
+### Changed
+
+- The reading floor every seat reads is four documents plus the `_meta` trio: `patterns/code-organization.md`
+  (was `vertical-slice-anatomy.md` — it describes the layout a repository actually has and presumes no
+  pattern), `backend-patterns.md`, `frontend-patterns.md`, `testing.md`. `codegen.md` leaves the floor.
+- The standard set a role reads on top of the floor is seven documents, each drafted by `init` only when the
+  repository shows the concern and each carrying a `doc-index.md` row either way: `codegen`,
+  `state-management`, `ui-style-guide`, `design-tokens` (the token authority, split out of the style guide),
+  `long-running-workflows` (split out of `background-work`), `realtime-events`, `background-work`.
+  `spec-child` names them by path and says an absent one has a row saying `not detected`.
+- `docs/_meta/doc-index.md` § Role reading lists is the repository's reserved space: `Doc | what it gives
+  the seat | backend | frontend | mixed`. `spec-parent` copies a role's rows into every seed's `EXTRA DOCS`
+  line, so a team's own documents reach a seat as paths in its prompt rather than as an index to consult.
+- `spec-pipeline` sizes every spec for one session before context compacts, with no target count;
+  `engineering-loop.md` says the same in place of a session range.
+- `init doctor` fails a standard document that is absent without its `not detected` row, and any
+  Role-reading-lists row whose path does not exist.
+
+### Added
+
+- Templates `code-organization.md`, `design-tokens.md`, `long-running-workflows.md`.
+
+### Removed
+
+- The snapshot-stub pattern for the standard names: a repository names its documents with the standard
+  names directly; no pointer documents.
+
 ## [0.1.0] - 2026-09-20
 
 ### Added

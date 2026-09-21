@@ -1,7 +1,7 @@
 # UI Style Guide
 
 > Which class or component to reach for, for which job, and the composition rules that keep screens
-> consistent — plus the design tokens and how to consume them. Last verified {today}.
+> consistent. The tokens themselves are the authority of [design-tokens](design-tokens.md). Last verified {today}.
 <!-- meta: type=pattern; status=draft; verified={today}; lineage=0 -->
 <!-- naswerks-loop: draft; scanned={files} -->
 
@@ -52,12 +52,13 @@ Every data-driven page handles four states: **loading**, **error**, **empty**, *
 
 ## Tokens
 
-<!-- init: scan — a tokens/theme file, a global stylesheet, the UI library's token variables.
-     fill — a table `Token | CSS variable | Purpose | When to use` for brand, base and status tokens,
-     then the ONE consumption rule for component CSS (use `var(--…)` tokens, never a literal colour; how to
-     express opacity), and the dead forms to grep for if the library moved majors.
-     absent — "No design tokens detected — fill this in: the colour and spacing tokens and how component
-     CSS consumes them." -->
+Snapshot — the token authority is [design-tokens](design-tokens.md): which tokens exist, what each
+means, and the one rule for consuming them in component CSS. This page names the class for the job; that
+page names the value behind the class.
+
+<!-- init: fill — one sentence naming the token family this UI library exposes (from design-tokens.md when
+     drafted). absent — "No design tokens detected — the classes above are the whole vocabulary; fill this in
+     if a token layer appears." -->
 
 ## Forms
 
@@ -73,4 +74,4 @@ Every data-driven page handles four states: **loading**, **error**, **empty**, *
 |---------|-------|
 
 ## Lineage
-- **Related** — [frontend-patterns](frontend-patterns.md)
+- **Related** — [frontend-patterns](frontend-patterns.md) · [design-tokens](design-tokens.md)

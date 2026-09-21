@@ -70,4 +70,4 @@
 |------|---------|
 
 ## Lineage
-- **Related** — [frontend-patterns](frontend-patterns.md) · [vertical-slice-anatomy](vertical-slice-anatomy.md)
+- **Related** — [frontend-patterns](frontend-patterns.md) · [code-organization](code-organization.md)

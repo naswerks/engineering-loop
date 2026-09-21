@@ -34,16 +34,24 @@ apply** (`spec-seat`, Step 0). This list is for a build seat working from a spec
 
 ## Role — the adds, on top of spec-seat's Step 0 floor
 
+The loop's standard docs, by path. **Read every one that exists for your role.** One that is absent was
+not detected by `init` — `docs/_meta/doc-index.md` § Role reading lists carries a row saying so — and is
+not a missing-file finding. `patterns/codegen.md` is read by any seat that touches a generated folder.
+
 | Role | Adds |
 |---|---|
-| **frontend** | `patterns/state-management.md` · `patterns/ui-style-guide.md` · `infrastructure/realtime-events.md` (the poke/refetch concept trips sessions up — read it even for "pure UI" work) · plus your role's rows in `docs/_meta/doc-index.md` § Role reading lists |
-| **backend** | `infrastructure/realtime-events.md` (the poke/refetch concept trips sessions up — read it even for "pure API" work) · `infrastructure/background-work.md` as the task warrants · plus your role's rows in `docs/_meta/doc-index.md` § Role reading lists |
-| **mixed** | **NOT every set by default** — read the adds for the surfaces your spec ACTUALLY touches, decided at recon once you have read the spec. **This is the default role and it covers every surface with no role of its own** — a surface the repo names only in `docs/_meta/doc-index.md` § Role reading lists (a sidecar, a CLI, a worker) reads the row there; docs work needs nothing beyond the Step 0 floor |
+| **frontend** | `patterns/state-management.md` · `patterns/ui-style-guide.md` · `patterns/design-tokens.md` · `infrastructure/realtime-events.md` (the poke/refetch concept trips sessions up — read it even for "pure UI" work) · `patterns/codegen.md` when the client consumes generated types |
+| **backend** | `infrastructure/realtime-events.md` (the poke/refetch concept trips sessions up — read it even for "pure API" work) · `infrastructure/background-work.md` · `patterns/long-running-workflows.md` as the task warrants · `patterns/codegen.md` when the server side emits generated code |
+| **mixed** | **NOT every set by default** — read the adds for the surfaces your spec ACTUALLY touches, decided at recon once you have read the spec. **This is the default role and it covers every surface with no role of its own** — a CLI, a sidecar, a worker project; docs work needs nothing beyond the Step 0 floor |
+
+**This repository's own docs reach you as paths too, not as an index to consult:** the coordinator copies
+your role's rows from `docs/_meta/doc-index.md` § Role reading lists into your prompt's `EXTRA DOCS` line.
+Read those the same way. If your prompt carries no `EXTRA DOCS` line, read that section yourself once and
+say in your PLAN TLDR which rows you took.
 
 A role is *which docs does this build session read* — nothing else. Jobs are SEAT KINDS, not roles:
 `docs-process` is a session type of its own, and a spec that touches a surface with no role of its own is
-`mixed` with that surface's row. A doc-index row that says "no X detected" is an honest answer from `init`:
-that concern is not in this repo yet, and there is nothing to read for it.
+`mixed` with that surface's rows.
 
 ## Recon — the build seat's first act
 

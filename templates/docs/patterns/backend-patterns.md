@@ -93,4 +93,4 @@
      absent — "| (none detected) | fill this in: the base entity, the data context, the composition root |" -->
 
 ## Lineage
-- **Related** — [vertical-slice-anatomy](vertical-slice-anatomy.md) · [testing](testing.md) · [codegen](codegen.md)
+- **Related** — [code-organization](code-organization.md) · [testing](testing.md) · [codegen](codegen.md)

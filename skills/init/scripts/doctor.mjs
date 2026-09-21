@@ -56,18 +56,36 @@ for (const name of ['docs-workflow.md', 'engineering-loop.md']) {
 }
 
 // ── 4. the reading floor and the conditional docs ───────────────────────────────────────────────
-const FLOOR = ['patterns/vertical-slice-anatomy.md', 'patterns/backend-patterns.md', 'patterns/frontend-patterns.md', 'patterns/testing.md', 'patterns/codegen.md'];
-const CONDITIONAL = ['patterns/state-management.md', 'patterns/ui-style-guide.md', 'infrastructure/realtime-events.md', 'infrastructure/background-work.md'];
+const FLOOR = ['patterns/code-organization.md', 'patterns/backend-patterns.md', 'patterns/frontend-patterns.md', 'patterns/testing.md'];
+const STANDARD = ['patterns/codegen.md', 'patterns/state-management.md', 'patterns/ui-style-guide.md', 'patterns/design-tokens.md', 'patterns/long-running-workflows.md', 'infrastructure/realtime-events.md', 'infrastructure/background-work.md'];
+const roleRows = (() => { const t = read(join(repo, 'docs', '_meta', 'doc-index.md')); return t === null ? null : sectionOf(t, '## Role reading lists'); })();
 for (const d of FLOOR) docRow(d, true);
-for (const d of CONDITIONAL) docRow(d, false);
+for (const d of STANDARD) docRow(d, false);
 function docRow(relPath, required) {
   const text = read(join(repo, 'docs', relPath));
-  if (text === null) { row(required ? 'FAIL' : 'ok', `docs/${relPath}`, required ? 'missing' : 'absent (drafted only when the scan finds the concern)'); return; }
+  if (text === null) {
+    if (required) { row('FAIL', `docs/${relPath}`, 'missing'); return; }
+    const rowText = roleRows === null ? null : roleRows.split('\n').find((l) => l.includes(relPath));
+    if (rowText && /not detected/i.test(rowText)) row('ok', `docs/${relPath}`, 'absent, and doc-index says why (not detected)');
+    else row('FAIL', `docs/${relPath}`, 'absent with no doc-index row saying it was not detected — a seat meeting this path has no answer');
+    return;
+  }
   const meta = /<!-- meta:[^>]*status=([a-z]+)/.exec(text);
   if (!meta) row('DEGRADE', `docs/${relPath}`, 'no <!-- meta --> line');
   else if (meta[1] === 'draft') row('DEGRADE', `docs/${relPath}`, 'status=draft — scanned, not decided');
   else row('ok', `docs/${relPath}`, `status=${meta[1]}`);
   if (/<!-- init:/.test(text)) row('DEGRADE', `docs/${relPath}`, 'an <!-- init: --> instruction was left in the file');
+}
+
+// ── 4b. every path a Role reading lists row names resolves ─────────────────────────────────────
+if (roleRows !== null) {
+  for (const line of roleRows.split('\n').filter((l) => l.trim().startsWith('|') && !/^\|\s*-/.test(l.trim()) && !/^\|\s*Doc\s*\|/i.test(l.trim()))) {
+    for (const m of line.matchAll(/`((?:patterns|infrastructure|guides|features)\/[A-Za-z0-9_.-]+\.md)`|\]\((?:\.\.\/)?((?:patterns|infrastructure|guides|features)\/[A-Za-z0-9_.-]+\.md)\)/g)) {
+      const p = m[1] || m[2];
+      if (/not detected/i.test(line)) continue;
+      row(existsSync(join(repo, 'docs', p)) ? 'ok' : 'FAIL', `doc-index row: docs/${p}`, existsSync(join(repo, 'docs', p)) ? '' : 'the row names a path that does not exist');
+    }
+  }
 }
 
 // ── 5. CLAUDE.md / AGENTS.md stanza, settings pin ───────────────────────────────────────────────

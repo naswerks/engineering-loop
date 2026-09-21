@@ -61,19 +61,23 @@ Then recon the tree: `git rev-parse HEAD`, `git status --porcelain`, `git branch
 
 | Doc | What it gives you |
 |---|---|
-| `patterns/vertical-slice-anatomy.md` | where a feature's files go, every stack the repo has |
+| `patterns/code-organization.md` | where the code lives and where a new piece goes, every stack the repo has |
 | `patterns/backend-patterns.md` | how the server side is built here |
 | `patterns/frontend-patterns.md` | how the client side is built here |
 | `patterns/testing.md` | how to write and RUN the suites — including the run protocol |
-| `patterns/codegen.md` | what is generated and how; never hand-write a generated folder |
 
 **That is the default set, required regardless of role** —
 `docs/_meta/doc-index.md` · `docs/_meta/docs-workflow.md` · `docs/_meta/engineering-loop.md` ·
-`patterns/vertical-slice-anatomy.md` · `patterns/backend-patterns.md` · `patterns/frontend-patterns.md` ·
-`patterns/testing.md` · `patterns/codegen.md`
+`patterns/code-organization.md` · `patterns/backend-patterns.md` · `patterns/frontend-patterns.md` ·
+`patterns/testing.md`
 <!-- A control plane may read this line + list as its preset hint (it looks for "default set" and "role" on
      one line, then collects the backticked paths until a blank line). Keep the phrase and the list
      contiguous, or the hint silently empties. -->
+
+**On top of the floor, your job skill names the loop's standard docs for your role by path, and your
+prompt's `EXTRA DOCS` line names this repository's own.** Read every one that exists. A standard doc that
+is absent was not detected by `init` — `docs/_meta/doc-index.md` § Role reading lists carries a row
+saying so — and is not a missing-file finding.
 
 A doc marked `status=draft` in its meta line was scanned by `init`, not decided by the repo's owners —
 read it as the starting point it is, and treat a rule it states without a cited source as a question for
@@ -365,8 +369,8 @@ doorbell with no follow-through**; if you receive one bare, retry anyway and say
   echo text — the deny layer matches text, not parsed verbs.
 - Prefer native read/glob/grep tools for reads; a shell read flows with its row like any other
   non-boundary call.
-- **Codegen only through the command `patterns/codegen.md` § Running codegen names** — never hand-write a
-  generated folder.
+- **Codegen only through the command `patterns/codegen.md` § Running codegen names** (when the repo has
+  one) — never hand-write a generated folder.
 - **Never improvise a qualifying path in.** If a push parks and the remedy you can think of is touching a
   `docs/working/` file or the tracker to satisfy a predicate, that is fabricating a receipt. Raise a
   `## MID-BUILD QUESTION` and price the options; do not execute it and do not invent a way around it.

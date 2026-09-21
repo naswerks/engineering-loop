@@ -32,11 +32,13 @@
 
 ## Long-running workflows
 
-<!-- init: scan — a saga / orchestration / state-machine base class, a job with stages.
-     fill — the shape (stages, per-item progress, exactly-once stage transitions and what guarantees them,
-     progress reporting to the client), one REAL workflow as the example, then `### Rules`.
-     absent — "No multi-stage workflow detected — fill this in when one appears: how stages chain, how a
-     stage transition happens exactly once, how progress is reported." -->
+Snapshot — multi-stage work (stages, per-item progress, exactly-once transitions) is the authority of
+[long-running-workflows](../patterns/long-running-workflows.md) when the repo has one; this page is the
+transport it runs on.
+
+<!-- init: fill — one sentence naming the workflow mechanism (from long-running-workflows.md when drafted).
+     absent — "No multi-stage workflow detected — every background job here is single-stage; fill this in
+     when one appears." -->
 
 ## Gotchas
 
@@ -50,4 +52,4 @@
 |------|---------|
 
 ## Lineage
-- **Related** — [backend-patterns](../patterns/backend-patterns.md) · [realtime-events](realtime-events.md)
+- **Related** — [backend-patterns](../patterns/backend-patterns.md) · [realtime-events](realtime-events.md) · [long-running-workflows](../patterns/long-running-workflows.md)

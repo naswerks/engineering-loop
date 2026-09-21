@@ -100,4 +100,4 @@ A test that cannot go red is a green light with a test's name on it. For every p
      absent — "| (none detected) | fill this in: the runner config, the shared fixtures, the CI workflow |" -->
 
 ## Lineage
-- **Related** — [backend-patterns](backend-patterns.md) · [frontend-patterns](frontend-patterns.md) · [vertical-slice-anatomy](vertical-slice-anatomy.md)
+- **Related** — [backend-patterns](backend-patterns.md) · [frontend-patterns](frontend-patterns.md) · [code-organization](code-organization.md)

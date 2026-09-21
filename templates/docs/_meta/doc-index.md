@@ -21,12 +21,11 @@
 
 | Doc | When to read |
 |-----|-------------|
-| [vertical-slice-anatomy](../patterns/vertical-slice-anatomy.md) | **Where a feature's files go**, per stack, and the new-feature checklist |
+| [code-organization](../patterns/code-organization.md) | **Where the code lives and where a new piece goes** — the folder shape as it is, per stack, and the add-a-feature checklist |
 | [backend-patterns](../patterns/backend-patterns.md) | **How the server side is built here** — data layer, API layer, write paths, registration |
 | [frontend-patterns](../patterns/frontend-patterns.md) | **How the client side is built here** — architecture rules, component kinds and files, state, styling |
 | [testing](../patterns/testing.md) | **How to write and RUN the suites** — the lanes and their exact commands, the run protocol, what to test where, the controls discipline |
-| [codegen](../patterns/codegen.md) | **What is generated and by which command** — never hand-write a generated file |
-<!-- init: add rows for state-management and ui-style-guide when they were drafted. -->
+<!-- init: add rows for codegen, state-management, ui-style-guide, design-tokens and long-running-workflows when they were drafted; the hook for each ends "(draft — scanned, not decided)". -->
 
 ## Infrastructure — what runs UNDER THE HOOD
 
@@ -49,15 +48,22 @@
 
 ## Role reading lists
 
-The adds a build seat reads on top of the floor every seat reads (`spec-seat` Step 0). `spec-child`
-names the generic docs; this section is where THIS repository adds its own rows per role.
+The docs a build seat reads on top of the floor every seat reads (`spec-seat` Step 0). The `spec-child`
+skill names the loop's standard docs by path; this table is the repository's reserved space — one row per
+doc, saying which roles read it. The coordinator copies a role's rows into every seat's seed as
+`EXTRA DOCS`, so a seat sees paths, not this index. Add a row for any doc of your own a role should read;
+add a role column if your seats have kinds the loop does not ship.
 
-| Role | Adds |
-|---|---|
-| **backend** | <!-- init: `infrastructure/realtime-events.md` when drafted, else "no realtime library detected"; `infrastructure/background-work.md` when drafted, else "no queue or worker detected" --> |
-| **frontend** | <!-- init: `patterns/state-management.md` when drafted, else "no state library detected"; `patterns/ui-style-guide.md` when drafted, else "no UI library detected"; `infrastructure/realtime-events.md` as above --> |
-| **mixed** | reads the rows above for the surfaces the spec touches; <!-- init: one row per surface the scan found that has no role of its own (a CLI, a sidecar, a worker project): "`{path to its doc, or the folder}` — {what it is}" --> |
-<!-- repo rows go here: a surface this repository has that the generic docs do not cover -->
+| Doc | What it gives the seat | backend | frontend | mixed |
+|---|---|---|---|---|
+<!-- init: one row per standard doc the scan found evidence for and drafted (codegen, state-management,
+     ui-style-guide, design-tokens, realtime-events, background-work, long-running-workflows), with the
+     roles that read it marked `x` (realtime-events: backend + frontend; state-management, ui-style-guide,
+     design-tokens: frontend; background-work, long-running-workflows: backend; codegen: any seat that
+     touches a generated folder). One row per standard doc NOT drafted, in the form
+     "| `patterns/state-management.md` | not detected — no state library found | | | |" so a seat that
+     meets the absent path knows why. `mixed` reads the rows for the surfaces its spec touches. -->
+<!-- repo rows go here: a doc this repository has that the loop's standard set does not name -->
 
 ## Apps and their build commands
 

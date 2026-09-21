@@ -10,11 +10,11 @@
     {
       "name": "naswerks",
       "description": "The engineering loop: docs-* knowledge loop, spec-* execution loop, and init for a fresh repository.",
-      "version": "0.1.0",
+      "version": "0.2.0",
       "source": {
         "source": "npm",
         "package": "@naswerks/engineering-loop",
-        "version": "0.1.0"
+        "version": "0.2.0"
       }
     }
   ]

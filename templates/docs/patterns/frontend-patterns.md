@@ -89,4 +89,4 @@
      absent — "| (none detected) | fill this in: the app config, the routes, the shared components |" -->
 
 ## Lineage
-- **Related** — [vertical-slice-anatomy](vertical-slice-anatomy.md) · [testing](testing.md) · [codegen](codegen.md) · [backend-patterns](backend-patterns.md)
+- **Related** — [code-organization](code-organization.md) · [testing](testing.md) · [codegen](codegen.md) · [backend-patterns](backend-patterns.md)

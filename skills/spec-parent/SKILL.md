@@ -32,13 +32,14 @@ hand-testing what shipped. Everything else that a human does hand-cranked, you d
 
 ## Read first
 
-**Step 0 — the same floor every seat reads, all eight.** You verify every seat's work, so you start
-from the context they build in. A coordinator that has not read `testing.md` cannot judge a receipt; one
-that has not read `codegen.md` cannot spot a hand-written generated file.
+**Step 0 — the same floor every seat reads, all seven, plus every standard doc this repository has.**
+You verify every seat's work, so you start from the context they build in. A coordinator that has not
+read `testing.md` cannot judge a receipt; one that has not read `codegen.md` (when the repo has one)
+cannot spot a hand-written generated file.
 
 `_meta/doc-index.md` · `_meta/docs-workflow.md` · `_meta/engineering-loop.md` ·
-`patterns/vertical-slice-anatomy.md` · `patterns/backend-patterns.md` · `patterns/frontend-patterns.md` ·
-`patterns/testing.md` · `patterns/codegen.md`
+`patterns/code-organization.md` · `patterns/backend-patterns.md` · `patterns/frontend-patterns.md` ·
+`patterns/testing.md` — then every doc `doc-index.md` § Role reading lists carries a path for.
 
 **Step 1 — the effort**, in order:
 
@@ -113,9 +114,12 @@ read the board and answer on first receipt rather than spending a round-trip.
    defect even when it works: there are then two sources for one contract and only one of them gets
    corrected.
 
-   **Pick the docs:** the role floor is settled (`spec-seat`'s Step 0 + `spec-child`'s role table) and
-   **extras are YOUR call per task** — scan `docs/_meta/doc-index.md` for the quick decision. When in
-   doubt, seed the doc: a seat reading one extra doc is cheaper than a seat guessing.
+   **Pick the docs:** the floor and the loop's standard docs are settled (`spec-seat`'s Step 0 +
+   `spec-child`'s role table). **This repository's own docs are yours to seed, by path, every time:** copy
+   the seat's role rows from `docs/_meta/doc-index.md` § Role reading lists into the prompt's `EXTRA DOCS`
+   line — a seat follows a path in its prompt and does not reliably follow an index. Then add the extras
+   the task itself warrants. When in doubt, seed the doc: a seat reading one extra doc is cheaper than a
+   seat guessing.
 
    **The seed-retirement rule:** each new seed restates ONLY what OVERRIDES a default (every seat
    re-acquires the defaults from the skill + umbrella from scratch) and DROPS what merely confirms them.
@@ -368,7 +372,7 @@ so read them as run-time obligations, not close-out ones:
   branch-deletion backstop. The fence fires on the commands a careful seat runs to PROVE its work.
 - Seats never edit `project-status.md` or memory files; never run `docs-write` unprompted; respect the
   umbrella's out-of-scope list; codegen only through the command `patterns/codegen.md` § Running codegen
-  names; component files laid out as `patterns/frontend-patterns.md` § Component files states. Run the
+  names (when the repo has one); component files laid out as `patterns/frontend-patterns.md` § Component files states. Run the
   suite lanes SERIALLY.
 - Cross-slice changes (touching a shipped spec's files) need your explicit approval and get recorded as
   a departure. Additive-only; never amend pushed commits.
@@ -440,7 +444,8 @@ Pipeline context: {umbrella path} (settled decisions — don't relitigate) + {pr
 (READ-ONLY, coordinator-owned — prior rows, deferred findings, and process incidents are your contract).
 
 EXTRA DOCS for this task (beyond your role's floor — read them):
-{the coordinator's picks from doc-index.md}
+{this repository's rows for the role, copied from doc-index.md § Role reading lists, by path}
+{the coordinator's task-specific picks}
 
 PRIOR SPECS ARE SHIPPED at {hash} — build against their ACTUAL shapes:
 {bullet the real endpoints, contracts, helpers-to-reuse, caveats, and coordinator-adopted requirements

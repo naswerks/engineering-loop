@@ -37,10 +37,16 @@ docs/
   _meta/doc-index.md              the menu, written LAST — every doc that exists + three repo slots:
                                   ## Role reading lists · ## Apps and their build commands · ## The evidence tools
   research/ working/ archive/ guides/ patterns/ infrastructure/ features/     each with a README.md
-  patterns/vertical-slice-anatomy.md  patterns/backend-patterns.md  patterns/frontend-patterns.md
-  patterns/testing.md  patterns/codegen.md                          the floor — always drafted
-  patterns/state-management.md  patterns/ui-style-guide.md
-  infrastructure/realtime-events.md  infrastructure/background-work.md   only when the scan finds the concern
+  patterns/code-organization.md  patterns/backend-patterns.md
+  patterns/frontend-patterns.md  patterns/testing.md               the floor — always drafted; a repo
+                                                                   with no server side or no client side
+                                                                   gets an honest "not detected" doc
+  patterns/codegen.md  patterns/state-management.md  patterns/ui-style-guide.md
+  patterns/design-tokens.md  patterns/long-running-workflows.md
+  infrastructure/realtime-events.md  infrastructure/background-work.md
+                                                                   the standard set — drafted ONLY when
+                                                                   the scan finds the concern; every one
+                                                                   gets a doc-index row either way
 CLAUDE.md                          the Start-here stanza appended (created with only the stanza if absent)
 AGENTS.md                          the same stanza, only when the file already exists
 .claude/settings.json              the plugin pin merged in (never clobbers existing keys)
@@ -48,6 +54,19 @@ AGENTS.md                          the same stanza, only when the file already e
 
 Eight folders, and the set is closed. Anything else already under `docs/` is left alone and reported as
 "outside the loop's shape — not touched" — never an error, never a queue entry.
+
+**The standard set is shaped by what an engineering team usually has, and a team that lacks one of them
+is told so, not handed a placeholder.** A concern the scan finds no evidence for is NOT drafted; its
+`doc-index.md` § Role reading lists row says `not detected — no {library/mechanism} found`, and the
+report lists it under "not in this codebase". A seat that later meets the absent path reads that row and
+moves on. The floor four are the exception: every repository can answer "where the code lives", "how
+the server side is built", "how the client side is built" and "how tests run" — even when the answer to
+one of them is "no client side here" — so those are always written.
+
+**The reserved space.** § Role reading lists in `doc-index.md` is the repository's own table: one row
+per doc a role should read, standard or not. The coordinator copies a role's rows into every seat's
+`EXTRA DOCS` line, so a team's own docs reach a seat as paths in its prompt. `init` seeds the standard
+rows; the team adds its own, and can add a role column if its seats have kinds the loop does not ship.
 
 **Every template lives at the pack root under `templates/`** (`templates/docs/patterns/*.md`,
 `templates/docs/infrastructure/*.md`, `templates/docs/_meta/doc-index.md`, `templates/docs/readme-*.md`,
@@ -91,9 +110,13 @@ not. `init` never overwrites, never reorders, never deletes.
    the only file init writes into a folder that already exists.
 2. `docs/_meta/docs-workflow.md` and `docs/_meta/engineering-loop.md` — byte copies of the pack's
    `references/*` (their first line is the version stamp; copy it with the file).
-3. The five floor drafts from `templates/docs/patterns/*.md`, filled as below.
-4. The conditional drafts — `state-management`, `ui-style-guide`, `realtime-events`, `background-work` —
-   only where pass 3 found the concern.
+3. The four floor drafts (`code-organization`, `backend-patterns`, `frontend-patterns`, `testing`) from
+   `templates/docs/patterns/*.md`, filled as below.
+4. The standard-set drafts — `codegen`, `state-management`, `ui-style-guide`, `design-tokens`,
+   `long-running-workflows`, `realtime-events`, `background-work` — only where pass 3 found the concern.
+   Evidence per concern: a `generated/` folder or codegen config; a state library; a UI library; a tokens
+   file or token layer; a saga / workflow / state-machine mechanism; a realtime library on either side; a
+   queue, worker or scheduler.
 5. `docs/_meta/doc-index.md` from its template, LAST, listing every doc that now exists under the four
    living folders (drafted or repo-owned), the three repo slots filled from the scan.
 6. The Start-here stanza (`templates/claude-md-stanza.md`) appended to `CLAUDE.md` (created if absent)
@@ -138,8 +161,9 @@ FAIL, so a CI job or a control plane can call it.
 | each of the eight folders | missing | README missing | present |
 | `_meta/docs-workflow.md`, `_meta/engineering-loop.md` | missing, or no stamp on line 1 | stamp behind the pack's version | stamp equals it |
 | `_meta/doc-index.md` and its three slot sections | missing | a slot carries only the absent-line | filled |
-| the five floor docs | missing | `status=draft`, or an `<!-- init: -->` left in | `status=current` |
-| the four conditional docs | — | `status=draft` when present | present and current, or absent |
+| the four floor docs | missing | `status=draft`, or an `<!-- init: -->` left in | `status=current` |
+| the seven standard docs | absent AND no doc-index row saying `not detected` | `status=draft` when present; absent with its row | present and current, or absent with its row |
+| every path a § Role reading lists row names | the row's path does not exist | — | resolves |
 | `CLAUDE.md` / `AGENTS.md` stanza · `.claude/settings.json` pin | — | missing | present |
 | `verify-staged` | — | not on PATH (the row carries the fallback) | resolvable |
 | every `docs/research/*/00-ignition-brief.md` | the five problems the control plane's parser emits (no `## The kick`; the kick has no blockquote; no `## The sequence`; the sequence holds no table; a row names no kind from `coordinator build fixit review retro witness docs-process`), or a spec a row names is missing from disk | — | clean |
@@ -157,7 +181,8 @@ state: the owner promotes each draft to `status=current` as they confirm it, sec
 
 - `init` is the front door of the pack; `docs-status` is the pulse after it. Run `docs-status` once the
   drafts are promoted to see the queue the way a session will.
-- The floor is always drafted, even in a repository with no frontend or no codegen — the reading floor
-  must RESOLVE for every seat kind, and "No frontend detected — fill this in" is an honest doc.
+- The floor four are always drafted, even in a repository with no frontend — the reading floor must
+  RESOLVE for every seat kind, and "No frontend detected — fill this in" is an honest doc. The standard
+  seven are drafted only on evidence; their absence is recorded, never papered over.
 - Counterpart skills: `spec-seat` (reads the floor), `spec-child` (reads the role rows), `spec-pipeline`
   (writes the brief `doctor` checks), `docs-write` / `docs-process` (the queue `doctor` reads).
