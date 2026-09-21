@@ -352,7 +352,9 @@ doorbell with no follow-through**; if you receive one bare, retry anyway and say
   exit 0 and NO output, and `git status` cannot show the loss** (an ignored file is neither staged nor
   dirty, so status looks *cleaner* after it — a `bin/` rule can eat a composition root, a `*.log` rule a
   folder of receipts). Run `verify-staged {your explicit staging list}` — one command, gate-legal (not on
-  PATH: `node <pack root>/bin/verify-staged.mjs {list}`; `--from-file` takes the list from a file,
+  PATH: `node ${CLAUDE_PLUGIN_ROOT}/bin/verify-staged.mjs {list}` — under Claude Code that variable is the
+  pack root, the folder this skill loaded from; in another harness it is the folder holding
+  `.claude-plugin/plugin.json`, two levels above this SKILL.md; `--from-file` takes the list from a file,
   `--against head` checks after the commit). Exit 0 is your staging receipt; non-zero names every missing
   file and the `.gitignore` rule that ate it, and is a **stop-the-line finding**: do not commit, do not
   `git add -f`, do not touch `.gitignore` — rename the artifact off the pattern (receipts stage as `.txt`,

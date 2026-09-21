@@ -5,6 +5,14 @@ version is the one in `package.json` and `.claude-plugin/plugin.json`, which mus
 
 ## [Unreleased]
 
+## [0.2.1] - 2026-09-20
+
+### Changed
+
+- `spec-seat`'s fallback for a `verify-staged` that is not on PATH names the pack root as `${CLAUDE_PLUGIN_ROOT}`
+  (substituted under Claude Code), with the folder two levels above the skill as the reading elsewhere — a
+  seat in a fresh worktree no longer has to locate the pack before it can take a staging receipt.
+
 ## [0.2.0] - 2026-09-20
 
 ### Changed
