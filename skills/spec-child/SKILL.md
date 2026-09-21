@@ -42,7 +42,7 @@ not a missing-file finding. `patterns/codegen.md` is read by any seat that touch
 |---|---|
 | **frontend** | `patterns/state-management.md` · `patterns/ui-style-guide.md` · `patterns/design-tokens.md` · `infrastructure/realtime-events.md` (the poke/refetch concept trips sessions up — read it even for "pure UI" work) · `patterns/codegen.md` when the client consumes generated types |
 | **backend** | `infrastructure/realtime-events.md` (the poke/refetch concept trips sessions up — read it even for "pure API" work) · `infrastructure/background-work.md` · `patterns/long-running-workflows.md` as the task warrants · `patterns/codegen.md` when the server side emits generated code |
-| **mixed** | **NOT every set by default** — read the adds for the surfaces your spec ACTUALLY touches, decided at recon once you have read the spec. **This is the default role and it covers every surface with no role of its own** — a CLI, a sidecar, a worker project; docs work needs nothing beyond the Step 0 floor |
+| **mixed** | **NOT every set by default** — read the adds for the surfaces your spec ACTUALLY touches, decided at recon once you have read the spec. **This is the default role and it covers every surface with no role of its own** — a CLI, a sidecar, a worker project — and its reading list is the rows for those surfaces in `docs/_meta/doc-index.md` § Role reading lists; docs work needs nothing beyond the Step 0 floor |
 
 **This repository's own docs reach you as paths too, not as an index to consult:** the coordinator copies
 your role's rows from `docs/_meta/doc-index.md` § Role reading lists into your prompt's `EXTRA DOCS` line.

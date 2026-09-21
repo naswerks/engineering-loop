@@ -5,6 +5,14 @@ version is the one in `package.json` and `.claude-plugin/plugin.json`, which mus
 
 ## [Unreleased]
 
+## [0.2.2] - 2026-09-21
+
+### Changed
+
+- `spec-child`'s `mixed` row names where its reading list lives — the rows for those surfaces in
+  `docs/_meta/doc-index.md` § Role reading lists — so the default role is no longer the one role told to
+  read "the adds for the surfaces your spec touches" without a path to them.
+
 ## [0.2.1] - 2026-09-20
 
 ### Changed
