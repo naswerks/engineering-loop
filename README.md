@@ -5,8 +5,9 @@ living documentation true, and an **execution loop** (`spec-*`) that turns an ap
 pipeline of agent sessions with a coordinator, build seats, a review seat and a retrospective. `init`
 makes a fresh repository ready for both.
 
-The package root is the plugin root: `.claude-plugin/` and `skills/` sit at the top, so one artifact serves
-a person's CLI, a hosted runner, and a repository's pin.
+The package root is the plugin root: `.claude-plugin/` and `skills/` sit at the top, so the same tree serves
+a person's CLI (through the marketplace, from this repository), a hosted runner (through npm), and a
+repository's pin.
 
 ## Install
 
@@ -16,6 +17,10 @@ a person's CLI, a hosted runner, and a repository's pin.
 claude plugin marketplace add naswerks/engineering-loop
 claude plugin install naswerks@engineering-loop
 ```
+
+The marketplace is this repository, and the plugin is sourced from it: no registry sits between you and a
+release. Plugins load at session start, so start a new session (or run `/reload-plugins`) after installing.
+To pick up a new release later: `claude plugin marketplace update engineering-loop`, then the install line again.
 
 Skills are namespaced by the plugin: `/naswerks:docs-write`, `/naswerks:spec-pipeline`, `/naswerks:init`.
 
@@ -71,7 +76,10 @@ method documents carry the version stamp; the vocabulary censuses. `node bin/ver
 
 The version lives in `package.json` and `.claude-plugin/plugin.json` (they must agree). A `v*` tag
 runs the pins and publishes to npm through trusted publishing; the GitHub release notes are the
-CHANGELOG section for that version.
+CHANGELOG section for that version. The marketplace serves the plugin from this repository at whatever
+`main` holds, so a CLI install never waits on npm; npm is the runner lane, and a refused publish leaves
+runners one version behind until the trusted publisher on npmjs.com matches this repository and
+`release.yml` (the workflow prints that remedy when it happens).
 
 ## License
 

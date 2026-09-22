@@ -68,3 +68,11 @@ test('CHANGELOG.md has a section for the package version', () => {
   const text = readText(join(root, 'CHANGELOG.md'));
   assert.ok(text.includes(`## [${pkg.version}]`), `CHANGELOG.md has no "## [${pkg.version}]" section`);
 });
+
+// The marketplace installs the plugin from this repository. A registry lags a tag whenever a publish
+// fails, and an entry pinned to a registry version then refuses every fresh install until someone
+// notices; the repository at the release commit is the same bytes with nothing in between.
+test('the marketplace entry sources the plugin from this repository, not from a registry', () => {
+  const entry = marketplace.plugins.find((p) => p.name === plugin.name);
+  assert.equal(entry.source, './', 'the marketplace entry must source the plugin from the repository root');
+});

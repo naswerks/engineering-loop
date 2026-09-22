@@ -5,6 +5,14 @@ version is the one in `package.json` and `.claude-plugin/plugin.json`, which mus
 
 ## [Unreleased]
 
+### Changed
+
+- The marketplace entry sources the plugin from this repository (`./`) instead of the npm package at a
+  pinned version. `claude plugin install naswerks@engineering-loop` no longer depends on a registry that
+  can lag a tag; npm remains the runner lane (`npm i -g @naswerks/engineering-loop`). A pin keeps it so.
+- The release workflow names the remedy when a publish is refused: the package has no trusted publisher
+  linked on npmjs.com for this repository and `release.yml`.
+
 ## [0.2.2] - 2026-09-21
 
 ### Changed

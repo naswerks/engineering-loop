@@ -66,6 +66,13 @@ jobs:
       - name: publish
         if: steps.publishable.outputs.value == 'true'
         run: npm publish --provenance --access public
+      - name: why the publish was refused
+        if: failure() && steps.publishable.outputs.value == 'true'
+        run: |
+          echo "npm refused the publish. This workflow carries no token: it publishes through trusted publishing, so" >&2
+          echo "npmjs.com must list a trusted publisher for the package that matches THIS repository and workflow:" >&2
+          echo "  package: $(node -p "require('./package.json').name")  provider: GitHub Actions  owner: ${GITHUB_REPOSITORY%%/*}  repository: ${GITHUB_REPOSITORY#*/}  workflow: release.yml" >&2
+          echo "A 404 on the PUT is what npm answers when no publisher matches. Link one under the package settings on npmjs.com, then re-run this job." >&2
       - name: release notes from the changelog
         if: startsWith(github.ref, 'refs/tags/v')
         run: |
