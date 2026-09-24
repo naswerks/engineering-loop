@@ -5,8 +5,32 @@ version is the one in `package.json` and `.claude-plugin/plugin.json`, which mus
 
 ## [Unreleased]
 
+## [0.3.0] - 2026-09-22
+
 ### Changed
 
+- **The repository's copy of `docs-workflow.md` is the authority for a doc's header and for where an
+  effort is filed.** Three of its sections are marked `(repository-owned)`: The archive convention, Doc
+  metadata, Templates. A repository whose docs already carry a metadata convention (YAML frontmatter with
+  its own keys and status words, a validator, an indexer) or already have a home for an effort's history
+  rewrites those sections in its `docs/_meta/` copy, in one voice; `engineering-loop.md` gains a
+  `This repository's rails (repository-owned)` section for the policy document, gates, suite and PR
+  target, and marks the POLICY row of where-a-rule-lives the same way. `rg -n 'repository-owned'
+  docs/_meta/` lists every such section.
+- Every skill that writes or files a doc points at those sections instead of stating the header or the
+  destination itself: `docs-write`, `docs-process`, `docs-status`, `docs-backlog`, `docs-audit-feature`,
+  `docs-audit-full`, `spec-pipeline`, `spec-parent`, `spec-review`, `init`. `spec-seat`'s Step 0 rows say
+  the two method docs carry the repository's conventions. The eleven templates carry an init instruction
+  in place of the loop's own header line, so a fresh repository's drafts are written in whatever header
+  its copy prescribes. A pin holds the census: no skill spells `<!-- meta:` any more, and every writer
+  names the repository-owned section.
+- `init doctor` reads a doc's status from either header form unaided, the loop's meta line or a
+  frontmatter `status:` key, needing only the word `draft`; the method docs' version stamp is read after
+  a leading frontmatter block when a repository's gate requires one on every file. `init` no longer calls
+  the method docs byte copies. A pin drives the doctor over both header forms, with controls.
+- `docs-workflow.md` § The archive convention describes a third shape beside flat and split: a pipeline
+  filed as one package into a home the repository already has, with `spec-pipeline` recording the resolved
+  destination in the umbrella's `Archive:` line when only the authoring session can know it.
 - The marketplace entry sources the plugin from this repository (`./`) instead of the npm package at a
   pinned version. `claude plugin install naswerks@engineering-loop` no longer depends on a registry that
   can lag a tag; npm remains the runner lane (`npm i -g @naswerks/engineering-loop`). A pin keeps it so.

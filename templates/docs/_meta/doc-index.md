@@ -43,7 +43,7 @@
 
 | Doc | When to read |
 |-----|-------------|
-| [docs-workflow](docs-workflow.md) | The loop, folder rules, templates (the `<!-- meta -->` header + `## Lineage` footer convention and the spec-doc template), the `docs-*` knowledge-loop + `spec-*` execution-loop skills — read before running `docs-write` / `docs-process` / `spec-pipeline` |
+| [docs-workflow](docs-workflow.md) | The loop, folder rules, templates (the doc header + `## Lineage` footer convention, the sections marked repository-owned, and the spec-doc template), the `docs-*` knowledge-loop + `spec-*` execution-loop skills — read before running `docs-write` / `docs-process` / `spec-pipeline` |
 | [engineering-loop](engineering-loop.md) | The quick intro to how work gets built: the two loops (`docs-*` knowledge / `spec-*` execution, both hand-crankable), the seats, the ceremony, the blackboard + the question lane, and where a rule lives (policy / procedure / task) |
 
 ## Role reading lists

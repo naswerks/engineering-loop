@@ -1,4 +1,4 @@
-<!-- naswerks-loop: version=0.2.2 -->
+<!-- naswerks-loop: version=0.3.0 -->
 # The Engineering Loop — flow, seats, skills, and the ceremony
 
 > The quick intro to how work gets built with this loop: the two loops (`docs-*` knowledge, `spec-*`
@@ -77,6 +77,18 @@ effort wants a review row and a docs-process row, and writes them into the row t
 learns the shape by reading its own sequence, and nothing needs a toggle. A pipeline can be plain,
 `+review`, `+review +process`, or `+process`.
 
+**Sections marked (repository-owned), here and in `docs-workflow.md`, are this repository's.** They say
+how a doc's header is written, where a finished effort is filed, and which rails a commit passes here.
+Every other section is the loop and reads the same in every repository. The coordinator and every seat
+read both documents at Step 0, so a repository's conventions reach them without a line in any prompt,
+and a skill that writes or files a doc takes those two facts from `docs-workflow.md`, never from its
+own text. `rg -n 'repository-owned' docs/_meta/` lists every such section.
+
+## This repository's rails (repository-owned)
+
+No repository rails recorded — fill this in: the policy document every seat is bound by, the gates a
+commit passes here, the suite that runs before a PR, the PR target and the branch names.
+
 ## Two loops — both hand-crankable
 
 - **`docs-*` is the knowledge loop** and runs standalone, forever: small/everyday efforts are
@@ -122,7 +134,7 @@ fresh session can resume as coordinator losslessly (`spec-parent {topic}`).
 | `spec-witness` | spec | a pipeline looks wedged, or actors' claims conflict | the read-only fourth seat: substrate access, zero writes, zero rulings |
 | `init` | — | a repository that has none of this yet | create the `docs/` shape, the method docs, first drafts of every doc the skills read; `init doctor` says what is missing |
 
-### Where a rule lives — policy, procedure, task
+### Where a rule lives — policy, procedure, task (repository-owned: the POLICY row)
 
 The thing that keeps prompts and skills from drifting apart:
 

@@ -198,7 +198,7 @@ not a chat transcript, and it archives with the effort.
 
 > The outside look, written before the retro and before the PR. Two independent passes, consolidated.
 > Reviewed `main..{sha}` across N sessions. **This seat did not read the coordinator's retrospective.**
-<!-- meta: type=session; status=final; verified={date}; lineage=N -->
+{the machine header docs/_meta/docs-workflow.md § Doc metadata (repository-owned) prescribes, at its final status}
 
 ## The verdict, first
 {The one thing a reader must not miss. If the pipeline ships something untrue, say it here in bold.}

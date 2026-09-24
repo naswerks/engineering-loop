@@ -16,16 +16,19 @@ just counts.
 2. **`research/` — waiting ideas.** List each doc in `docs/research/` (and topic subfolders) by name
    with a one-line hook. This is the backlog of things to pick up next.
 
-3. **`archive/` — recently done.** List the most recently modified topic folders / session docs in
-   `docs/archive/` (a handful, newest first) so the user can see what just shipped.
+3. **Recently done.** List the most recently modified topic folders / session docs in the archive home
+   `docs/_meta/docs-workflow.md` § The archive convention (repository-owned) names (the loop's own is
+   `docs/archive/`; a handful, newest first) so the user can see what just shipped.
 
-4. **Meta sweep — the condensed status table.** Run `rg -o '<!-- meta:.*-->' docs/` and parse each
-   `type · status · verified · lineage` into a compact one-line-per-doc table (group by folder). This is the
-   headline pulse — richer than the old date-only scan. Read-only; do not write anything. Flag, in order of
-   concern:
-   - **missing-meta** — a living doc (`guides/ patterns/ infrastructure/ features/`) with no `<!-- meta:`
-     comment. Read its blockquote `Last verified` instead (back-compat: read either, **prefer the
-     comment**) and list it as a gap to fill.
+4. **Meta sweep — the condensed status table.** Run the sweep command `docs/_meta/docs-workflow.md` § Doc
+   metadata (repository-owned) gives (`rg -n 'repository-owned' docs/_meta/docs-workflow.md` finds the
+   section, and the command is spelled there for whichever header this repository writes). Parse each doc's
+   `type · status · verified · lineage` into a compact one-line-per-doc table (group by folder), in that
+   section's status words. This is the headline pulse — richer than the old date-only scan. Read-only; do
+   not write anything. Flag, in order of concern:
+   - **missing-meta** — a living doc (`guides/ patterns/ infrastructure/ features/`) with no header. Read
+     its blockquote `Last verified` instead (back-compat: read either, **prefer the header**) and list it
+     as a gap to fill.
    - **stale** — `verified` older than ~14 days, a candidate for `docs-audit-feature` (the existing nudge;
      note the harder 90-day line the future `docs_freshness` tool will use).
    - **dead lineage** — a `## Lineage` link whose target file no longer exists (a broken breadcrumb).

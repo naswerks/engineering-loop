@@ -32,8 +32,9 @@ block read, never the exit code alone; a pin must be able to fail.
 
 ```
 docs/
-  _meta/docs-workflow.md          a byte copy of the pack's references/docs-workflow.md (stamped)
-  _meta/engineering-loop.md       a byte copy of references/engineering-loop.md (stamped)
+  _meta/docs-workflow.md          a copy of the pack's references/docs-workflow.md (stamped); its sections marked
+                                  (repository-owned) are the repository's to rewrite to its own conventions
+  _meta/engineering-loop.md       a copy of references/engineering-loop.md (stamped), under the same rule
   _meta/doc-index.md              the menu, written LAST — every doc that exists + three repo slots:
                                   ## Role reading lists · ## Apps and their build commands · ## The evidence tools
   research/ working/ archive/ guides/ patterns/ infrastructure/ features/     each with a README.md
@@ -108,8 +109,13 @@ not. `init` never overwrites, never reorders, never deletes.
 
 1. The seven folders, each with its `README.md` from `templates/docs/readme-{folder}.md` — the README is
    the only file init writes into a folder that already exists.
-2. `docs/_meta/docs-workflow.md` and `docs/_meta/engineering-loop.md` — byte copies of the pack's
-   `references/*` (their first line is the version stamp; copy it with the file).
+2. `docs/_meta/docs-workflow.md` and `docs/_meta/engineering-loop.md` — copies of the pack's
+   `references/*` (their first line is the version stamp; copy it with the file). **If the repository
+   already carries a copy, read its sections marked (repository-owned) before writing any draft:** the
+   header every draft below carries is the one that copy's § Doc metadata prescribes, not the templates'
+   own line (`rg -n 'repository-owned' docs/_meta/docs-workflow.md` finds it). When the repository's own
+   gate requires frontmatter on every file under `docs/`, the block may sit above the stamp; the doctor
+   reads the stamp after it.
 3. The four floor drafts (`code-organization`, `backend-patterns`, `frontend-patterns`, `testing`) from
    `templates/docs/patterns/*.md`, filled as below.
 4. The standard-set drafts — `codegen`, `state-management`, `ui-style-guide`, `design-tokens`,
@@ -139,8 +145,10 @@ the scan opened for that doc.
 
 The shape every drafted doc keeps — because it is the shape the seats know how to read:
 
-1. the H1, the one-line blockquote ending `Last verified {today}.`, the `<!-- meta: … status=draft … -->`
-   line, the `<!-- naswerks-loop: draft; scanned=… -->` line;
+1. the H1, the one-line blockquote ending `Last verified {today}.`, the machine header
+   `docs/_meta/docs-workflow.md` § Doc metadata (repository-owned) prescribes at its draft status (the
+   loop's own is the one-line meta comment the template's init instruction spells), the
+   `<!-- naswerks-loop: draft; scanned=… -->` line;
 2. Overview, then Stack, then the shape (a tree copied from a REAL folder), then one section per
    concept in the micro-grammar *prose rule, a REAL example, `### Rules`, `### Gotcha:`*;
 3. decision tables that decide, checklists whose items are real paths, a `Legacy (never use)` column
@@ -159,9 +167,9 @@ FAIL, so a CI job or a control plane can call it.
 | Row | FAIL | DEGRADE | ok |
 |---|---|---|---|
 | each of the eight folders | missing | README missing | present |
-| `_meta/docs-workflow.md`, `_meta/engineering-loop.md` | missing, or no stamp on line 1 | stamp behind the pack's version | stamp equals it |
+| `_meta/docs-workflow.md`, `_meta/engineering-loop.md` | missing, or no stamp on line 1 (or on the first line after a frontmatter block) | stamp behind the pack's version | stamp equals it |
 | `_meta/doc-index.md` and its three slot sections | missing | a slot carries only the absent-line | filled |
-| the four floor docs | missing | `status=draft`, or an `<!-- init: -->` left in | `status=current` |
+| the four floor docs | missing | `status=draft` (read from either header form), or an `<!-- init: -->` left in | a decided status |
 | the seven standard docs | absent AND no doc-index row saying `not detected` | `status=draft` when present; absent with its row | present and current, or absent with its row |
 | every path a § Role reading lists row names | the row's path does not exist | — | resolves |
 | `CLAUDE.md` / `AGENTS.md` stanza · `.claude/settings.json` pin | — | missing | present |
@@ -171,8 +179,8 @@ FAIL, so a CI job or a control plane can call it.
 | anything else under `docs/` | — | — | "outside the loop's shape — not touched" |
 
 **If `node` is absent**, walk the same rows by hand with your file tools, in that order, and print the
-same table: the checks are file existence, a first-line stamp, a heading grep, a `status=` read, and the
-brief's two sections.
+same table: the checks are file existence, a first-line stamp, a heading grep, a `status` read in either
+header form, and the brief's two sections.
 
 A repository fresh from `init` reads DEGRADE on every draft and ok on the shape. That is the intended
 state: the owner promotes each draft to `status=current` as they confirm it, section by section.

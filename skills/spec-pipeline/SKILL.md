@@ -146,7 +146,8 @@ sessions/                        WHO PUTS IT THERE
 
 3. **Write the specs**, using the spec-doc template in `docs/_meta/docs-workflow.md`. Each per-seat
    spec opens with the spec-doc blockquote (`Builds on [prior]` + `Source: [umbrella / research]`) and the
-   `<!-- meta: type=spec; status=draft; verified={date}; lineage=N -->` line, so the set stays navigable.
+   machine header `docs/_meta/docs-workflow.md` § Doc metadata (repository-owned) prescribes, at its draft
+   status, so the set stays navigable.
 
    **Six things every slice carries**, each earned by a session that did not have it:
 
@@ -208,7 +209,13 @@ sessions/                        WHO PUTS IT THERE
    list, and a research doc nobody named is one that stays behind in the running tab after its effort has
    shipped. Two lines in the umbrella now saves a hunt through a shared folder later.
 
-5. **Stop.** The specs stay in `research/{topic}/`. Do NOT implement, do NOT touch living docs, do NOT
+5. **Name the archive destination when only you can.** Read `docs/_meta/docs-workflow.md` § The archive
+   convention (repository-owned). If where a pipeline files depends on something only this session knows
+   (which living feature the effort belongs to, say), resolve it now and write the path into the
+   umbrella's blockquote as an `Archive:` line; `spec-parent` hands it to the docs-process row and
+   `docs-process` files there. A convention that needs nothing from you needs no line.
+
+6. **Stop.** The specs stay in `research/{topic}/`. Do NOT implement, do NOT touch living docs, do NOT
    archive — those are later phases. Output the new files only.
 
 ## The `00-ignition-brief.md` template
@@ -231,7 +238,7 @@ requires no authoring at all.
 
 > You are the COORDINATOR of the {topic} pipeline. Read this, then the umbrella (01-*.md), then the
 > tracker (project-status.md — yours), then EVERY numbered spec before arming the first seat.
-<!-- meta: type=spec; status=draft; verified={date}; lineage=N -->
+{the machine header docs/_meta/docs-workflow.md § Doc metadata (repository-owned) prescribes, at its draft status}
 
 **Last verified against:** {date}, `{sha}`. Ignition re-verifies this brief against live HEAD and
 corrects drift; it does not re-author it.
@@ -338,7 +345,7 @@ viewer because they are instructions to the coordinator, not content for the hum
 # {Topic} — Project Status
 
 > The coordinator's ledger. Advanced at every session boundary, never reconstructed at close.
-<!-- meta: type=working; status=wip; verified={date}; lineage=N -->
+{the machine header docs/_meta/docs-workflow.md § Doc metadata (repository-owned) prescribes, at its in-progress status}
 
 ## What this is
 {one paragraph}
@@ -434,9 +441,9 @@ to edit it directly.
   folder), the chat transcript, and any subagent reports vanish. Inline their load-bearing content; never
   point at ephemeral state as the source of truth. Cross-links to *other durable docs* are fine.
 - **Lifecycle.** Specs live in `research/{topic}/` through the build. When the effort ships, `docs-process`
-  archives the umbrella + every spec + the working docs together into `archive/{topic}/` — the spec set
-  *is* the design history.
-- **Anti-fabrication.** A spec's `<!-- meta: verified -->` is the date it was *authored against the code it
+  archives the umbrella + every spec + the working docs together into the home `docs-workflow.md` § The
+  archive convention (repository-owned) names, in its shape — the spec set *is* the design history.
+- **Anti-fabrication.** A spec's header verified date is the date it was *authored against the code it
   cites*, not a promise the code stays unchanged. Only write facts you actually checked this run.
 - **Author against the HEAD the run will start from — and know what that does not buy you.** Authoring close
   to HEAD reduces drift; it does not substitute for a seat reading the code. Specs authored against the

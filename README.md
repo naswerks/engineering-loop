@@ -37,6 +37,13 @@ then point the runner at `$(npm root -g)/@naswerks/engineering-loop` — with pe
 structure the skills read, the two method documents, a `CLAUDE.md` pointer and the plugin pin in
 `.claude/settings.json`. A team member still installs the plugin once per machine; the pin enables it.
 
+**In a repository that already has a docs convention** (frontmatter on every file, a pre-commit
+validator, an indexer): rewrite the sections marked **(repository-owned)** in your `docs/_meta/` copies
+of `docs-workflow.md` and `engineering-loop.md`, in your own words: the header every doc carries, where a
+finished effort is filed, the rails a commit passes. Every skill that writes or files a doc reads those
+copies for exactly those facts and never states them itself, so the pack stays generic and your
+conventions live in your repository. `rg -n 'repository-owned' docs/_meta/` lists the sections.
+
 ## What is in the box
 
 | Skill | Loop | One line |
@@ -56,7 +63,8 @@ structure the skills read, the two method documents, a `CLAUDE.md` pointer and t
 | `spec-ignite` | spec | the ignition copilot for a hosted run |
 | `init` | — | make a repository ready for both loops |
 
-`references/` carries the two method documents a repository copies into `docs/_meta/`;
+`references/` carries the two method documents a repository copies into `docs/_meta/` and then
+rewrites where they say (repository-owned);
 `bin/verify-staged` is the staging receipt the seats run between `git add` and `git commit`. A
 marketplace install puts nothing on PATH: `npm i -g @naswerks/engineering-loop` does, and the skills
 carry the fallback `node <pack root>/bin/verify-staged.mjs`.

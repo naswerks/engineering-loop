@@ -14,7 +14,8 @@ Capture ideas as research docs. `docs/research/` is the idea inbox — the folde
 
 2. **For each idea, create a research doc** at `docs/research/{topic}.md` using the research-doc
    template in `docs/_meta/docs-workflow.md`: Current State, Desired End State, Design Options /
-   Recommendation, Open Questions. Capture the idea while it's fresh — verify "Current State" against
+   Recommendation, Open Questions. Its header is the one that file's § Doc metadata (repository-owned)
+   prescribes. Capture the idea while it's fresh — verify "Current State" against
    code if quick, otherwise note it's unverified.
 
    **The research doc must be self-contained.** It's the durable jump-off point; assume everything else
@@ -37,5 +38,5 @@ Capture ideas as research docs. `docs/research/` is the idea inbox — the folde
 - When an idea is later picked up and built, link it via the session doc's **Source** field. The
   research doc **stays in `research/` through the build** (it's the running tab, and a build may span
   several sessions / working docs). When the effort finishes, `docs-process` archives the research doc
-  **alongside its working doc(s)** in the same `archive/{topic}/` folder — research and the work that
+  **alongside its working doc(s)** in the same archive home (`docs-workflow.md` § The archive convention) — research and the work that
   delivered it are filed together, not deleted.

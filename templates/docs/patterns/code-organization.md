@@ -2,7 +2,7 @@
 
 > Where the code lives and where a new piece goes — the folder shape this repository actually uses, per
 > stack, and the checklist for adding a feature to it. Last verified {today}.
-<!-- meta: type=pattern; status=draft; verified={today}; lineage=0 -->
+<!-- init: write here the machine header docs/_meta/docs-workflow.md § Doc metadata (repository-owned) prescribes, at its draft status. The loop's own header is the one-line meta comment: type=pattern; status=draft; verified={today}; lineage=0 -->
 <!-- naswerks-loop: draft; scanned={files} -->
 
 ---

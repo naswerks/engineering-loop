@@ -3,7 +3,7 @@
 > How multi-stage work is orchestrated in this repository: the stages, per-item progress, exactly-once
 > transitions, and how progress reaches the client. The transport it runs on is
 > [background-work](../infrastructure/background-work.md). Last verified {today}.
-<!-- meta: type=pattern; status=draft; verified={today}; lineage=0 -->
+<!-- init: write here the machine header docs/_meta/docs-workflow.md § Doc metadata (repository-owned) prescribes, at its draft status. The loop's own header is the one-line meta comment: type=pattern; status=draft; verified={today}; lineage=0 -->
 <!-- naswerks-loop: draft; scanned={files} -->
 
 ---

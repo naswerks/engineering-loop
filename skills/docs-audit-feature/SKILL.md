@@ -44,7 +44,8 @@ writes across docs. End with a one-line-per-doc summary (stale-count / added-cou
    (The master `health-report-*.md` from `docs-audit-full` stays at the `audit/` root — it's cross-cutting.)
 
 5. **Update the living doc** with the corrections and bump its "Last verified" date — **and refresh the
-   `<!-- meta: … -->` line in lockstep** (`verified` = today, update `status`, recompute `lineage=N`). This is
+   machine header in lockstep** (the one `docs/_meta/docs-workflow.md` § Doc metadata (repository-owned)
+   prescribes: its verified date = today, its status, `lineage=N` recomputed). This is
    allowed here only because you just did the full doc-vs-code pass; the meta `verified` obeys the same
    anti-fabrication rule as the blockquote date (the two always move together). **Verify the `## Lineage`
    footer** — check every link resolves; flag any dead breadcrumb into `## Open Issues` (or the audit report)
@@ -78,8 +79,9 @@ catalog. Build the real list from `Features/` + the frontend feature folders/rou
   feature/doc lists from real `ls`/`find` output, not memory.
 - Only stamp **"Last verified: <today>"** on a doc you actually checked against code in this run.
   Stamping a date you didn't verify is the exact failure this rule exists to prevent.
-- The `<!-- meta: verified=… -->` date is bound by the **same** rule and always equals the blockquote's
-  `Last verified` — refresh `verified` / `status` / `lineage=N` only after the full doc-vs-code pass this run.
+- The header's verified date (whatever `docs-workflow.md` § Doc metadata (repository-owned) calls it) is
+  bound by the **same** rule and always equals the blockquote's `Last verified` — refresh it, the status
+  and `lineage=N` only after the full doc-vs-code pass this run.
 
 ## Notes
 - **Descriptive docs (`infrastructure/`, `features/`):** code is truth — where doc and code disagree,

@@ -27,16 +27,19 @@ for (const f of FOLDERS) {
 }
 
 // ── 2. the two method docs and their stamp ──────────────────────────────────────────────────────
+// A repository rewrites the repository-owned sections of these two files to its own conventions, so the
+// doctor compares only the version stamp: line 1, or the first line after a leading frontmatter block when
+// the repository's own gate requires one on every file under docs/.
 const STAMP = /^<!-- naswerks-loop: version=([0-9]+\.[0-9]+\.[0-9]+[^ ]*) -->/m;
 for (const name of ['docs-workflow.md', 'engineering-loop.md']) {
   const p = join(repo, 'docs', '_meta', name);
   const text = read(p);
   if (text === null) { row('FAIL', `docs/_meta/${name}`, 'missing'); continue; }
-  const m = STAMP.exec(text.split('\n', 1)[0]);
-  if (!m) { row('FAIL', `docs/_meta/${name}`, 'no naswerks-loop stamp on line 1 — an unstamped copy cannot be told from a stale one'); continue; }
+  const m = STAMP.exec(firstBodyLine(text));
+  if (!m) { row('FAIL', `docs/_meta/${name}`, 'no naswerks-loop stamp on line 1 (or on the first line after a frontmatter block) — an unstamped copy cannot be told from a stale one'); continue; }
   if (!packVersion) { row('DEGRADE', `docs/_meta/${name}`, `stamped ${m[1]}; the pack's own version could not be read`); continue; }
   const cmp = compareVersions(m[1], packVersion);
-  if (cmp < 0) row('DEGRADE', `docs/_meta/${name}`, `stamp ${m[1]} is behind the pack ${packVersion} — diff against the pack's references/${name}`);
+  if (cmp < 0) row('DEGRADE', `docs/_meta/${name}`, `stamp ${m[1]} is behind the pack ${packVersion} — diff the loop-owned sections against the pack's references/${name}`);
   else row('ok', `docs/_meta/${name}`, `stamp ${m[1]}`);
 }
 
@@ -56,6 +59,9 @@ for (const name of ['docs-workflow.md', 'engineering-loop.md']) {
 }
 
 // ── 4. the reading floor and the conditional docs ───────────────────────────────────────────────
+// A doc's status is read from whichever header the repository writes: the loop's own <!-- meta --> line,
+// or a YAML frontmatter block with a status key. The one word the doctor needs is `draft`, which both forms
+// spell the same way.
 const FLOOR = ['patterns/code-organization.md', 'patterns/backend-patterns.md', 'patterns/frontend-patterns.md', 'patterns/testing.md'];
 const STANDARD = ['patterns/codegen.md', 'patterns/state-management.md', 'patterns/ui-style-guide.md', 'patterns/design-tokens.md', 'patterns/long-running-workflows.md', 'infrastructure/realtime-events.md', 'infrastructure/background-work.md'];
 const roleRows = (() => { const t = read(join(repo, 'docs', '_meta', 'doc-index.md')); return t === null ? null : sectionOf(t, '## Role reading lists'); })();
@@ -70,10 +76,10 @@ function docRow(relPath, required) {
     else row('FAIL', `docs/${relPath}`, 'absent with no doc-index row saying it was not detected — a seat meeting this path has no answer');
     return;
   }
-  const meta = /<!-- meta:[^>]*status=([a-z]+)/.exec(text);
-  if (!meta) row('DEGRADE', `docs/${relPath}`, 'no <!-- meta --> line');
-  else if (meta[1] === 'draft') row('DEGRADE', `docs/${relPath}`, 'status=draft — scanned, not decided');
-  else row('ok', `docs/${relPath}`, `status=${meta[1]}`);
+  const status = statusOf(text);
+  if (status === null) row('DEGRADE', `docs/${relPath}`, 'no status in either header form (<!-- meta --> line or frontmatter status key)');
+  else if (status.value === 'draft') row('DEGRADE', `docs/${relPath}`, `status=draft (${status.layer}) — scanned, not decided`);
+  else row('ok', `docs/${relPath}`, `status=${status.value} (${status.layer})`);
   if (/<!-- init:/.test(text)) row('DEGRADE', `docs/${relPath}`, 'an <!-- init: --> instruction was left in the file');
 }
 
@@ -191,4 +197,30 @@ function compareVersions(a, b) {
   const pa = a.split(/[.-]/).map((x) => parseInt(x, 10) || 0), pb = b.split(/[.-]/).map((x) => parseInt(x, 10) || 0);
   for (let i = 0; i < 3; i++) { if ((pa[i] || 0) !== (pb[i] || 0)) return (pa[i] || 0) - (pb[i] || 0); }
   return 0;
+}
+// A doc's status from whichever header it carries: the <!-- meta --> line first, then a frontmatter
+// `status:` key. Returns { value, layer } or null.
+function statusOf(text) {
+  const m = /<!-- meta:[^>]*\bstatus=([A-Za-z-]+)/.exec(text);
+  if (m) return { value: m[1], layer: 'meta line' };
+  const fm = frontmatterOf(text);
+  if (fm && fm.status !== undefined) return { value: fm.status, layer: 'frontmatter' };
+  return null;
+}
+// The leading YAML frontmatter block as flat key: value pairs (scalars only — that is all the doctor reads).
+function frontmatterOf(text) {
+  if (!text.startsWith('---\n')) return null;
+  const end = text.indexOf('\n---', 4);
+  if (end < 0) return null;
+  const out = {};
+  for (const line of text.slice(4, end).split('\n')) {
+    const m = /^([A-Za-z_][A-Za-z0-9_-]*):\s*(.*)$/.exec(line);
+    if (m) out[m[1]] = m[2].trim().replace(/^["']|["']$/g, '');
+  }
+  return out;
+}
+function firstBodyLine(text) {
+  let body = text;
+  if (text.startsWith('---\n')) { const end = text.indexOf('\n---', 4); if (end >= 0) body = text.slice(end + 4).replace(/^\n+/, ''); }
+  return body.split('\n', 1)[0];
 }

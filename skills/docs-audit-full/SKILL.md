@@ -11,7 +11,9 @@ what to audit next.
 ## Steps
 
 1. **Freshness scan** — read "Last verified" dates across all living docs (`guides/ patterns/
-   infrastructure/ features/`). Flag anything older than ~14 days; sort oldest-first.
+   infrastructure/ features/`), from the blockquote or from the header's verified field as
+   `docs/_meta/docs-workflow.md` § Doc metadata (repository-owned) names it. Flag anything older than
+   ~14 days; sort oldest-first.
 
 2. **Feature completeness** — quick `docs/features/` folder pass (per `docs-audit-feature`'s
    folder mode): any features in code with no doc, or docs whose feature is gone.

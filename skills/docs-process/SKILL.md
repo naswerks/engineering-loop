@@ -5,8 +5,8 @@ description: Patch the living docs from a session doc's "Living Docs to Update" 
 
 # docs-process
 
-The **second** half of the bookend. Take a finished session doc (in `docs/working/` or its topic
-folder under `docs/archive/`) and bring the living docs up to current state.
+The **second** half of the bookend. Take a finished session doc (in `docs/working/`, or already filed
+in its archive home) and bring the living docs up to current state.
 
 ## Running as a pipeline row (`docs-process` seat)
 
@@ -66,9 +66,12 @@ branch, which is the truth for that PR, and you say so at close.
      **Exception:** a doc you *create from scratch* here by reading the code is verified-today by
      definition — set its date.
    - **Update the Key Files table** if files were renamed, created, or deleted.
-   - **Write / update the meta-comment + `## Lineage`** (see "Doc metadata" in `docs-workflow.md`):
-     - *Creating a doc from scratch* here: emit the `<!-- meta: type=…; status=current; verified={today};
-       lineage=N -->` line (its `verified` = today, matching the blockquote you just set) **and** a
+   - **Write / update the header + `## Lineage`** — the header is the one `docs/_meta/docs-workflow.md`
+     § Doc metadata (repository-owned) prescribes, in its words (`rg -n 'repository-owned'
+     docs/_meta/docs-workflow.md` finds it); the states below are the loop's names for what that section
+     spells:
+     - *Creating a doc from scratch* here: write the header at status current with its verified date =
+       today (matching the blockquote you just set) **and** a
        `## Lineage` footer. You already know the `Source:` research doc (the `Idea` row), any spec pipeline
        (the `Spec` row), and the working-doc sequence / `## Archive` target (the `Built` row); derive `Related` from
        existing peer links. Set `lineage=N` to the link count. **Keep `Spec` and `Built` symmetric** —
@@ -88,18 +91,23 @@ branch, which is the truth for that PR, and you say so at close.
      surfaces these so they aren't lost.
 
 3. **New feature?** If the work added a feature, ensure it has a doc in `docs/features/` (one doc per
-   feature) and add it to the menu in `docs/_meta/doc-index.md`.
+   feature) and add it to the menu in `docs/_meta/doc-index.md` — unless `docs-workflow.md` § Doc metadata
+   (repository-owned) says a repository tool generates the menu, in which case leave it alone.
 
 4. **Closing grep** — if the session doc notes deletions or renames, grep all living
    docs (`guides/ patterns/ infrastructure/ features/ _meta/`) for stale references and fix them. Do
    NOT touch `archive/` — that's frozen history.
 
 5. **Archive the effort — research/spec docs AND working doc(s), together.** Now that the living docs are
-   patched and verified, file the whole effort into one **topic folder** under `docs/archive/{topic}/`
-   (use the `## Archive` line; reuse the folder if it exists, create it if new; descriptive names, **no
-   numeric prefixes on working docs** — `Builds on` is the ordering):
+   patched and verified, file the whole effort where `docs/_meta/docs-workflow.md` § The archive convention
+   (repository-owned) says, in the shape it describes (`rg -n 'repository-owned' docs/_meta/docs-workflow.md`
+   finds it). The loop's own convention is one **topic folder** under `docs/archive/{topic}/` (use the
+   `## Archive` line; reuse the folder if it exists, create it if new; descriptive names, **no numeric
+   prefixes on working docs** — `Builds on` is the ordering); a pipeline whose umbrella carries an
+   `Archive:` line files there:
 
-   **FIRST, RECONCILE THE DESTINATIONS — `rg '^\s*`?docs/archive/' <every working doc in the effort>`.**
+   **FIRST, RECONCILE THE DESTINATIONS — `rg -A1 '^## Archive' <every working doc in the effort>`, plus
+   the umbrella's `Archive:` line when there is a pipeline.**
    This step says *"one topic folder"* and *"use the `## Archive` line"* — a singular read over a PLURAL
    source, so the set is checked before any move. **If the docs disagree, STOP and ask.** Do not pick the
    majority, do not pick the first, and do not pick the one you happen to be reading. The failure is not
@@ -111,7 +119,8 @@ branch, which is the truth for that PR, and you say so at close.
    - Move the **`Source:`** research/spec docs from `docs/research/` into the **same** topic folder — the
      idea and the work that delivered it are filed together. Do NOT delete and do NOT leave in `research/`
      (that's what kept shipped ideas cluttering the running tab).
-   - **Pick the folder shape** (see "Two topic-folder shapes" in `docs-workflow.md`):
+   - **Pick the folder shape** (see "Two topic-folder shapes" in `docs-workflow.md`; the section is
+     repository-owned, and a shape it describes for this repository wins over the loop's own below):
      - **Flat** (no spec pipeline — the default for small/single-session efforts): working doc(s) + any
        research doc at the topic-folder root.
      - **Split** (the effort used `spec-pipeline`, so a numbered spec set exists): `git mv` the numbered
@@ -122,13 +131,20 @@ branch, which is the truth for that PR, and you say so at close.
        moves wholesale alongside them. `git mv` STAGES immediately — in a shared working tree, another
        session's commit can silently sweep your staged renames. Commit promptly after the moves, or
        announce the staged state before yielding the tree.
+     - **Package** (the effort used `spec-pipeline` and the archive convention says pipelines file as one
+       package): `git mv` the whole `research/{topic}/` folder to the home it names as one
+       unit — no re-sorting, every file keeps its name and its place, `sessions/` rides along untouched —
+       then move the working docs in under `implementation/`. The tracker stays the "read me first" at
+       the package root. The same staging caution applies.
      - **Follow-on round** (the effort continues an already-archived family — e.g. a round-2 pipeline for
        a shipped feature): its own **sibling** topic folder with the full split shape, named
        `{family-prefix}-{subtopic}` — **never file into the frozen prior-round folder**. The family
        index is the living feature doc's `## Lineage` (append this round's Idea/Spec/Built rows beside
        the prior round's); the new round's back-links to the old archive stay as-is (historical
        cross-effort links). See the section named `Follow-on pipelines` in `docs-workflow.md`.
-   - **Repair the intra-effort links the move breaks** (relative depths change). On a split, fix: each
+   - **Repair the intra-effort links the move breaks** (relative depths change). On a package, only the
+     working docs' `Source:` links and the live feature doc's `## Lineage` rows change — the specs kept
+     their places. On a split, fix: each
      working doc's `Source:` becomes `../specs/NN-*.md`; the spec / `project-status` links; and the **live feature
      doc's `## Lineage`** rows (`Spec` to `…/specs/…`, `Built` to `…/implementation/…`). On a flat archive, a
      working doc's `Source: ../research/{topic}/x.md` becomes the now-sibling `x.md`. **Leave pre-existing

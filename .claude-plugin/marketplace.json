@@ -10,7 +10,7 @@
     {
       "name": "naswerks",
       "description": "The engineering loop: docs-* knowledge loop, spec-* execution loop, and init for a fresh repository.",
-      "version": "0.2.2",
+      "version": "0.3.0",
       "source": "./"
     }
   ]

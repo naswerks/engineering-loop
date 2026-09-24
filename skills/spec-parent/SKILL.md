@@ -306,9 +306,12 @@ read the board and answer on first receipt rather than spending a round-trip.
       are **contingent on the merge**, so say so in the close: the docs describe what the PR will land.
 
       **P MOVES THE EFFORT HOME OUT OF YOUR REACH — the tracker pass in step 1 is your LAST chance at
-      the specs and live-checks.** P `git mv`s `docs/research/{topic}/` to `docs/archive/{topic}/`. The
-      ledger survives the rename (its write predicate admits `docs/{research|archive}/*/project-status.md`),
-      but the effort-home lane (`live-checks.md`, the specs) is research only — the archive is frozen
+      the specs and live-checks.** P `git mv`s `docs/research/{topic}/` to the archive home
+      `docs/_meta/docs-workflow.md` § The archive convention (repository-owned) names — `docs/archive/{topic}/`
+      in the loop's own, or the umbrella's `Archive:` line when it carries one. The ledger survives the
+      rename (its write predicate admits `docs/{research|archive}/*/project-status.md`; a home elsewhere
+      is outside it, so there P's write to the tracker is the last one), but the effort-home lane
+      (`live-checks.md`, the specs) is research only — the archive is frozen
       testimony. So finish those before P runs, and record P's own outcome in P's TLDR rather than
       planning to journal it afterwards.
 
@@ -488,7 +491,8 @@ REVIEW row (R):
 
 DOCS-PROCESS row (P):
   You are the DOCS-PROCESS seat: invoke the docs-process skill before anything else.
-  Effort: {topic} · archive target: docs/archive/{topic}/
+  Effort: {topic} · archive target: {per docs/_meta/docs-workflow.md § The archive convention
+    (repository-owned), or the umbrella's Archive: line when it carries one} · shape: {as that section says}
   Working docs for THIS effort, and ONLY these: {explicit list — docs/working/ is a shared
     queue and may hold other efforts' docs; do not infer membership from the folder}
   Research/spec docs to archive: docs/research/{topic}/
