@@ -5,7 +5,23 @@ version is the one in `package.json` and `.claude-plugin/plugin.json`, which mus
 
 ## [Unreleased]
 
+### Added
+
+- **The menu declares its shape.** `docs/_meta/doc-index.md` carries `<!-- naswerks-loop: menu=all -->` (it
+  lists every living doc: the repository has no other index; the default, and what a menu with no such line
+  means) or `<!-- naswerks-loop: menu=curated; index={path} -->` (the repository already indexes every doc in
+  `{path}`; the menu lists the docs its seats read). `docs-workflow.md` § The repository-owned sections
+  explains both, and the loop's standard for a doc on a curated menu: a header at a decided status and a
+  `## Key Files` section. `init` writes `menu=curated` when its scan finds an index the repository already
+  keeps; `docs-process` registers a new doc where the shape says; `docs-status` and `docs-audit-full` flag a
+  menu that has drifted; `init doctor` reads the shape, FAILs a doc the menu names that does not exist,
+  flags a living doc an all-menu misses, and holds every doc a curated menu names to the standard.
+  `pins/menu.test.mjs` holds both shapes.
+
 ### Changed
+
+- The map's Doc metadata row no longer asks whether the menu is kept by hand; the menu's shape line says
+  what the menu is.
 
 - `docs-workflow.md` § The repository-owned sections no longer says which words this repository writes for
   the loop's states; that is § Doc metadata's to say, so a repository that pastes the section verbatim no

@@ -118,13 +118,46 @@ function docRow(relPath, required) {
   if (/<!-- init:/.test(text)) row('DEGRADE', `docs/${relPath}`, 'an <!-- init: --> instruction was left in the file');
 }
 
-// ── 4b. every path a Role reading lists row names resolves ─────────────────────────────────────
-if (roleRows !== null) {
-  for (const line of roleRows.split('\n').filter((l) => l.trim().startsWith('|') && !/^\|\s*-/.test(l.trim()) && !/^\|\s*Doc\s*\|/i.test(l.trim()))) {
-    for (const m of line.matchAll(/`((?:patterns|infrastructure|guides|features)\/[A-Za-z0-9_.-]+\.md)`|\]\((?:\.\.\/)?((?:patterns|infrastructure|guides|features)\/[A-Za-z0-9_.-]+\.md)\)/g)) {
-      const p = m[1] || m[2];
-      if (/not detected/i.test(line)) continue;
-      row(existsSync(join(repo, 'docs', p)) ? 'ok' : 'FAIL', `doc-index row: docs/${p}`, existsSync(join(repo, 'docs', p)) ? '' : 'the row names a path that does not exist');
+// ── 4b. the menu: its shape, and every doc it names ────────────────────────────────────────────
+// doc-index.md declares one of two shapes (docs-workflow.md § The repository-owned sections): menu=all lists
+// every living doc; menu=curated lists the docs the seats read and names the index that lists every doc. A
+// menu with no shape line is menu=all. Every doc a menu names must exist (a row saying `not detected` is
+// exempt); a curated menu's docs must also meet the loop's standard: a status in either header form, not
+// draft, and a `## Key Files` section.
+{
+  const menu = read(join(repo, 'docs', '_meta', 'doc-index.md'));
+  if (menu !== null) {
+    const line = /<!-- naswerks-loop: menu=([A-Za-z-]+)(?:;\s*index=(\S+?))?\s*-->/.exec(menu);
+    const shape = line ? line[1] : 'all';
+    if (!['all', 'curated'].includes(shape)) row('FAIL', 'menu shape', `menu=${shape} is not a shape the loop knows (all | curated)`);
+    else if (shape === 'curated') {
+      const index = line[2];
+      if (!index) row('DEGRADE', 'menu shape', 'menu=curated names no index of every doc, so docs-process cannot say where a new doc is registered');
+      else if (!existsSync(join(repo, index))) row('DEGRADE', 'menu shape', `menu=curated; its index ${index} does not exist`);
+      else row('ok', 'menu shape', `menu=curated; index=${index}`);
+    } else row('ok', 'menu shape', line ? 'menu=all' : 'menu=all (no shape line: the default)');
+
+    const named = new Set();
+    for (const l of menu.split('\n')) {
+      if (/not detected/i.test(l)) continue;
+      for (const m of l.matchAll(/(?:\]\(|`)(?:\.\.\/)?((?:guides|patterns|infrastructure|features)\/[A-Za-z0-9_./-]+\.md)/g)) named.add(m[1]);
+    }
+    const missing = [...named].filter((p) => !existsSync(join(repo, 'docs', p))).sort();
+    for (const p of missing) row('FAIL', `menu: docs/${p}`, 'the menu names a doc that does not exist');
+    if (shape === 'curated') {
+      for (const p of [...named].filter((q) => !missing.includes(q)).sort()) {
+        const text = read(join(repo, 'docs', p));
+        const short = [];
+        const st = statusOf(text);
+        if (st === null) short.push('no status in either header form');
+        else if (st.value === 'draft') short.push('status draft');
+        if (!/^## Key Files\b/m.test(text)) short.push('no ## Key Files');
+        row(short.length ? 'DEGRADE' : 'ok', `menu: docs/${p}`, short.length ? `below the loop's standard: ${short.join(', ')}` : "meets the loop's standard");
+      }
+    } else if (shape === 'all') {
+      const unnamed = livingDocs().filter((p) => !named.has(p) && !menu.includes(p));
+      for (const p of unnamed) row('DEGRADE', `menu: docs/${p}`, 'a living doc the menu does not name (menu=all) — add its row, or declare the menu curated');
+      if (!unnamed.length && !missing.length) row('ok', 'menu entries', `names every living doc (${named.size}), each present`);
     }
   }
 }
@@ -248,6 +281,24 @@ function frontmatterOf(text) {
     if (m) out[m[1]] = m[2].trim().replace(/^["']|["']$/g, '');
   }
   return out;
+}
+// The living docs a menu=all menu lists: every .md directly under the four living folders, and each
+// feature folder's own docs one level down (a filed effort's notes sit deeper and are history, not living).
+function livingDocs() {
+  const out = [];
+  for (const f of ['guides', 'patterns', 'infrastructure', 'features']) {
+    const dir = join(repo, 'docs', f);
+    if (!existsSync(dir)) continue;
+    for (const e of readdirSync(dir, { withFileTypes: true })) {
+      if (e.isFile() && e.name.endsWith('.md') && e.name !== 'README.md') out.push(`${f}/${e.name}`);
+      else if (f === 'features' && e.isDirectory()) {
+        for (const g of readdirSync(join(dir, e.name), { withFileTypes: true })) {
+          if (g.isFile() && g.name.endsWith('.md') && g.name !== 'README.md') out.push(`features/${e.name}/${g.name}`);
+        }
+      }
+    }
+  }
+  return out.sort();
 }
 function firstBodyLine(text) {
   let body = text;

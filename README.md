@@ -49,6 +49,11 @@ sections lists what each must answer. One grep lists the four:
 rg -n '^#+ .*\(repository-owned\)' docs/_meta/
 ```
 
+If the repository already keeps an index of every doc, declare the loop's menu curated — put
+`<!-- naswerks-loop: menu=curated; index=docs/INDEX.md -->` (your index's path) in `docs/_meta/doc-index.md`
+— and the menu lists only the docs your seats read, each held to the loop's standard; every other doc stays
+in your own index. A repository with no index of its own keeps the default, a menu of every living doc.
+
 Every skill names the section it needs and never states the format itself, so the pack stays generic and
 your conventions live in your repository. **Taking a newer pack:** `/naswerks:init refresh` writes only
 those four sections and the version stamp into your copies — a dry run first, then `--write` on your word —
@@ -89,7 +94,7 @@ or the child may resolve `docs/` paths against the parent session's workspace.
 both method documents' stamps; every skill directory carries a `SKILL.md` named for its folder; no
 byte-order marks; the vocabulary and content censuses; no skill states a format a repository owns, and
 every skill that needs one carries the same find-format line; exactly four repository-owned sections, found
-by the one grep; the loop's own preferences stay stated in the method documents; `init refresh` leaves
+by the one grep; the loop's own preferences stay stated in the method documents; the menu's two shapes; `init refresh` leaves
 every line outside those sections byte for byte. `node bin/verify-staged.mjs --self-test` drives the
 receipt against a throwaway repository and reports each case.
 

@@ -2,6 +2,12 @@
 
 > The menu. Read this at session start, pick the 2-3 docs that match your task, read those for context.
 > This is the curated short list — the compiled layer you read *before* diving into source.
+<!-- naswerks-loop: menu=all -->
+<!-- init: the shape line above stays in the output. It says menu=all unless the scan found an index the
+     repository already keeps of every doc (a docs/INDEX.md or docs/index.md that lists them, a
+     docs/SUMMARY.md, a mkdocs.yml nav, a docusaurus or vitepress sidebar); then it says
+     menu=curated; index={that path}, and the tables below list only the docs init drafted plus the Meta
+     rows. The owner adds each further doc that meets the loop's standard. -->
 
 ---
 

@@ -53,7 +53,7 @@ Do this immediately, whatever your assignment turns out to be. It needs no role 
 
 | Doc | What it gives you |
 |---|---|
-| `docs/_meta/doc-index.md` | the menu — which living doc answers which question |
+| `docs/_meta/doc-index.md` | the menu — which living doc answers which question: every living doc, or on a curated menu the ones meant for seats (its shape line says which) |
 | `docs/_meta/docs-workflow.md` | the folders, the templates, the two loops — and, in its sections marked (repository-owned), this repository's doc header and where an effort is filed |
 | `docs/_meta/engineering-loop.md` | the seats, the ceremony, **the comms protocol you follow** — and this repository's rails (repository-owned) |
 

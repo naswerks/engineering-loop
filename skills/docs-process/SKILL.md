@@ -92,9 +92,13 @@ branch, which is the truth for that PR, and you say so at close.
      speculation. A sizable design idea goes to `docs-backlog` (research/) instead. `docs-status`
      surfaces these so they aren't lost.
 
-3. **New feature?** If the work added a feature, ensure it has a doc in `docs/features/` (one doc per
-   feature) and add it to the menu in `docs/_meta/doc-index.md` — unless `docs-workflow.md` § Doc metadata
-   (repository-owned) says a repository tool generates the menu, in which case leave it alone.
+3. **A new living doc?** If the work added a feature, ensure it has a doc in `docs/features/` (one doc per
+   feature). Then register every living doc this run created where the menu's shape line says
+   (`rg -n 'naswerks-loop: menu=' docs/_meta/doc-index.md`; `docs/_meta/docs-workflow.md` § The
+   repository-owned sections explains the two shapes). **`menu=all`, or no shape line:** add its row to the
+   menu in `docs/_meta/doc-index.md`. **`menu=curated; index={path}`:** add it to `{path}` the way that
+   index is kept — a generated index is never edited by hand — and add a menu row only when the doc meets
+   the loop's standard and a seat should read it; say which you did in the summary.
 
 4. **Closing grep** — if the session doc notes deletions or renames, grep all living
    docs (`guides/ patterns/ infrastructure/ features/ _meta/`) for stale references and fix them. Do

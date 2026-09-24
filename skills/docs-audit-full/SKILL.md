@@ -18,7 +18,10 @@ what to audit next.
    oldest-first.
 
 2. **Feature completeness** — quick `docs/features/` folder pass (per `docs-audit-feature`'s
-   folder mode): any features in code with no doc, or docs whose feature is gone.
+   folder mode): any features in code with no doc, or docs whose feature is gone. Then the menu against its
+   shape line (`rg -n 'naswerks-loop: menu=' docs/_meta/doc-index.md`; none means `menu=all`): on
+   `menu=all`, living docs it does not name; on `menu=curated`, docs it names that fall short of the loop's
+   standard (`docs/_meta/docs-workflow.md` § The repository-owned sections).
 
 3. **Convention spot-check** — sample 2-3 source files per major convention against the
    `docs/patterns/` docs; note drift.

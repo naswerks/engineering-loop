@@ -84,7 +84,7 @@ that replaces the section rewrites alongside it):
 | Section | What the skills read from it | Also echoed in |
 |---------|------------------------------|----------------|
 | **The archive convention** (this file) | the archive home for each kind of effort (hand-cranked, spec pipeline, follow-on round) and for audit reports · the shape inside it · what a working doc's `## Archive` line says, and whether an umbrella carries an `Archive:` line · the links a move repairs · what is frozen once filed | The Loop (the diagram and its prose) · Folders (`research/`, `working/`, `archive/`) · "Living docs vs session docs" · the skills table (`docs-process`) · Conventions (incident receipts, archived docs) · `engineering-loop.md` "The loop at a glance" |
-| **Doc metadata** (this file) | the header — its form and its place · the sweep: one command, one line per doc · the word for each loop state (below) · where the verified date lives, and the rule that moves it · whether `## Lineage` stays · the gates a doc passes, and the folders they exempt · whether `doc-index.md` is kept by hand or generated | the skills table (`docs-status`) · Conventions (the machine layer; dates in the header) · `engineering-loop.md`'s own header line and its `## Lineage` |
+| **Doc metadata** (this file) | the header — its form and its place · the sweep: one command, one line per doc · the word for each loop state (below) · where the verified date lives, and the rule that moves it · whether `## Lineage` stays · the gates a doc passes, and the folders they exempt | the skills table (`docs-status`) · Conventions (the machine layer; dates in the header) · `engineering-loop.md`'s own header line and its `## Lineage` |
 | **Templates** (this file) | each template's header lines, at the state its writer names | — |
 | **This repository's rails** (`engineering-loop.md`) | the policy document, and how a seat reaches it · the gates a commit passes · the suite before a PR · the base branch, the PR target, the branch names and how a PR is opened · the staging rule · the repository's own skills a seat meets | the POLICY row of "Where a rule lives" · the Hard rules, which the rails add to and never subtract from |
 
@@ -100,8 +100,21 @@ writes for each.
 
 *Stale* is a date, not a state: `docs-status` computes it from the verified date, and no seat writes it.
 
-**Silence.** A section that says nothing about an item leaves the loop's default: the menu is kept by hand
-(`docs-process` adds a row for a new feature doc), no gate runs on a commit, the base branch is the remote's
+**The menu.** `doc-index.md` is the menu the seats read, and the whole file is the repository's: `init` writes
+it once and never again. A line near its top says which of two shapes it has, and one grep reads it:
+`rg -n 'naswerks-loop: menu=' docs/_meta/doc-index.md`.
+
+| Shape line | The menu lists | A new living doc goes |
+|------------|----------------|-----------------------|
+| `<!-- naswerks-loop: menu=all -->` | every living doc — the repository has no other index | onto the menu |
+| `<!-- naswerks-loop: menu=curated; index={path} -->` | the docs this repository's seats read; `{path}` indexes every doc | into `{path}`, the way that index is kept, and onto the menu only when it meets the loop's standard and a seat should read it |
+
+**The loop's standard for a doc on a curated menu:** it exists, it carries the header § Doc metadata
+prescribes at a decided status (not the word for `draft`), and it has a `## Key Files` section. `init doctor`
+checks exactly that, for every doc a curated menu names.
+
+**Silence.** A section that says nothing about an item leaves the loop's default: a menu with no shape line
+lists every living doc (`menu=all`), no gate runs on a commit, the base branch is the remote's
 default (`git symbolic-ref refs/remotes/origin/HEAD`), and a seat with no PR route asks the human once and
 suggests recording the answer in the rails. Any other unanswered item is a question for the human, never a
 guess.
@@ -131,6 +144,9 @@ Keep what the skills need to find, change the words to yours:
   `spec-pipeline` then records the resolved path in the umbrella's blockquote as an `Archive:` line.
 - **Your rails.** Fill each item of `engineering-loop.md` § This repository's rails from what the
   repository already wrote down — a policy document, hooks, CI, a pull-request template.
+- **Your menu.** A repository that already indexes its docs declares its menu curated and names that index:
+  the menu then lists only the docs its seats read, each meeting the loop's standard, and every other doc
+  stays in the repository's own index, kept the way it already is.
 
 **The version stamp** on line 1 names the pack version whose repository-owned sections this copy carries.
 The loop text around them is this repository's copy from whenever it was taken: `init doctor` never grades

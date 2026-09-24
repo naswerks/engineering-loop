@@ -38,7 +38,8 @@ docs/
   _meta/docs-workflow.md          a copy of the pack's references/docs-workflow.md (stamped); its sections marked
                                   (repository-owned) are the repository's to rewrite to its own conventions
   _meta/engineering-loop.md       a copy of references/engineering-loop.md (stamped), under the same rule
-  _meta/doc-index.md              the menu, written LAST — every doc that exists + three repo slots:
+  _meta/doc-index.md              the menu, written LAST — its shape line (menu=all: every doc that exists;
+                                  menu=curated: the docs init drafted, when the repository indexes its own) + three repo slots:
                                   ## Role reading lists · ## Apps and their build commands · ## The evidence tools
   research/ working/ archive/ guides/ patterns/ infrastructure/ features/     each with a README.md
   patterns/code-organization.md  patterns/backend-patterns.md
@@ -104,7 +105,9 @@ what it says` — and cite from it. A draft written mid-scan is a draft written 
    analyzer configs (`.stylecop`, `.globalconfig`, `Directory.Build.props` rules such as
    `TreatWarningsAsErrors`, `Nullable`, banned-API lists) · `tsconfig*.json` strictness ·
    `BannedSymbols.txt`, `FLAKY-TESTS.md` · CODEOWNERS · `.husky/`, `.githooks/` · PR templates · the
-   existing `docs/` tree · `.claude/settings.json`.
+   existing `docs/` tree · `.claude/settings.json` · an index the repository already keeps of every doc (a
+   `docs/INDEX.md` or `docs/index.md` that lists them, a `docs/SUMMARY.md`, a `mkdocs.yml` nav, a
+   docusaurus or vitepress sidebar).
 
 ## The write order — create-if-missing at every step
 
@@ -134,8 +137,12 @@ not. `init` never overwrites, never reorders, never deletes.
    Evidence per concern: a `generated/` folder or codegen config; a state library; a UI library; a tokens
    file or token layer; a saga / workflow / state-machine mechanism; a realtime library on either side; a
    queue, worker or scheduler.
-5. `docs/_meta/doc-index.md` from its template, LAST, listing every doc that now exists under the four
-   living folders (drafted or repo-owned), the three repo slots filled from the scan.
+5. `docs/_meta/doc-index.md` from its template, LAST, with its shape line (`docs/_meta/docs-workflow.md`
+   § The repository-owned sections, the menu). **`menu=all`** when the repository keeps no other index: the
+   menu lists every doc that now exists under the four living folders (drafted or repo-owned). **`menu=curated;
+   index={path}`** when pass 4 found an index the repository already keeps of every doc: the menu lists only
+   the docs `init` drafted, and the report says the owner adds each further doc that meets the loop's
+   standard. Either way, the three repo slots are filled from the scan.
 6. The Start-here stanza (`templates/claude-md-stanza.md`) appended to `CLAUDE.md` (created if absent)
    and to `AGENTS.md` (only if present); skipped when the opening marker
    `<!-- naswerks-loop:start-here -->` is already there.
@@ -187,9 +194,11 @@ FAIL, so a CI job or a control plane can call it.
 | each repository-owned heading, in its file | — | unmarked (an earlier spelling) or missing — `init refresh` marks or adds it | present |
 | each item of § This repository's rails (repository-owned) | — | missing, or still its absent-line | recorded |
 | `_meta/doc-index.md` and its three slot sections | missing | a slot carries only the absent-line | filled |
+| the menu's shape line | an unknown shape | a curated menu names no index, or an index that does not exist | `menu=all` (also a menu with no shape line), or `menu=curated` with its index |
+| every living doc a `menu=all` menu should list | — | a doc under the four living folders the menu does not name | named |
+| every doc a menu names | the path does not exist (a row saying `not detected` is exempt) | on a curated menu: no status in either header form, the word `draft`, or no `## Key Files` | meets the loop's standard |
 | the four floor docs | missing | the word `draft` (read from either header form), or an `<!-- init: -->` left in | a decided status |
 | the seven standard docs | absent AND no doc-index row saying `not detected` | the word `draft` when present; absent with its row | present and decided, or absent with its row |
-| every path a § Role reading lists row names | the row's path does not exist | — | resolves |
 | `CLAUDE.md` / `AGENTS.md` stanza · `.claude/settings.json` pin | — | missing | present |
 | `verify-staged` | — | not on PATH (the row carries the fallback) | resolvable |
 | every `docs/research/*/00-ignition-brief.md` | the five problems the control plane's parser emits (no `## The kick`; the kick has no blockquote; no `## The sequence`; the sequence holds no table; a row names no kind from `coordinator build fixit review retro witness docs-process`), or a spec a row names is missing from disk | — | clean |
