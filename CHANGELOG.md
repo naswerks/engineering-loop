@@ -5,37 +5,67 @@ version is the one in `package.json` and `.claude-plugin/plugin.json`, which mus
 
 ## [Unreleased]
 
-## [0.3.0] - 2026-09-22
+## [0.4.0] - 2026-09-23
 
 ### Changed
 
-- **The repository's copy of `docs-workflow.md` is the authority for a doc's header and for where an
-  effort is filed.** Three of its sections are marked `(repository-owned)`: The archive convention, Doc
-  metadata, Templates. A repository whose docs already carry a metadata convention (YAML frontmatter with
-  its own keys and status words, a validator, an indexer) or already have a home for an effort's history
-  rewrites those sections in its `docs/_meta/` copy, in one voice; `engineering-loop.md` gains a
-  `This repository's rails (repository-owned)` section for the policy document, gates, suite and PR
-  target, and marks the POLICY row of where-a-rule-lives the same way. `rg -n 'repository-owned'
-  docs/_meta/` lists every such section.
-- Every skill that writes or files a doc points at those sections instead of stating the header or the
-  destination itself: `docs-write`, `docs-process`, `docs-status`, `docs-backlog`, `docs-audit-feature`,
-  `docs-audit-full`, `spec-pipeline`, `spec-parent`, `spec-review`, `init`. `spec-seat`'s Step 0 rows say
-  the two method docs carry the repository's conventions. The eleven templates carry an init instruction
-  in place of the loop's own header line, so a fresh repository's drafts are written in whatever header
-  its copy prescribes. A pin holds the census: no skill spells `<!-- meta:` any more, and every writer
-  names the repository-owned section.
+- **The two method documents state one way of running the loop, opinionated on purpose, and name the four
+  places a repository replaces with its own.** Each is a whole section whose heading ends
+  `(repository-owned)`: in `docs-workflow.md`, The archive convention, Doc metadata and Templates; in
+  `engineering-loop.md`, This repository's rails. One grep lists them and nothing else:
+  `rg -n '^#+ .*\(repository-owned\)' docs/_meta/`. The heading is the contract: a repository keeps it and
+  replaces the body in its `docs/_meta/` copy, in its own words. The loop's own preferences stay stated
+  concretely in the references: the `<!-- meta -->` header and its Obsidian interop, `## Lineage`, the
+  topic folders under `archive/{topic}/`, flat and split.
+- `docs-workflow.md` gains § The repository-owned sections: what the skills read from each section, where
+  the two documents echo it in passing, the loop's four states (`draft`, `wip`, `current`, `shipped`) and
+  who writes each, what silence in a section means, how to replace one (filing a pipeline as one package
+  into a home the repository already has among the examples), and what the version stamp means.
+- `engineering-loop.md` § This repository's rails is six items, each an absent-line until the repository
+  fills it: Policy, Gates a commit passes, Before a PR, Where a PR goes, Staging, Skills a seat meets here.
+  They add to the Hard rules and never subtract. The POLICY row of where-a-rule-lives points at the rails'
+  policy document, and in hosted mode at the control plane's suffix.
+- **The skills name the section and the concept, never the value.** A header is written at the word for a
+  loop state, "the verified date" is wherever § Doc metadata keeps it, an effort files into "the archive
+  home" § The archive convention names, and the base branch and the PR route come from the rails. Every
+  skill that needs a format carries the same line near its top, "Find the format first", with the grep.
+  `docs-process` holds the filing procedure only; the shapes and the link repairs are the archive
+  convention's. `spec-review` and `spec-pipeline` diff against the rails' base branch; `spec-parent` and
+  `spec-retro` open the PR where and how the rails say.
+- The templates keep the loop's own header; their init instruction drops the blockquote date where
+  § Doc metadata keeps none. `init` writes the Start-here stanza's and the folder READMEs' echo lines in the
+  copy's words when the copy has replaced the section they echo, and drafts § This repository's rails from
+  the scan.
 - `init doctor` reads a doc's status from either header form unaided, the loop's meta line or a
-  frontmatter `status:` key, needing only the word `draft`; the method docs' version stamp is read after
-  a leading frontmatter block when a repository's gate requires one on every file. `init` no longer calls
-  the method docs byte copies. A pin drives the doctor over both header forms, with controls.
-- `docs-workflow.md` § The archive convention describes a third shape beside flat and split: a pipeline
-  filed as one package into a home the repository already has, with `spec-pipeline` recording the resolved
-  destination in the umbrella's `Archive:` line when only the authoring session can know it.
+  frontmatter `status:` key, needing only the word `draft`; reads the version stamp after a leading
+  frontmatter block; and reports each repository-owned heading (unmarked or missing: DEGRADE) and each
+  rails item (missing, or still its absent-line: DEGRADE). It never grades the loop text or the content of
+  a repository-owned section.
 - The marketplace entry sources the plugin from this repository (`./`) instead of the npm package at a
   pinned version. `claude plugin install naswerks@engineering-loop` no longer depends on a registry that
   can lag a tag; npm remains the runner lane (`npm i -g @naswerks/engineering-loop`). A pin keeps it so.
 - The release workflow names the remedy when a publish is refused: the package has no trusted publisher
   linked on npmjs.com for this repository and `release.yml`.
+
+### Added
+
+- `init refresh` (`skills/init/scripts/refresh.mjs`): brings a repository's copies of the method documents
+  up to this pack by writing only their repository-owned sections and the stamp. A dry run by default, one
+  row per section (kept, heading marked, added, item added, stamp); `--write` applies exactly those rows. It
+  never touches the loop text, never deletes, never reorders, keeps every line's own ending, and a second
+  run writes nothing.
+- `skills/init/scripts/owned.mjs`: the one list of repository-owned sections the doctor, refresh and the
+  pins share.
+- Pins: a census that no skill spells the loop's own header or archive destination; the one-grep pin
+  (exactly four marked headings, equal to `owned.mjs`, no partial marker); section citations by exact
+  heading only; the loop states a skill names; the find-format line; `pins/preferences.test.mjs`, which
+  keeps the loop's own preferences in the references; `pins/refresh.test.mjs`.
+
+### Fixed
+
+- `docs-audit-full` named `docs-write` as the skill that files a finished working doc; it is
+  `docs-process`.
+- `spec-review` wrote its report at a status no loop state names; it writes the word for `shipped`.
 
 ## [0.2.2] - 2026-09-21
 

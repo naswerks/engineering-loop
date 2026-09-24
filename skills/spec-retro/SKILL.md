@@ -10,6 +10,8 @@ today that perspective evaporates the moment the run closes. This skill turns it
 
 **It is not a summary. It is an audit — of the pipeline, and of the seat that ran it.**
 
+**Find the format first.** This repository writes its formats (the doc header and status words, where an effort is filed, its rails) in the sections `rg -n '^#+ .*\(repository-owned\)' docs/_meta/` lists; read the one a step names before that step writes. This skill names the section, never the format.
+
 Run it as the **last act of the coordinator seat**, after the final session's close-out commit — before or
 after the PR is cut, either works. Output: `docs/research/{topic}/sessions/parent-retrospective.md`. It is
 a scoped write on the pipeline's branch, so it rides the PR to the base branch either way.
@@ -381,8 +383,9 @@ is the look of a record with none of a record's properties.
 4. **Do not fix anything.** Findings become proposed fixits. The retro is a read.
 5. **Then** commit the retro (explicit path) and push it (`git push origin <the effort's branch>`), and
    write `BUILD COMPLETE` into `docs/research/{topic}/project-status.md` (the tracker's close marker). **If no
-   PR exists yet, create it yourself** — `gh pr create` on the effort's branch; one branch, one PR from any
-   seat. **If one is already open, the push is enough.** These three git commands are your own close-out
+   PR exists yet, create it yourself** — on the effort's branch, where and how `docs/_meta/engineering-loop.md`
+   § This repository's rails (repository-owned) says (when it names no route, ask the human once and suggest
+   recording the answer there); one branch, one PR from any seat. **If one is already open, the push is enough.** These three git commands are your own close-out
    lane and they are gated and receipted like any other publish. **The push command must be the ENTIRE
    command** — a leading `cd` disqualifies it — and keep git-verb words out of any echo label you write
    around it; the deny layer matches TEXT, not parsed verbs.

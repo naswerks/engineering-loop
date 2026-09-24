@@ -1,6 +1,6 @@
 ---
 name: init
-description: Make a repository able to run the loop — create the docs/ shape, the two method docs, a scanned first draft of every doc the loop's skills read, the doc-index menu with the repo's own slots, the Start-here stanza and the plugin pin; then say what is still missing. Run init in a repository that has none of this; run init doctor to check one that does. A second init writes nothing and prints the doctor report.
+description: Make a repository able to run the loop — create the docs/ shape, the two method docs, a scanned first draft of every doc the loop's skills read, the doc-index menu with the repo's own slots, the Start-here stanza and the plugin pin; then say what is still missing. Run init in a repository that has none of this; run init doctor to check one that does; run init refresh to bring a repository's copies of the method docs up to a newer pack (it writes only their repository-owned sections and the stamp). A second init writes nothing and prints the doctor report.
 ---
 
 # init
@@ -11,8 +11,11 @@ control plane admits a spec folder only when the repository carries `docs/_meta/
 `init` creates all of that in a repository that has none of it — as REAL first drafts scanned off the
 repo, never as empty headings — and `init doctor` says, per path, whether the loop can run.
 
-**Two invocations:** `init` (create what is missing, then the report) · `init doctor` (the report only).
-A second `init` writes nothing and IS the doctor report.
+**Three invocations:** `init` (create what is missing, then the report) · `init doctor` (the report only) ·
+`init refresh` (a newer pack's repository-owned sections into the copies that exist — see § refresh). A
+second `init` writes nothing and IS the doctor report.
+
+**Find the format first.** This repository writes its formats (the doc header and status words, where an effort is filed, its rails) in the sections `rg -n '^#+ .*\(repository-owned\)' docs/_meta/` lists; read the one a step names before that step writes. This skill names the section, never the format.
 
 **The law of the draft:** a section is filled only from files the scan opened, and every drafted doc
 names them in its provenance line. Stack, trees, commands, config keys and Key Files are copied verbatim.
@@ -91,7 +94,8 @@ what it says` — and cite from it. A draft written mid-scan is a draft written 
    `.gitlab-ci.yml`) — the jobs are the lanes · app roots (`angular.json` projects, `apps/*`,
    `packages/*`, `web/*` and `services/*` under `src/`, `cmd/*`, an executable `*.csproj`) · `generated/` folders
    and codegen configs (`codegen.ts`, `codegen.yml`, `openapi*`, `*.proto`, `tgconfig.json`, `prisma/`) ·
-   the folder layout two deep · `git log --oneline -20` (the message convention) · a realtime library
+   the folder layout two deep · `git log --oneline -20` (the message convention) · the remote's default
+   branch (`git symbolic-ref refs/remotes/origin/HEAD`) · a realtime library
    (signalr, socket.io, ws, sse, pusher, ably) · a state library (ngxs, ngrx, redux, zustand, pinia,
    mobx) · a UI library or tokens file (tailwind, daisyui, mui, chakra, bootstrap, shadcn) · a queue,
    worker or scheduler (a service bus, RabbitMQ, SQS, BullMQ, Hangfire, Quartz, Celery, sidekiq).
@@ -111,11 +115,18 @@ not. `init` never overwrites, never reorders, never deletes.
    the only file init writes into a folder that already exists.
 2. `docs/_meta/docs-workflow.md` and `docs/_meta/engineering-loop.md` — copies of the pack's
    `references/*` (their first line is the version stamp; copy it with the file). **If the repository
-   already carries a copy, read its sections marked (repository-owned) before writing any draft:** the
-   header every draft below carries is the one that copy's § Doc metadata prescribes, not the templates'
-   own line (`rg -n 'repository-owned' docs/_meta/docs-workflow.md` finds it). When the repository's own
-   gate requires frontmatter on every file under `docs/`, the block may sit above the stamp; the doctor
-   reads the stamp after it.
+   already carries a copy, read its repository-owned sections before writing any draft:** the header every
+   draft below carries is the one that copy's § Doc metadata (repository-owned) prescribes, not the
+   templates' own line. An existing copy is never rewritten by `init`; `init refresh` is the one path that
+   writes into a copy, and only into its repository-owned sections. When the repository's own gate requires
+   frontmatter on every file under `docs/`, the block may sit above the stamp; the doctor reads the stamp
+   after it.
+
+   **When `init` writes the copies itself, it drafts § This repository's rails (repository-owned)** in the
+   new `engineering-loop.md` from the scan, under the law of the draft: each item carries only what a file
+   the scan opened states — CONTRIBUTING, `CLAUDE.md` / `AGENTS.md`, `.husky/` / `.githooks/`, the CI
+   workflows, a pull-request template, CODEOWNERS, the remote's default branch — and cites it, or keeps
+   its absent-line.
 3. The four floor drafts (`code-organization`, `backend-patterns`, `frontend-patterns`, `testing`) from
    `templates/docs/patterns/*.md`, filled as below.
 4. The standard-set drafts — `codegen`, `state-management`, `ui-style-guide`, `design-tokens`,
@@ -145,16 +156,21 @@ the scan opened for that doc.
 
 The shape every drafted doc keeps — because it is the shape the seats know how to read:
 
-1. the H1, the one-line blockquote ending `Last verified {today}.`, the machine header
-   `docs/_meta/docs-workflow.md` § Doc metadata (repository-owned) prescribes at its draft status (the
-   loop's own is the one-line meta comment the template's init instruction spells), the
+1. the H1, the one-line blockquote, the machine header `docs/_meta/docs-workflow.md` § Doc metadata
+   (repository-owned) prescribes at the word for `draft` — placed and spelled as that section says, the
+   verified date included wherever it keeps one (the templates carry the loop's own header, and each
+   template's init instruction says what to drop when this repository's differs) — then the
    `<!-- naswerks-loop: draft; scanned=… -->` line;
 2. Overview, then Stack, then the shape (a tree copied from a REAL folder), then one section per
    concept in the micro-grammar *prose rule, a REAL example, `### Rules`, `### Gotcha:`*;
 3. decision tables that decide, checklists whose items are real paths, a `Legacy (never use)` column
    where the repo has one;
 4. exact commands in fenced blocks; identifiers in backticks;
-5. `## Key Files`, `## Lineage`.
+5. `## Key Files`, and `## Lineage` where § Doc metadata (repository-owned) keeps it.
+
+**The templates speak the loop's own formats** — the header, the status words in the Start-here stanza and
+the folder READMEs, the archive home in the `archive/` and `working/` READMEs and in the doc-index. When
+this repository's copy has replaced the section a line echoes, write that line in the copy's words instead.
 
 A section the scan can only half-fill says which half. A rule with no cited source is not written.
 
@@ -167,10 +183,12 @@ FAIL, so a CI job or a control plane can call it.
 | Row | FAIL | DEGRADE | ok |
 |---|---|---|---|
 | each of the eight folders | missing | README missing | present |
-| `_meta/docs-workflow.md`, `_meta/engineering-loop.md` | missing, or no stamp on line 1 (or on the first line after a frontmatter block) | stamp behind the pack's version | stamp equals it |
+| `_meta/docs-workflow.md`, `_meta/engineering-loop.md` | missing, or no stamp on line 1 (or on the first line after a frontmatter block) | stamp behind the pack's version (`init refresh` restamps) | stamp equals it |
+| each repository-owned heading, in its file | — | unmarked (an earlier spelling) or missing — `init refresh` marks or adds it | present |
+| each item of § This repository's rails (repository-owned) | — | missing, or still its absent-line | recorded |
 | `_meta/doc-index.md` and its three slot sections | missing | a slot carries only the absent-line | filled |
-| the four floor docs | missing | `status=draft` (read from either header form), or an `<!-- init: -->` left in | a decided status |
-| the seven standard docs | absent AND no doc-index row saying `not detected` | `status=draft` when present; absent with its row | present and current, or absent with its row |
+| the four floor docs | missing | the word `draft` (read from either header form), or an `<!-- init: -->` left in | a decided status |
+| the seven standard docs | absent AND no doc-index row saying `not detected` | the word `draft` when present; absent with its row | present and decided, or absent with its row |
 | every path a § Role reading lists row names | the row's path does not exist | — | resolves |
 | `CLAUDE.md` / `AGENTS.md` stanza · `.claude/settings.json` pin | — | missing | present |
 | `verify-staged` | — | not on PATH (the row carries the fallback) | resolvable |
@@ -183,7 +201,38 @@ same table: the checks are file existence, a first-line stamp, a heading grep, a
 header form, and the brief's two sections.
 
 A repository fresh from `init` reads DEGRADE on every draft and ok on the shape. That is the intended
-state: the owner promotes each draft to `status=current` as they confirm it, section by section.
+state: the owner promotes each draft to the word for `current` as they confirm it, section by section.
+
+The doctor never grades the loop text of the two method docs, and never their repository-owned sections'
+content: a repository rewrites both as it sees fit. It reads the stamp, the owned headings, and the rails
+items' absent-lines.
+
+## refresh
+
+`node ${CLAUDE_SKILL_DIR}/scripts/refresh.mjs [repo-root]` is a dry run; add `--write` to apply it. Node 22
+or later, no dependencies. **What it does, in the line it prints first: it writes only the repository-owned
+sections and the stamp; every other line is left as it is.** A repository updating the pack is taking new
+skills, not new prose — the loop text in its copies is its own, whatever it has done to it, and refresh
+never touches it.
+
+It reads the pack's `references/` for what each repository-owned section is, and prints one row per section:
+
+| Row | When | What `--write` does |
+|---|---|---|
+| **kept** | the copy has the section under its exact heading | nothing — the section is the repository's, byte for byte |
+| **heading marked** | the copy has it under an earlier spelling (`## The archive convention`, `## Doc metadata (header + lineage)`, `## Templates`) | rewrites that one heading line and nothing else |
+| **added** | the copy lacks the section | inserts the pack's default before the first following section the copy also has |
+| **item added** | § This repository's rails (repository-owned) lacks an item this pack names | appends that item's absent-line to the end of the section |
+| **stamp** | the stamp is behind the pack | restamps (after any frontmatter the stamp sits under) |
+
+Then, for each section, what this pack's skills read from it and which loop passages echo it (from the
+pack's § The repository-owned sections), so the owner can check that a rewritten section still answers each
+item. It never deletes, never reorders, keeps every line's own ending, and a second run writes nothing.
+
+**Run it this way:** the dry run first; show the human its table; `--write` only on their word. After the
+write, offer — and ask before doing either — to fill each new absent-line from the scan as `init` would
+(the law of the draft), and to move into its new item any fact the repository had parked in its loop text
+(a paragraph naming its own skills, say). Then run `init doctor`.
 
 ## Notes
 

@@ -1,4 +1,4 @@
-<!-- naswerks-loop: version=0.3.0 -->
+<!-- naswerks-loop: version=0.4.0 -->
 # Docs Workflow
 
 > How knowledge flows through `docs/`: the loop, the folder rules, the templates, and the `docs-*` skills.
@@ -62,12 +62,89 @@ is usually a code problem to flag, not a doc to rewrite (unless the rule itself 
 
 ---
 
+## The repository-owned sections
+
+This file and [engineering-loop](engineering-loop.md) state one way of running the loop, and they are
+opinionated on purpose. Where a repository's conventions differ, they differ in four places only — the
+sections whose heading ends **(repository-owned)**. Each one declares this repository's preference for one
+thing; another repository **keeps the heading and replaces the body** in its `docs/_meta/` copy, in its own
+words. Every other section is the loop and reads the same everywhere. One grep lists the four, with their
+line numbers; each runs to the next `## ` heading:
+
+```
+rg -n '^#+ .*\(repository-owned\)' docs/_meta/
+```
+
+**The skills read these sections and never restate them.** A skill names the section and the thing it
+needs from it — *the header § Doc metadata prescribes*, *the archive home § The archive convention names*,
+*the base branch § This repository's rails names* — and takes the value from this repository's copy. What
+each section answers, and where the two method docs echo the preference in passing (the lines a repository
+that replaces the section rewrites alongside it):
+
+| Section | What the skills read from it | Also echoed in |
+|---------|------------------------------|----------------|
+| **The archive convention** (this file) | the archive home for each kind of effort (hand-cranked, spec pipeline, follow-on round) and for audit reports · the shape inside it · what a working doc's `## Archive` line says, and whether an umbrella carries an `Archive:` line · the links a move repairs · what is frozen once filed | The Loop (the diagram and its prose) · Folders (`research/`, `working/`, `archive/`) · "Living docs vs session docs" · the skills table (`docs-process`) · Conventions (incident receipts, archived docs) · `engineering-loop.md` "The loop at a glance" |
+| **Doc metadata** (this file) | the header — its form and its place · the sweep: one command, one line per doc · the word for each loop state (below) · where the verified date lives, and the rule that moves it · whether `## Lineage` stays · the gates a doc passes, and the folders they exempt · whether `doc-index.md` is kept by hand or generated | the skills table (`docs-status`) · Conventions (the machine layer; dates in the header) · `engineering-loop.md`'s own header line and its `## Lineage` |
+| **Templates** (this file) | each template's header lines, at the state its writer names | — |
+| **This repository's rails** (`engineering-loop.md`) | the policy document, and how a seat reaches it · the gates a commit passes · the suite before a PR · the base branch, the PR target, the branch names and how a PR is opened · the staging rule · the repository's own skills a seat meets | the POLICY row of "Where a rule lives" · the Hard rules, which the rails add to and never subtract from |
+
+**The loop's states.** The skills speak in four states, and § Doc metadata says which word this repository
+writes for each. Here the words are the states themselves.
+
+| State | Written by | Means |
+|-------|------------|-------|
+| `draft` | `init`, `spec-pipeline`, `docs-backlog` | scanned or authored, not yet decided or verified |
+| `wip` | `docs-write` mid-effort, the pipeline's tracker | in progress |
+| `current` | `docs-process` for a doc it creates, `docs-audit-feature` | describes the code as it is |
+| `shipped` | `docs-write` for an effort's last session, `spec-review`'s report | finished — frozen once filed |
+
+*Stale* is a date, not a state: `docs-status` computes it from the verified date, and no seat writes it.
+
+**Silence.** A section that says nothing about an item leaves the loop's default: the menu is kept by hand
+(`docs-process` adds a row for a new feature doc), no gate runs on a commit, the base branch is the remote's
+default (`git symbolic-ref refs/remotes/origin/HEAD`), and a seat with no PR route asks the human once and
+suggests recording the answer in the rails. Any other unanswered item is a question for the human, never a
+guess.
+
+### Replacing a section
+
+Keep what the skills need to find, change the words to yours:
+- **The header and how to sweep it.** Name the fields (a status, a verified date, a type) and where they
+  live, and give the one command `docs-status` runs to list every doc's status in one line each. For the
+  loop's own header that command is `rg -o '<!-- meta:.*-->' docs/`; for a frontmatter convention it is a
+  grep over the keys.
+- **The status words.** Say which word of yours a seat writes for each loop state above, in one line — *"a
+  seat that would write `current` or `shipped` writes `stable`; `wip` and `draft` are `draft`"*. `draft` is
+  the one word `init doctor` looks for, in either header form.
+- **What the verified date means.** It moves only when a doc is checked against code in that run, whatever
+  it is called; state the rule in your words so the anti-fabrication rule survives the rename.
+- **Whether `## Lineage` stays.** It is the footer that carries Idea, Spec, Built and Related; a repository
+  whose own tooling derives that graph may drop it and say so.
+- **Your gates.** Name the validator or index a commit must pass, and which of the loop's folders it
+  exempts. The loop's session folders (`research/`, `working/`, `archive/`) hold breadcrumbs, not living
+  docs, and are the usual exemption.
+- **Your archive home.** A repository whose living docs already have a home for an effort's history (a
+  feature's own folder, say) may file a spec pipeline **as one package** into that home: nothing is
+  re-sorted, every file keeps its name and its place, `sessions/` rides along untouched, and the effort's
+  working docs join the package under `implementation/`, with the tracker still the "read me first" at its
+  root. When where a pipeline files depends on something only its authoring session knows, say so —
+  `spec-pipeline` then records the resolved path in the umbrella's blockquote as an `Archive:` line.
+- **Your rails.** Fill each item of `engineering-loop.md` § This repository's rails from what the
+  repository already wrote down — a policy document, hooks, CI, a pull-request template.
+
+**The version stamp** on line 1 names the pack version whose repository-owned sections this copy carries.
+The loop text around them is this repository's copy from whenever it was taken: `init doctor` never grades
+it, and `init refresh` never touches it — refresh adds a section or a rails item a newer pack reads, and
+restamps.
+
+---
+
 ## The archive convention (repository-owned)
 
 > **Repository-owned.** This section says where a finished effort is filed and in what shape. A
 > repository whose living docs already have a home for an effort's history rewrites it in its
 > `docs/_meta/` copy; every skill that files a doc reads this copy, never its own text.
-> `rg -n 'repository-owned' docs/_meta/` lists every such section.
+> [The repository-owned sections](#the-repository-owned-sections) lists what it must answer.
 
 A multi-session effort becomes a **topic folder** under `archive/` (e.g. `archive/{topic}/`).
 Docs are **not numbered** — they use descriptive names and chain via a header link:
@@ -118,16 +195,7 @@ one** (via `spec-pipeline`). The trigger for the layout is simply *"does this ef
                                record, not the convention.
   ```
 
-- **Package (has specs, and this section says so)** — a repository whose living docs already have a home
-  for an effort's history (a feature's own folder, say) may file a pipeline **as one unit** into that
-  home: nothing is re-sorted into `specs/` and `implementation/`, every file keeps its name and its place,
-  `sessions/` rides along untouched, and the effort's working docs join the package under
-  `implementation/`. The tracker is still the "read me first" at the package root. A repository that
-  chooses this writes the destination here, and `spec-pipeline` records the resolved path in the
-  umbrella's blockquote as an `Archive:` line when only the authoring session can know it.
-
-**Follow-on pipelines (multi-round families).** *(Renamed at the v2 cutover — this section was
-`Follow-on chains`; skills citing the old heading mean this one.)* A second (third, …) spec pipeline that continues an
+**Follow-on pipelines (multi-round families).** A second (third, …) spec pipeline that continues an
 already-archived effort gets its **own sibling topic folder**, never filed inside the frozen one.
 Rules: (a) name the new topic `{family-prefix}-{subtopic}` so the family groups
 alphabetically; (b) each folder keeps the full split shape (own `project-status.md` at root); (c) the
@@ -156,11 +224,13 @@ report sits beside the docs it audits. The cross-cutting `health-report-{date}.m
 > What follows is the loop's own header. A repository whose docs already carry a metadata convention
 > (YAML frontmatter with its own keys and status words, a validator, an indexer) rewrites this section
 > and the templates below in its `docs/_meta/` copy to say that convention, in one voice; every skill
-> that writes a doc takes the header from this copy (`rg -n 'repository-owned' docs/_meta/docs-workflow.md`).
+> that writes a doc takes the header from this copy. [The repository-owned sections](#the-repository-owned-sections)
+> lists what it must answer.
 
 Two additive machine layers wrap a doc's unchanged human content: an invisible **header meta-comment**
 (greppable status/identity) and a visible **`## Lineage` footer** (the clickable provenance breadcrumb).
-Both render cleanly in any markdown viewer.
+Both render cleanly in any markdown viewer, and both have an Obsidian (frontmatter + `[[wikilink]]`)
+equivalent so imported vaults work too.
 
 ### The header meta-comment
 
@@ -225,22 +295,15 @@ Most feature/infra docs already list code paths in their `## Key Files` table (p
 mentions). A doc-graph tool can reverse-index those into a `related_files` set per doc — a `COVERS` edge
 from the doc to the matching code file. **No new field, no new authoring** — just keep `## Key Files` accurate.
 
-### Rewriting this section for a repository with its own convention
+### Obsidian interop (two encodings of the same fields)
 
-Keep what the skills need to find, change the words to yours:
-- **The header and how to sweep it.** Name the fields (a status, a verified date, a type) and where they
-  live, and give the one command `docs-status` runs to list every doc's status in one line each. For the
-  loop's own header that command is `rg -o '<!-- meta:.*-->' docs/`; for a frontmatter convention it is a
-  grep over the keys.
-- **The status words.** The loop's states are current, wip, draft, stale and shipped; say which word of
-  yours a seat writes for each. `draft` is the one word `init doctor` looks for, in either header form.
-- **What the verified date means.** It moves only when a doc is checked against code in that run, whatever
-  it is called; state the rule in your words so the anti-fabrication rule survives the rename.
-- **Whether `## Lineage` stays.** It is the footer that carries Idea, Spec, Built and Related; a repository
-  whose own tooling derives that graph may drop it and say so.
-- **Your gates.** Name the validator or index a commit must pass, and which of the loop's folders it
-  exempts. The loop's session folders (`research/`, `working/`, `archive/`) hold breadcrumbs, not living
-  docs, and are the usual exemption.
+The format is two encodings of one set of fields, which a doc-graph parser treats as equivalent:
+- **Native:** `<!-- meta -->` (status/identity) + `## Lineage` relative links (edges).
+- **Imported (Obsidian):** YAML frontmatter keys `type/status/verified` + `[[wikilinks]]` anywhere.
+
+Native is the default because a plain markdown renderer shows the HTML comment invisibly and relative links
+cleanly, whereas frontmatter shows as a stray paragraph + `<hr>` and `[[ ]]` as literal text. Embrace-and-extend
+Obsidian; don't imitate it.
 
 ---
 
@@ -440,8 +503,8 @@ come from this copy, so a repository changes them once, here.
 - **Code is truth — for descriptive docs** (`infrastructure/`, `features/`): verify every update against
   the actual source. For prescriptive docs (`patterns/`, `guides/`) the doc is the decided rule — check
   that code conforms to it instead (see "Two kinds of living doc" above).
-- **Every living / spec / working doc carries the machine layer** — the header "Doc metadata
-  (repository-owned)" prescribes + a `## Lineage` footer. The verified date moves with the blockquote's
-  `Last verified` and obeys the same anti-fabrication rule: only stamp it for a doc actually checked
-  against code this run.
+- **Every living / spec / working doc carries the machine layer** — a one-line `<!-- meta: … -->` header
+  below the blockquote + a `## Lineage` footer (see "Doc metadata (repository-owned)" above). The meta
+  `verified` date moves with the blockquote's `Last verified` and obeys the same anti-fabrication rule:
+  only stamp it for a doc actually checked against code this run.
 - **Don't edit archived docs** — stale references there are historical record.

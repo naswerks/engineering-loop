@@ -8,6 +8,8 @@ description: Patch the living docs from a session doc's "Living Docs to Update" 
 The **second** half of the bookend. Take a finished session doc (in `docs/working/`, or already filed
 in its archive home) and bring the living docs up to current state.
 
+**Find the format first.** This repository writes its formats (the doc header and status words, where an effort is filed, its rails) in the sections `rg -n '^#+ .*\(repository-owned\)' docs/_meta/` lists; read the one a step names before that step writes. This skill names the section, never the format.
+
 ## Running as a pipeline row (`docs-process` seat)
 
 Most of the time a human runs this cold, after a merge, and this section does not apply.
@@ -31,8 +33,8 @@ branch, which is the truth for that PR, and you say so at close.
 1. **Read the session doc(s) for the effort** from `docs/working/` — that's where `docs-write` leaves
    them (it does not archive). A folder's `README.md` is never a queue entry. One effort may be a **SEQUENCE of working docs** across sessions (each
    `Builds on` the prior, all sharing one `Source:` research doc); treat the sequence as one unit. The
-   combined **Living Docs to Update** sections are your checklist; the `## Archive` line names the topic
-   folder you'll file everything into in the last step. Run this when the effort is done (it's the
+   combined **Living Docs to Update** sections are your checklist; the `## Archive` line names the archive
+   home you'll file everything into in the last step. Run this when the effort is done (it's the
    finalizer) — mid-effort, just keep adding working docs and continue.
 
    **`docs/working/` is a SHARED QUEUE — it may hold other efforts' docs.** Invoked by hand you scope
@@ -58,31 +60,31 @@ branch, which is the truth for that PR, and you say so at close.
    - Read the living doc and the session doc's description of what changed.
    - **Patch the stale sections** — don't rewrite. Preserve everything still accurate.
    - **Verify against code** — open the actual source file for each claimed change. Code is truth.
-   - **Leave the "Last verified" date alone.** You verified the *specific* checklist changes against
-     code — but you did NOT re-read the whole doc against the whole codebase, and "Last verified" is a
-     *whole-doc* claim. Stamping it for a targeted patch (rename or substantive alike) overclaims and
-     hides real staleness in the untouched sections from the next `docs-status` scan. That date is
-     `docs-audit-feature`'s to set (it does the full doc-vs-code pass — see its anti-fabrication rule).
-     **Exception:** a doc you *create from scratch* here by reading the code is verified-today by
-     definition — set its date.
+   - **Leave the verified date alone.** You verified the *specific* checklist changes against
+     code — but you did NOT re-read the whole doc against the whole codebase, and the verified date (wherever
+     § Doc metadata (repository-owned) says it lives) is a *whole-doc* claim. Stamping it for a targeted patch
+     (rename or substantive alike) overclaims and hides real staleness in the untouched sections from the next
+     `docs-status` scan. That date is `docs-audit-feature`'s to set (it does the full doc-vs-code pass — see
+     its anti-fabrication rule). **Exception:** a doc you *create from scratch* here by reading the code is
+     verified-today by definition — set its date.
    - **Update the Key Files table** if files were renamed, created, or deleted.
    - **Write / update the header + `## Lineage`** — the header is the one `docs/_meta/docs-workflow.md`
-     § Doc metadata (repository-owned) prescribes, in its words (`rg -n 'repository-owned'
-     docs/_meta/docs-workflow.md` finds it); the states below are the loop's names for what that section
-     spells:
-     - *Creating a doc from scratch* here: write the header at status current with its verified date =
-       today (matching the blockquote you just set) **and** a
-       `## Lineage` footer. You already know the `Source:` research doc (the `Idea` row), any spec pipeline
-       (the `Spec` row), and the working-doc sequence / `## Archive` target (the `Built` row); derive `Related` from
-       existing peer links. Set `lineage=N` to the link count. **Keep `Spec` and `Built` symmetric** —
-       list **every per-slice spec that a `Built` session implemented** (the umbrella + `00-operating-frame`
-       go in `Idea`, not `Spec`); a `Built` session whose spec is missing from `Spec` is the smell (see the
-       Lineage rules in `docs-workflow.md`).
-     - *Patching an existing doc*: bump `status` if it changed and recompute `lineage=N`; append any new
-       `Built`/`Spec` rows for this effort. **Do NOT restamp `verified`** — same anti-fabrication rule as the
-       `Last verified` date above (a targeted patch is not a whole-doc re-verify).
-     - **Migrate `## Related Docs`.** If the doc still carries a `## Related Docs` section, fold its links into
-       the `## Lineage` `Related` row and remove the old section (the convention supersedes it).
+     § Doc metadata (repository-owned) prescribes, in its words, and `## Lineage` is written where that
+     section keeps it:
+     - *Creating a doc from scratch* here: write the header at the word for `current`, its verified date
+       today, **and** a `## Lineage` footer. You already know the `Source:` research doc (the `Idea` row), any
+       spec pipeline (the `Spec` row), and the working-doc sequence / `## Archive` target (the `Built` row);
+       derive `Related` from existing peer links. Compute any field the header derives from those links the
+       way the section says. **Keep `Spec` and `Built` symmetric** — list **every per-slice spec that a
+       `Built` session implemented** (the umbrella + `00-operating-frame` go in `Idea`, not `Spec`); a `Built`
+       session whose spec is missing from `Spec` is the smell (the `## Lineage` rules § Doc metadata
+       (repository-owned) gives).
+     - *Patching an existing doc*: update the status if it changed and recompute any field the header
+       derives; append any new `Built`/`Spec` rows for this effort. **Do NOT restamp the verified date** — same
+       anti-fabrication rule as above (a targeted patch is not a whole-doc re-verify).
+     - **Migrate `## Related Docs`.** If the doc still carries a `## Related Docs` section and the section
+       keeps `## Lineage`, fold its links into the `## Lineage` `Related` row and remove the old section (the
+       convention supersedes it).
    - **Flag code risks you spot.** If you notice a genuine bug / risk / tech-debt *outside* what you're
      documenting — while verifying against code, or as a still-unresolved item in the working doc's
      **Watch-Outs** — add a dated one-line bullet (with `file:line`) to that doc's `## Open Issues`
@@ -96,60 +98,39 @@ branch, which is the truth for that PR, and you say so at close.
 
 4. **Closing grep** — if the session doc notes deletions or renames, grep all living
    docs (`guides/ patterns/ infrastructure/ features/ _meta/`) for stale references and fix them. Do
-   NOT touch `archive/` — that's frozen history.
+   NOT touch a filed doc — wherever § The archive convention (repository-owned) files them, they are frozen
+   history.
 
-5. **Archive the effort — research/spec docs AND working doc(s), together.** Now that the living docs are
+5. **File the effort — research/spec docs AND working doc(s), together.** Now that the living docs are
    patched and verified, file the whole effort where `docs/_meta/docs-workflow.md` § The archive convention
-   (repository-owned) says, in the shape it describes (`rg -n 'repository-owned' docs/_meta/docs-workflow.md`
-   finds it). The loop's own convention is one **topic folder** under `docs/archive/{topic}/` (use the
-   `## Archive` line; reuse the folder if it exists, create it if new; descriptive names, **no numeric
-   prefixes on working docs** — `Builds on` is the ordering); a pipeline whose umbrella carries an
-   `Archive:` line files there:
+   (repository-owned) says, in the shape it gives for this kind of effort (a small effort, a spec pipeline,
+   a follow-on round). That section holds the destination, the shape and the links a move repairs; this
+   step holds the procedure, which is the same everywhere. A pipeline whose umbrella carries an `Archive:`
+   line files there.
 
    **FIRST, RECONCILE THE DESTINATIONS — `rg -A1 '^## Archive' <every working doc in the effort>`, plus
    the umbrella's `Archive:` line when there is a pipeline.**
-   This step says *"one topic folder"* and *"use the `## Archive` line"* — a singular read over a PLURAL
+   This step says *"one archive home"* and *"use the `## Archive` line"* — a singular read over a PLURAL
    source, so the set is checked before any move. **If the docs disagree, STOP and ask.** Do not pick the
    majority, do not pick the first, and do not pick the one you happen to be reading. The failure is not
-   recoverable by you: one working doc naming a different, populated effort's folder is enough to sweep
-   this effort's docs into a neighbour's archive, and `archive/` is frozen history. No seat can see it
+   recoverable by you: one working doc naming a different, populated effort's home is enough to sweep
+   this effort's docs into a neighbour's, and a filed effort is frozen history. No seat can see it
    alone — each wrote one working doc and each line is individually plausible; the divergence exists only
    in the SET, which is why the check belongs here and not upstream.
-   - Move **every working doc** in the effort from `docs/working/` into the topic folder.
-   - Move the **`Source:`** research/spec docs from `docs/research/` into the **same** topic folder — the
-     idea and the work that delivered it are filed together. Do NOT delete and do NOT leave in `research/`
-     (that's what kept shipped ideas cluttering the running tab).
-   - **Pick the folder shape** (see "Two topic-folder shapes" in `docs-workflow.md`; the section is
-     repository-owned, and a shape it describes for this repository wins over the loop's own below):
-     - **Flat** (no spec pipeline — the default for small/single-session efforts): working doc(s) + any
-       research doc at the topic-folder root.
-     - **Split** (the effort used `spec-pipeline`, so a numbered spec set exists): `git mv` the numbered
-       specs + umbrella into **`specs/`**, the working docs into **`implementation/`**, and leave
-       **`project-status.md` at the topic-folder root** as the index, plus any `live-checks.md`; a
-       `sessions/` folder (**two files per session — the filed `plan.md` + `tldr.md`**; older archives may
-       also hold `questions.md` / `status-after-*.md`, which is historical record, not the convention)
-       moves wholesale alongside them. `git mv` STAGES immediately — in a shared working tree, another
-       session's commit can silently sweep your staged renames. Commit promptly after the moves, or
-       announce the staged state before yielding the tree.
-     - **Package** (the effort used `spec-pipeline` and the archive convention says pipelines file as one
-       package): `git mv` the whole `research/{topic}/` folder to the home it names as one
-       unit — no re-sorting, every file keeps its name and its place, `sessions/` rides along untouched —
-       then move the working docs in under `implementation/`. The tracker stays the "read me first" at
-       the package root. The same staging caution applies.
-     - **Follow-on round** (the effort continues an already-archived family — e.g. a round-2 pipeline for
-       a shipped feature): its own **sibling** topic folder with the full split shape, named
-       `{family-prefix}-{subtopic}` — **never file into the frozen prior-round folder**. The family
-       index is the living feature doc's `## Lineage` (append this round's Idea/Spec/Built rows beside
-       the prior round's); the new round's back-links to the old archive stay as-is (historical
-       cross-effort links). See the section named `Follow-on pipelines` in `docs-workflow.md`.
-   - **Repair the intra-effort links the move breaks** (relative depths change). On a package, only the
-     working docs' `Source:` links and the live feature doc's `## Lineage` rows change — the specs kept
-     their places. On a split, fix: each
-     working doc's `Source:` becomes `../specs/NN-*.md`; the spec / `project-status` links; and the **live feature
-     doc's `## Lineage`** rows (`Spec` to `…/specs/…`, `Built` to `…/implementation/…`). On a flat archive, a
-     working doc's `Source: ../research/{topic}/x.md` becomes the now-sibling `x.md`. **Leave pre-existing
-     cross-effort links** (to *other* topic folders / research folders) as historical record. Verify with a
-     link-resolution pass before finishing.
+   - Move **every working doc** in the effort from `docs/working/` into that home, in the section's shape.
+   - Move the **`Source:`** research/spec docs from `docs/research/` into the **same** home — the idea and
+     the work that delivered it are filed together. Do NOT delete and do NOT leave in `research/` (that's
+     what kept shipped ideas cluttering the running tab).
+   - **`git mv` STAGES immediately** — in a shared working tree, another session's commit can silently sweep
+     your staged renames. Commit promptly after the moves, or announce the staged state before yielding
+     the tree.
+   - **A `sessions/` folder moves wholesale and byte-untouched** — it is testimony, and no link repair
+     reaches into it.
+   - **Never file into a frozen effort.** An effort that continues one already filed (a follow-on round)
+     goes where the section puts a follow-on — never inside the earlier round's home.
+   - **Repair the links the move breaks** — the ones the section names (relative depths change), inside the
+     effort and in the live feature doc that points at it. **Leave pre-existing cross-effort links** as
+     historical record. Verify with a link-resolution pass before finishing.
    This clears both the `working/` queue and the research idea. After this the docs are frozen history.
 
 6. **Summary** — list which living docs were updated, what changed in each, which source files you read
@@ -157,6 +138,6 @@ branch, which is the truth for that PR, and you say so at close.
 
 ## Notes
 - Skip doc updates for pure bug fixes that restored behavior the doc already described correctly.
-- `docs-write` leaves the doc in `working/`; **this skill is what archives it** (step 5) — only after the
+- `docs-write` leaves the doc in `working/`; **this skill is what files it** (step 5) — only after the
   living docs are current. That keeps `working/` an honest queue of unprocessed sessions.
 - No releases/changelog step — git history covers that.

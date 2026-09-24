@@ -12,6 +12,8 @@ run **before the coordinator's retro and before the PR exists.**
 each; the coordinator judged them all and formed beliefs doing it. You arrive with none of that, which is
 why you can see the seams between sessions that no session's own verification structurally covers.
 
+**Find the format first.** This repository writes its formats (the doc header and status words, where an effort is filed, its rails) in the sections `rg -n '^#+ .*\(repository-owned\)' docs/_meta/` lists; read the one a step names before that step writes. This skill names the section, never the format.
+
 Two documents come out of a pipeline's close and they are deliberately different: **the retro looks
 inward, and you look in from outside.** They are independent grades, and reconciling them is somebody
 else's job.
@@ -33,7 +35,9 @@ else's job.
 Your seed carries **no beliefs about the pipeline, and that is deliberate** — but it should carry an
 **inventory**, because you cannot review what you cannot find:
 
-- the **topic**, the **branch**, and the **diff range** (`main...<branch>`);
+- the **topic**, the **branch**, and the **diff range** (`{base}...<branch>` — `{base}` is the base branch
+  `docs/_meta/engineering-loop.md` § This repository's rails (repository-owned) names, or the remote's
+  default when it names none);
 - **every numbered spec path** — you read them as claims, not facts;
 - the **`sessions/`** folder, holding each build seat's `plan.md` + `tldr.md`;
 - the **working docs for this effort, named explicitly** — `docs/working/` is a shared queue and you must
@@ -54,7 +58,7 @@ That is testimony; record it and treat it as a claim.
 3. **The working docs** in `docs/working/` — the narrative: what was tried, what failed, what changed.
 4. **The tracker** — `project-status.md`, the coordinator's journal: rulings and their reasoning, recon
    corrections, incidents.
-5. **THEN the diff** — `git diff main...<pipeline-branch>`, plus `git log --oneline main..<pipeline-branch>`.
+5. **THEN the diff** — `git diff {base}...<pipeline-branch>`, plus `git log --oneline {base}..<pipeline-branch>`.
 
 **Read the artifacts before the code, and the code before you conclude.** Reading the diff first makes
 you review a patch; reading the claims first makes you review whether the pipeline did what it said.
@@ -144,7 +148,7 @@ finding seen twice.
 - **A receipt is false** — a TLDR, spec, or doc asserts something proven that the code does not do. This
   matters as much as a bug, because the next pipeline builds on it.
 
-**(b) Leaving it costs more than a session costs** — it reaches main, propagates to the next pipeline, or a
+**(b) Leaving it costs more than a session costs** — it reaches the base branch, propagates to the next pipeline, or a
 human discovers it live.
 
 Everything else is a finding with a home, and you name the home:
@@ -197,8 +201,8 @@ not a chat transcript, and it archives with the effort.
 # Code + session review — {topic}, pipeline {id}
 
 > The outside look, written before the retro and before the PR. Two independent passes, consolidated.
-> Reviewed `main..{sha}` across N sessions. **This seat did not read the coordinator's retrospective.**
-{the machine header docs/_meta/docs-workflow.md § Doc metadata (repository-owned) prescribes, at its final status}
+> Reviewed `{base}..{sha}` across N sessions. **This seat did not read the coordinator's retrospective.**
+{the machine header docs/_meta/docs-workflow.md § Doc metadata (repository-owned) prescribes, at the word for `shipped`}
 
 ## The verdict, first
 {The one thing a reader must not miss. If the pipeline ships something untrue, say it here in bold.}
@@ -238,7 +242,7 @@ that does not exist yet (an unauthored row, an unwritten charter) is NOT homed: 
 ## What I could not verify
 {Stated, not omitted.}
 
-## Lineage
+## Lineage   _(where § Doc metadata (repository-owned) keeps the footer)_
 - **Pipeline** — the tracker · the umbrella · sessions 02..NN
 - **Counterpart** — `parent-retrospective.md` (the inside look; written after this)
 ```

@@ -10,6 +10,8 @@ docs, or a whole folder — in `docs/features/`, `docs/infrastructure/`, or `doc
 the one audit skill for "does this doc still match the code"; it produces both the **audit report**
 and the **corrected living doc**.
 
+**Find the format first.** This repository writes its formats (the doc header and status words, where an effort is filed, its rails) in the sections `rg -n '^#+ .*\(repository-owned\)' docs/_meta/` lists; read the one a step names before that step writes. This skill names the section, never the format.
+
 > **The system:** `docs/_meta/doc-index.md` (the menu of living docs) + `docs/_meta/docs-workflow.md`
 > (the loop, folders, templates) explain how the docs are organized. Skim them if you need to place a
 > doc or find its siblings.
@@ -30,29 +32,29 @@ writes across docs. End with a one-line-per-doc summary (stale-count / added-cou
 1. **Read the living doc** (`docs/features/{x}.md`, `docs/infrastructure/{x}.md`, or
    `docs/patterns/{x}.md`).
 
-2. **Read the corresponding code** — the backend `Features/{Feature}/` slice and matching frontend
-   feature folder for feature docs; the relevant subsystem for infrastructure/pattern docs. Confirm
-   entities, endpoints, stores, routes, services, config, key files.
+2. **Read the corresponding code** — the feature's code on each side, wherever
+   `docs/patterns/code-organization.md` says a feature lives, for feature docs; the relevant subsystem for
+   infrastructure/pattern docs. Confirm entities, endpoints, stores, routes, services, config, key files.
 
 3. **Check against conventions** — cross-check the doc's claims against `docs/patterns/` (and
    `docs/infrastructure/` where relevant) so the doc matches how things are actually built.
 
-4. **Report findings** — write a short audit report to `docs/archive/audit/{group}/{doc-name}-audit.md`,
-   where `{group}` mirrors the living doc's folder (`guides/`, `patterns/`, `infrastructure/`, or
-   `features/`; create the subfolder if absent). Date in header: what was accurate, what was stale,
+4. **Report findings** — write a short audit report where `docs/_meta/docs-workflow.md` § The archive
+   convention (repository-owned) files audit reports, named for the doc it audits and grouped the way that
+   section groups them (create the folder if absent). Date in header: what was accurate, what was stale,
    what's undocumented, and any **code risks / bugs / tech-debt** you noticed against the source.
-   (The master `health-report-*.md` from `docs-audit-full` stays at the `audit/` root — it's cross-cutting.)
+   (The master health report from `docs-audit-full` sits where that section puts it — it's cross-cutting.)
 
-5. **Update the living doc** with the corrections and bump its "Last verified" date — **and refresh the
-   machine header in lockstep** (the one `docs/_meta/docs-workflow.md` § Doc metadata (repository-owned)
-   prescribes: its verified date = today, its status, `lineage=N` recomputed). This is
-   allowed here only because you just did the full doc-vs-code pass; the meta `verified` obeys the same
-   anti-fabrication rule as the blockquote date (the two always move together). **Verify the `## Lineage`
-   footer** — check every link resolves; flag any dead breadcrumb into `## Open Issues` (or the audit report)
-   and recompute `lineage=N` to match. **Soft-check `Spec` / `Built` symmetry** — for a spec-driven feature, a
+5. **Update the living doc** with the corrections and set its verified date to today — **every place
+   `docs/_meta/docs-workflow.md` § Doc metadata (repository-owned) keeps that date moves in lockstep**, along
+   with its status and any field the header derives. This is allowed here only because you just did the full
+   doc-vs-code pass; the verified date obeys the anti-fabrication rule below. **Verify the `## Lineage`
+   footer** (where that section keeps it) — check every link resolves; flag any dead breadcrumb into
+   `## Open Issues` (or the audit report) and recompute any field the header derives from it. **Soft-check
+   `Spec` / `Built` symmetry** — for a spec-driven feature, a
 `Built` session whose per-slice spec is absent from `Spec` (or vice-versa) is usually an under-scoped row;
 note it and complete it *unless* the doc is deliberately scoped tighter than the effort (judgment, not a hard
-fail — see the Lineage rules in `docs-workflow.md`). **Reconcile its `## Open Issues` section** — add any real, code-verified
+fail — the `## Lineage` rules § Doc metadata (repository-owned) gives). **Reconcile its `## Open Issues` section** — add any real, code-verified
    risk/bug/tech-debt you found (dated, with `file:line`), and remove any listed issue the code now resolves.
    (The archived report is the history; `## Open Issues` is the live signal `docs-status` reads.)
 
@@ -66,8 +68,8 @@ is missed:
 - **Both exist**: run the per-doc audit above.
 
 For `docs/features/`, the folder (one doc per feature) IS the inventory — there is no separate
-catalog. Build the real list from `Features/` + the frontend feature folders/routes via actual
-`ls`/`find` output in this run, then diff.
+catalog. Build the real list from where `docs/patterns/code-organization.md` says features live — each
+side, routes included — via actual `ls`/`find` output in this run, then diff.
 
 ## Anti-fabrication rule
 
@@ -77,11 +79,11 @@ catalog. Build the real list from `Features/` + the frontend feature folders/rou
 - **Every claim traces to a file you opened in this run** — entity names, endpoints, routes, key
   files, line references. No identifiers or dates from memory. When listing a folder, build the
   feature/doc lists from real `ls`/`find` output, not memory.
-- Only stamp **"Last verified: <today>"** on a doc you actually checked against code in this run.
+- Only stamp **the verified date** (today) on a doc you actually checked against code in this run.
   Stamping a date you didn't verify is the exact failure this rule exists to prevent.
-- The header's verified date (whatever `docs-workflow.md` § Doc metadata (repository-owned) calls it) is
-  bound by the **same** rule and always equals the blockquote's `Last verified` — refresh it, the status
-  and `lineage=N` only after the full doc-vs-code pass this run.
+- Every place § Doc metadata (repository-owned) keeps that date, whatever it calls it, is bound by the
+  **same** rule and moves together — refresh it, the status and any derived field only after the full
+  doc-vs-code pass this run.
 
 ## Notes
 - **Descriptive docs (`infrastructure/`, `features/`):** code is truth — where doc and code disagree,

@@ -9,6 +9,8 @@ Turn this session into the **coordinator** for a `docs/research/{topic}/` spec p
 phase 3 of the backlog model (`docs-backlog`, `spec-pipeline`, **`spec-parent`**, seats build,
 `docs-process`).
 
+**Find the format first.** This repository writes its formats (the doc header and status words, where an effort is filed, its rails) in the sections `rg -n '^#+ .*\(repository-owned\)' docs/_meta/` lists; read the one a step names before that step writes. This skill names the section, never the format.
+
 **You are one of the three kinds that do NOT compose `spec-seat`** — that file is the contract for the
 seats you ARM, and it says so itself. This skill is your whole contract: you write rulings rather than
 receive them, you own the tracker, and you hold the close. The control plane's seed says so out loud
@@ -285,7 +287,7 @@ read the board and answer on first receipt rather than spending a round-trip.
       `.md` files (`live-checks.md`, the numbered specs, the umbrella) are inside your scoped write path —
       same gate, same receipt as your ledger. **This also means a line you have PROVEN false in a spec or
       a live-check row is yours to strike at the source.** Research stage only — after docs-process
-      archives the folder, only the ledger remains writable.
+      files the folder, only the ledger remains writable.
       Every session's TLDR section (e) row belongs there, plus any status only you observed. Unaggregated
       rows are the most common thing to fall through, and the human's sitting is what they are for.
    3. **Run `spec-retro`.** It is written FROM the tracker, which is why step 1 comes first — a retro
@@ -294,8 +296,10 @@ read the board and answer on first receipt rather than spending a round-trip.
       grades stay independent.** Do not reconcile them or soften yours to match; two accounts of one run
       are the point, and whoever reads them both does the reconciling.
    4. **Commit the retro** by explicit path and **write `BUILD COMPLETE`** into `project-status.md`.
-   5. **Push the effort's branch. Create the PR if none is open** (`gh pr create`); if one is already open
-      the push is enough. These are your own git — gated and receipted like any other publish. **The
+   5. **Push the effort's branch. Create the PR if none is open** — where and how
+      `docs/_meta/engineering-loop.md` § This repository's rails (repository-owned) says (when it names no
+      route, ask the human once and suggest recording the answer there); if one is already open the push is
+      enough. These are your own git — gated and receipted like any other publish. **The
       push command must be the ENTIRE command** (a leading `cd` disqualifies it), and keep git-verb words
       out of any echo label around it — the deny layer matches TEXT, not parsed verbs, and a decorative
       `=== remote tip ===` header over a read-only block will park.
@@ -307,8 +311,8 @@ read the board and answer on first receipt rather than spending a round-trip.
 
       **P MOVES THE EFFORT HOME OUT OF YOUR REACH — the tracker pass in step 1 is your LAST chance at
       the specs and live-checks.** P `git mv`s `docs/research/{topic}/` to the archive home
-      `docs/_meta/docs-workflow.md` § The archive convention (repository-owned) names — `docs/archive/{topic}/`
-      in the loop's own, or the umbrella's `Archive:` line when it carries one. The ledger survives the
+      `docs/_meta/docs-workflow.md` § The archive convention (repository-owned) names, or to the umbrella's
+      `Archive:` line when it carries one. The ledger survives the
       rename (its write predicate admits `docs/{research|archive}/*/project-status.md`; a home elsewhere
       is outside it, so there P's write to the tracker is the last one), but the effort-home lane
       (`live-checks.md`, the specs) is research only — the archive is frozen
@@ -367,6 +371,9 @@ so read them as run-time obligations, not close-out ones:
 - Plan TLDR as **plain text BEFORE any plan-approval mode**; questions as **plain numbered text, then
   STOP** — never an interactive question tool (the human can't copy from it).
 - **No commit/push without your relayed call.** Explicit staging only — never `git add -A`.
+- **This repository's rails add to these rules.** `docs/_meta/engineering-loop.md` § This repository's rails
+  (repository-owned) names the policy, the gates a commit passes, the suite before a PR, the PR route and
+  any stricter staging — bake every rail in beside these, and never let one subtract from them.
 - **The unattended git form, and it binds YOU as much as the seats: one git command per call, no shell
   metacharacters.** The FORM check reads the whole command string, so chaining, redirects or substitution
   disqualify it — `git add … && git commit … && git push …` parks, while the same three sent separately
@@ -567,8 +574,8 @@ PARENT RESPONSE — FINAL TLDR ACCEPTED {(+ what I verified myself)}.
    VERIFY before committing: verify-staged {same list} — commit only on exit 0. Non-zero means
    git add silently dropped files (usually a .gitignore rule); STOP, report the output verbatim,
    and wait — do not force-add, do not widen .gitignore.
-   Message: {conventional message naming the spec}
-   Trailer: {the trailer this repo's commit convention requires, if any — name YOUR model}
+   Message: {a message the rails' commit gates accept, naming the spec}
+   Trailer: {the trailer the rails' commit convention requires, if any — name YOUR model}
    Then push. Post-commit status must show only the known coordinator-owned/unrelated files, and
    the close-out report carries the one-line STAGING VERIFIED receipt — a commit report
    without it is incomplete (the whole defect class is silence; an unrequired receipt is

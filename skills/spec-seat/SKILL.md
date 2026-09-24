@@ -33,6 +33,8 @@ the review row into the umbrella its own charter excluded and offered the docs-p
 it must never run. One base class, three wrong instructions. The contract and the job are therefore two
 files.
 
+**Find the format first.** This repository writes its formats (the doc header and status words, where an effort is filed, its rails) in the sections `rg -n '^#+ .*\(repository-owned\)' docs/_meta/` lists; read the one a step names before that step writes. This skill names the section, never the format.
+
 ## What you hold (and what you never touch)
 
 - **Yours:** your one assignment; the recon; the plan; the work; your artifacts; your own explicit-path
@@ -79,9 +81,9 @@ prompt's `EXTRA DOCS` line names this repository's own.** Read every one that ex
 is absent was not detected by `init` — `docs/_meta/doc-index.md` § Role reading lists carries a row
 saying so — and is not a missing-file finding.
 
-A doc marked `status=draft` in its meta line was scanned by `init`, not decided by the repo's owners —
-read it as the starting point it is, and treat a rule it states without a cited source as a question for
-your PLAN TLDR, not a law.
+A doc whose header carries the word for `draft` (§ Doc metadata (repository-owned)) was scanned by `init`,
+not decided by the repo's owners — read it as the starting point it is, and treat a rule it states without
+a cited source as a question for your PLAN TLDR, not a law.
 
 Then report your orientation and beliefs, and ask ONE question: **your assignment.** Stop.
 
@@ -347,6 +349,9 @@ doorbell with no follow-through**; if you receive one bare, retry anyway and say
 
 ## Git shapes
 
+- **This repository's rails add to these shapes.** `docs/_meta/engineering-loop.md` § This repository's
+  rails (repository-owned) names the gates a commit passes, the suite before a PR, the PR route and any
+  stricter staging — follow them beside these, never instead of them.
 - **Explicit staging only, never `git add -A`.** Additive-only; never amend pushed commits.
 - **VERIFY EVERY STAGE BEFORE THE COMMIT — `git add` skips gitignored paths under a directory with
   exit 0 and NO output, and `git status` cannot show the loss** (an ignored file is neither staged nor

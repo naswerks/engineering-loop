@@ -5,6 +5,7 @@ import { existsSync, readFileSync, readdirSync, statSync } from 'node:fs';
 import { join, resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { execFileSync } from 'node:child_process';
+import { OWNED, compareVersions, linesOf, bare, h2Index, findSection, railsItems } from './owned.mjs';
 
 const repo = resolve(process.argv[2] || process.cwd());
 const packRoot = resolve(dirname(fileURLToPath(import.meta.url)), '..', '..', '..');
@@ -27,9 +28,10 @@ for (const f of FOLDERS) {
 }
 
 // ── 2. the two method docs and their stamp ──────────────────────────────────────────────────────
-// A repository rewrites the repository-owned sections of these two files to its own conventions, so the
-// doctor compares only the version stamp: line 1, or the first line after a leading frontmatter block when
-// the repository's own gate requires one on every file under docs/.
+// A repository rewrites the repository-owned sections of these two files to its own conventions, and the
+// loop text around them is its copy from whenever it was taken — the doctor grades neither. It reads the
+// version stamp (line 1, or the first line after a leading frontmatter block when the repository's own gate
+// requires one on every file under docs/) and whether each repository-owned heading is where a skill looks.
 const STAMP = /^<!-- naswerks-loop: version=([0-9]+\.[0-9]+\.[0-9]+[^ ]*) -->/m;
 for (const name of ['docs-workflow.md', 'engineering-loop.md']) {
   const p = join(repo, 'docs', '_meta', name);
@@ -39,8 +41,41 @@ for (const name of ['docs-workflow.md', 'engineering-loop.md']) {
   if (!m) { row('FAIL', `docs/_meta/${name}`, 'no naswerks-loop stamp on line 1 (or on the first line after a frontmatter block) — an unstamped copy cannot be told from a stale one'); continue; }
   if (!packVersion) { row('DEGRADE', `docs/_meta/${name}`, `stamped ${m[1]}; the pack's own version could not be read`); continue; }
   const cmp = compareVersions(m[1], packVersion);
-  if (cmp < 0) row('DEGRADE', `docs/_meta/${name}`, `stamp ${m[1]} is behind the pack ${packVersion} — diff the loop-owned sections against the pack's references/${name}`);
+  if (cmp < 0) row('DEGRADE', `docs/_meta/${name}`, `stamp ${m[1]} is behind the pack ${packVersion} — run init refresh: it adds this version's repository-owned sections and restamps, and never touches the loop text`);
   else row('ok', `docs/_meta/${name}`, `stamp ${m[1]}`);
+
+  // ── 2b. the repository-owned sections: present under the heading a skill looks them up by ─────────
+  const lines = linesOf(text);
+  const headings = h2Index(lines).map((h) => h.heading);
+  for (const space of OWNED.filter((o) => o.file === name)) {
+    if (headings.includes(space.heading)) row('ok', `docs/_meta/${name} ${space.heading}`, 'present');
+    else {
+      const was = space.earlier.find((h) => headings.includes(h));
+      row('DEGRADE', `docs/_meta/${name} ${space.heading}`, was
+        ? `unmarked (the copy says "${was}") — a skill finds this section by its heading; init refresh marks it`
+        : 'missing — a skill finds this section by its heading; init refresh adds it');
+    }
+  }
+
+  // ── 2c. the rails: every item the pack names is present, and none still carries its absent-line ───
+  const rails = OWNED.find((o) => o.file === name && o.heading.includes('rails'));
+  const sec = rails ? findSection(lines, rails.heading) : null;
+  if (sec) {
+    const section = lines.slice(sec.start, sec.end);
+    const items = railsItems(section);
+    const packItems = (() => {
+      const t = read(join(packRoot, 'references', name));
+      if (t === null) return [];
+      const pl = linesOf(t);
+      const ps = findSection(pl, rails.heading);
+      return ps ? railsItems(pl.slice(ps.start, ps.end)).map((it) => it.name) : [];
+    })();
+    for (const n of packItems.filter((n) => !items.some((it) => it.name.toLowerCase() === n.toLowerCase()))) {
+      row('DEGRADE', `rails: ${n}`, 'missing — init refresh adds it as its absent-line');
+    }
+    for (const it of items) row(/fill this in/i.test(it.text) ? 'DEGRADE' : 'ok', `rails: ${it.name}`, /fill this in/i.test(it.text) ? 'still the absent-line — fill it in (init drafts it from the scan)' : 'recorded');
+    if (!items.length && /fill this in/i.test(section.map(bare).join('\n'))) row('DEGRADE', 'rails', 'carries only the absent-line');
+  }
 }
 
 // ── 3. doc-index and its three repo slots ───────────────────────────────────────────────────────
@@ -192,11 +227,6 @@ function sectionOf(text, heading) {
   const body = [];
   for (let i = start + 1; i < lines.length; i++) { if (lines[i].startsWith('## ')) break; body.push(lines[i]); }
   return body.join('\n');
-}
-function compareVersions(a, b) {
-  const pa = a.split(/[.-]/).map((x) => parseInt(x, 10) || 0), pb = b.split(/[.-]/).map((x) => parseInt(x, 10) || 0);
-  for (let i = 0; i < 3; i++) { if ((pa[i] || 0) !== (pb[i] || 0)) return (pa[i] || 0) - (pb[i] || 0); }
-  return 0;
 }
 // A doc's status from whichever header it carries: the <!-- meta --> line first, then a frontmatter
 // `status:` key. Returns { value, layer } or null.

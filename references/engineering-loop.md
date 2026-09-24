@@ -1,4 +1,4 @@
-<!-- naswerks-loop: version=0.3.0 -->
+<!-- naswerks-loop: version=0.4.0 -->
 # The Engineering Loop — flow, seats, skills, and the ceremony
 
 > The quick intro to how work gets built with this loop: the two loops (`docs-*` knowledge, `spec-*`
@@ -82,12 +82,25 @@ how a doc's header is written, where a finished effort is filed, and which rails
 Every other section is the loop and reads the same in every repository. The coordinator and every seat
 read both documents at Step 0, so a repository's conventions reach them without a line in any prompt,
 and a skill that writes or files a doc takes those two facts from `docs-workflow.md`, never from its
-own text. `rg -n 'repository-owned' docs/_meta/` lists every such section.
+own text. One grep lists every such section — `rg -n '^#+ .*\(repository-owned\)' docs/_meta/` — and
+`docs-workflow.md` § The repository-owned sections lists what each answers and where it is echoed.
 
 ## This repository's rails (repository-owned)
 
-No repository rails recorded — fill this in: the policy document every seat is bound by, the gates a
-commit passes here, the suite that runs before a PR, the PR target and the branch names.
+What a commit and a PR pass here, beyond the loop. These add to the Hard rules below; they never subtract.
+
+- **Policy.** No policy document recorded — fill this in: the document every seat is bound by, and how a
+  seat reaches it.
+- **Gates a commit passes.** No commit gates recorded — fill this in: the hooks and checks a commit must
+  pass, and what each validates.
+- **Before a PR.** No pre-PR suite recorded — fill this in: the suite that runs before a PR, and where its
+  commands live.
+- **Where a PR goes.** No PR route recorded — fill this in: the base branch, the host, the branch names,
+  and how a PR is opened.
+- **Staging.** No staging rule recorded — fill this in: anything stricter than the Hard rules' explicit
+  paths and `verify-staged`.
+- **Skills a seat meets here.** No repository skills recorded — fill this in: the repository's own skills
+  a seat invokes by name, and when.
 
 ## Two loops — both hand-crankable
 
@@ -134,13 +147,13 @@ fresh session can resume as coordinator losslessly (`spec-parent {topic}`).
 | `spec-witness` | spec | a pipeline looks wedged, or actors' claims conflict | the read-only fourth seat: substrate access, zero writes, zero rulings |
 | `init` | — | a repository that has none of this yet | create the `docs/` shape, the method docs, first drafts of every doc the skills read; `init doctor` says what is missing |
 
-### Where a rule lives — policy, procedure, task (repository-owned: the POLICY row)
+### Where a rule lives — policy, procedure, task
 
 The thing that keeps prompts and skills from drifting apart:
 
 | Kind | Home | Why there |
 |---|---|---|
-| **POLICY** | the un-skippable system-prompt suffix the control plane supplies at open | cannot be skipped, present on every turn |
+| **POLICY** | the policy document § This repository's rails names — and, hosted, the un-skippable system-prompt suffix the control plane supplies at open | cannot be skipped, present on every turn |
 | **PROCEDURE — shared** | `spec-seat` | the contract for ANY seat the coordinator arms: blackboard, question lane, parked-call discriminator, verdicts, BELIEFS sha, git shapes, six-section FINAL TLDR, close-out order |
 | **PROCEDURE — per job** | `spec-child` · `spec-review` · `docs-process` | what THIS seat does. The job skill **refines** the seat contract and never contradicts it; a genuine conflict is a finding, not a fork |
 | **TASK** | the seed prompt + the pipeline's `00-ignition-brief.md` | per-run; dies with the run |

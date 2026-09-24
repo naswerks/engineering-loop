@@ -8,12 +8,14 @@ description: Master health check across all docs — staleness/age scan, convent
 A deep-clean sweep. Does NOT re-audit every feature in depth — it produces the prioritized plan of
 what to audit next.
 
+**Find the format first.** This repository writes its formats (the doc header and status words, where an effort is filed, its rails) in the sections `rg -n '^#+ .*\(repository-owned\)' docs/_meta/` lists; read the one a step names before that step writes. This skill names the section, never the format.
+
 ## Steps
 
-1. **Freshness scan** — read "Last verified" dates across all living docs (`guides/ patterns/
-   infrastructure/ features/`), from the blockquote or from the header's verified field as
-   `docs/_meta/docs-workflow.md` § Doc metadata (repository-owned) names it. Flag anything older than
-   ~14 days; sort oldest-first.
+1. **Freshness scan** — read the verified dates across all living docs (`guides/ patterns/
+   infrastructure/ features/`), wherever `docs/_meta/docs-workflow.md` § Doc metadata (repository-owned)
+   says that date lives (its sweep command reads them all at once). Flag anything older than ~14 days; sort
+   oldest-first.
 
 2. **Feature completeness** — quick `docs/features/` folder pass (per `docs-audit-feature`'s
    folder mode): any features in code with no doc, or docs whose feature is gone.
@@ -25,14 +27,15 @@ what to audit next.
    graduated/removed) and ideas worth surfacing.
 
 5. **Working/archive sanity** — note any docs lingering in `docs/working/` that look done (should be
-   filed via `docs-write`), and confirm `archive/` topic folders are intact.
+   filed via `docs-process`), and confirm the filed efforts are intact where § The archive convention
+   (repository-owned) puts them.
 
-6. **Read the previous report first.** Before writing anything, find the most recent
-   `docs/archive/audit/health-report-*.md` and read it in full. The new report continues from it:
-   note what was flagged last time and is now fixed, what's still outstanding, and anything that
-   regressed. If there is **no** prior report, say so — this run is the baseline.
+6. **Read the previous report first.** Before writing anything, find the most recent health report —
+   where § The archive convention (repository-owned) files audit reports — and read it in full. The new
+   report continues from it: note what was flagged last time and is now fixed, what's still outstanding,
+   and anything that regressed. If there is **no** prior report, say so — this run is the baseline.
 
-7. **Produce a health report** at `docs/archive/audit/health-report-{date}.md` with a prioritized,
+7. **Produce a health report** — `health-report-{date}.md`, beside the previous one — with a prioritized,
    actionable list (which `docs-audit-feature` runs, which docs to re-verify, which research to clear).
    Open with a **"Since last report"** section that diffs against the report from step 6 (or marks this
    as the baseline if none existed).

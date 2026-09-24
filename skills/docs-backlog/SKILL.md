@@ -7,6 +7,8 @@ description: Capture an idea, improvement, or future-state design as a research 
 
 Capture ideas as research docs. `docs/research/` is the idea inbox — the folder itself is the queue.
 
+**Find the format first.** This repository writes its formats (the doc header and status words, where an effort is filed, its rails) in the sections `rg -n '^#+ .*\(repository-owned\)' docs/_meta/` lists; read the one a step names before that step writes. This skill names the section, never the format.
+
 ## Steps
 
 1. **Scan existing research titles** in `docs/research/` — quick check for an obvious duplicate or a
@@ -15,7 +17,7 @@ Capture ideas as research docs. `docs/research/` is the idea inbox — the folde
 2. **For each idea, create a research doc** at `docs/research/{topic}.md` using the research-doc
    template in `docs/_meta/docs-workflow.md`: Current State, Desired End State, Design Options /
    Recommendation, Open Questions. Its header is the one that file's § Doc metadata (repository-owned)
-   prescribes. Capture the idea while it's fresh — verify "Current State" against
+   prescribes, at the word for `draft`. Capture the idea while it's fresh — verify "Current State" against
    code if quick, otherwise note it's unverified.
 
    **The research doc must be self-contained.** It's the durable jump-off point; assume everything else
@@ -38,5 +40,5 @@ Capture ideas as research docs. `docs/research/` is the idea inbox — the folde
 - When an idea is later picked up and built, link it via the session doc's **Source** field. The
   research doc **stays in `research/` through the build** (it's the running tab, and a build may span
   several sessions / working docs). When the effort finishes, `docs-process` archives the research doc
-  **alongside its working doc(s)** in the same archive home (`docs-workflow.md` § The archive convention) — research and the work that
-  delivered it are filed together, not deleted.
+  **alongside its working doc(s)** in the same archive home (`docs-workflow.md` § The archive convention
+  (repository-owned)) — research and the work that delivered it are filed together, not deleted.

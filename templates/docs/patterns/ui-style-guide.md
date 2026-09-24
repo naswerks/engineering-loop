@@ -2,7 +2,7 @@
 
 > Which class or component to reach for, for which job, and the composition rules that keep screens
 > consistent. The tokens themselves are the authority of [design-tokens](design-tokens.md). Last verified {today}.
-<!-- init: write here the machine header docs/_meta/docs-workflow.md § Doc metadata (repository-owned) prescribes, at its draft status. The loop's own header is the one-line meta comment: type=pattern; status=draft; verified={today}; lineage=0 -->
+<!-- init: write here the machine header docs/_meta/docs-workflow.md § Doc metadata (repository-owned) prescribes, at the word for draft; where that section keeps no date in the blockquote, drop the `Last verified {today}.` above. The loop's own header is the one-line meta comment: type=pattern; status=draft; verified={today}; lineage=0 -->
 <!-- naswerks-loop: draft; scanned={files} -->
 
 ---

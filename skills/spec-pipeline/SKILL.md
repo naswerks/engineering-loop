@@ -10,6 +10,8 @@ the two-phase backlog model: `docs-backlog` parks an idea; `spec-pipeline` gradu
 into specs. **The plan is throwaway — the specs carry every crumb.** A future session reads ONE spec + the
 umbrella and can build without the plan or the original conversation.
 
+**Find the format first.** This repository writes its formats (the doc header and status words, where an effort is filed, its rails) in the sections `rg -n '^#+ .*\(repository-owned\)' docs/_meta/` lists; read the one a step names before that step writes. This skill names the section, never the format.
+
 ## The two-phase model
 
 | Phase | When | Skill | Output |
@@ -111,8 +113,8 @@ sessions/                        WHO PUTS IT THERE
    **"Do you want DOCS-PROCESS as a row?"** In-pipeline gives you a zero-touch close: living docs patched
    and the effort archived without a second sitting. **State the trade honestly:** `docs-process` is
    designed as a fresh session over *merged* code, so in-pipeline it patches living docs against code that
-   is only **about to be** merged, and the `research/{topic}` to `archive/{topic}` rename rides the same
-   PR. If the PR is not merged, or is partly reverted, those docs describe something absent. **Say in the
+   is only **about to be** merged, and the move from `research/{topic}` into the archive home rides the
+   same PR. If the PR is not merged, or is partly reverted, those docs describe something absent. **Say in the
    brief that the living-doc patches are contingent on the merge.** Out-of-pipeline is equally valid and
    cheap — every artifact is durable, so it runs cold, later, over several efforts at once.
 
@@ -125,7 +127,7 @@ sessions/                        WHO PUTS IT THERE
 
    ```
    02..NN   the build seats
-   {R}      REVIEW      — spec-review, if chosen. Runs on `git diff main...<branch>`; no PR yet
+   {R}      REVIEW      — spec-review, if chosen. Runs on `git diff {base}...<branch>` (the rails' base branch); no PR yet
    {F}      FIXIT       — MAY materialise, one maximum, only if the review classifies an (a)+(b)
                           finding AND the coordinator rules it in. Not authored up front; the
                           coordinator charters it from the review's named list
@@ -146,8 +148,8 @@ sessions/                        WHO PUTS IT THERE
 
 3. **Write the specs**, using the spec-doc template in `docs/_meta/docs-workflow.md`. Each per-seat
    spec opens with the spec-doc blockquote (`Builds on [prior]` + `Source: [umbrella / research]`) and the
-   machine header `docs/_meta/docs-workflow.md` § Doc metadata (repository-owned) prescribes, at its draft
-   status, so the set stays navigable.
+   machine header `docs/_meta/docs-workflow.md` § Doc metadata (repository-owned) prescribes, at the word for
+   `draft`, so the set stays navigable.
 
    **Six things every slice carries**, each earned by a session that did not have it:
 
@@ -179,7 +181,7 @@ sessions/                        WHO PUTS IT THERE
      bans, and the builder is then forced to choose between the letter and the point. State the property
      and the letter can never contradict it.
    - **A `last verified against` line — the date AND the sha the spec was checked against.** The
-     `meta: verified` stamp records authoring; this tells the BUILDER what the spec's facts are relative
+     header's verified date records authoring; this tells the BUILDER what the spec's facts are relative
      to. **Recon's first act is to test whether the slice is already satisfied** — specs do get overtaken
      between authoring and build, and a session that discovers this at recon closes in minutes while one
      that assumes the work is pending rebuilds what already exists.
@@ -200,7 +202,7 @@ sessions/                        WHO PUTS IT THERE
    which spec moves it, and have the others leave it alone.
 
 4. **Name the RESEARCH the effort came from, in the umbrella, by path.** The idea that fed this work
-   archives *with* it — that is how a topic folder ends up holding the whole arc from "thing we'd like to
+   archives *with* it — that is how its archive home ends up holding the whole arc from "thing we'd like to
    do" to "done." When the research doc already lives at `research/{topic}/`, it travels for free. **When
    it does not** — a standalone `research/{something}.md`, or several — the umbrella's `Source:` / Lineage
    is the only record that it belongs to this effort.
@@ -238,7 +240,7 @@ requires no authoring at all.
 
 > You are the COORDINATOR of the {topic} pipeline. Read this, then the umbrella (01-*.md), then the
 > tracker (project-status.md — yours), then EVERY numbered spec before arming the first seat.
-{the machine header docs/_meta/docs-workflow.md § Doc metadata (repository-owned) prescribes, at its draft status}
+{the machine header docs/_meta/docs-workflow.md § Doc metadata (repository-owned) prescribes, at the word for `draft`}
 
 **Last verified against:** {date}, `{sha}`. Ignition re-verifies this brief against live HEAD and
 corrects drift; it does not re-author it.
@@ -327,7 +329,8 @@ stays short because a task buried in a run row cannot be diffed or reviewed the 
 ```
 
 **Do not restate the ceremony here.** The coordinator's procedure lives in `spec-parent` and its policy
-rides the un-skippable policy suffix the control plane supplies; a brief that re-teaches them accretes
+is the one § This repository's rails (repository-owned) names, which a hosted run also carries in the
+un-skippable policy suffix the control plane supplies; a brief that re-teaches them accretes
 into prompt-law that breaks the coordinator it was meant to steer. The brief carries THIS RUN's
 choreography and nothing else.
 
@@ -345,7 +348,7 @@ viewer because they are instructions to the coordinator, not content for the hum
 # {Topic} — Project Status
 
 > The coordinator's ledger. Advanced at every session boundary, never reconstructed at close.
-{the machine header docs/_meta/docs-workflow.md § Doc metadata (repository-owned) prescribes, at its in-progress status}
+{the machine header docs/_meta/docs-workflow.md § Doc metadata (repository-owned) prescribes, at the word for `wip`}
 
 ## What this is
 {one paragraph}

@@ -38,11 +38,20 @@ structure the skills read, the two method documents, a `CLAUDE.md` pointer and t
 `.claude/settings.json`. A team member still installs the plugin once per machine; the pin enables it.
 
 **In a repository that already has a docs convention** (frontmatter on every file, a pre-commit
-validator, an indexer): rewrite the sections marked **(repository-owned)** in your `docs/_meta/` copies
-of `docs-workflow.md` and `engineering-loop.md`, in your own words: the header every doc carries, where a
-finished effort is filed, the rails a commit passes. Every skill that writes or files a doc reads those
-copies for exactly those facts and never states them itself, so the pack stays generic and your
-conventions live in your repository. `rg -n 'repository-owned' docs/_meta/` lists the sections.
+validator, an indexer): the two method documents state one way of running the loop, opinionated on
+purpose, and mark the four sections that are yours to replace — the header every doc carries, where a
+finished effort is filed, the templates' header lines, the rails a commit passes. Keep each heading and
+rewrite its body in your `docs/_meta/` copies, in your own words; `docs-workflow.md` § The repository-owned
+sections lists what each must answer. One grep lists the four:
+
+```
+rg -n '^#+ .*\(repository-owned\)' docs/_meta/
+```
+
+Every skill names the section it needs and never states the format itself, so the pack stays generic and
+your conventions live in your repository. **Taking a newer pack:** `/naswerks:init refresh` writes only
+those four sections and the version stamp into your copies — a dry run first, then `--write` on your word —
+and never touches the rest of the text.
 
 ## What is in the box
 
