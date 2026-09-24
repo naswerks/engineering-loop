@@ -20,7 +20,8 @@ claude plugin install naswerks@engineering-loop
 
 The marketplace is this repository, and the plugin is sourced from it: no registry sits between you and a
 release. Plugins load at session start, so start a new session (or run `/reload-plugins`) after installing.
-To pick up a new release later: `claude plugin marketplace update engineering-loop`, then the install line again.
+To pick up a new release later: `claude plugin marketplace update engineering-loop`, then
+`claude plugin update naswerks@engineering-loop` (an install over an existing install does nothing).
 
 Skills are namespaced by the plugin: `/naswerks:docs-write`, `/naswerks:spec-pipeline`, `/naswerks:init`.
 
@@ -70,7 +71,7 @@ and never touches the rest of the text.
 | `spec-retro` | spec | the coordinator's close-out audit |
 | `spec-witness` | spec | a read-only verifier |
 | `spec-ignite` | spec | the ignition copilot for a hosted run |
-| `init` | — | make a repository ready for both loops |
+| `init` | — | make a repository ready for both loops; `init doctor` checks one, `init refresh` takes a newer pack's repository-owned sections |
 
 `references/` carries the two method documents a repository copies into `docs/_meta/` and then
 rewrites where they say (repository-owned);
@@ -84,19 +85,26 @@ or the child may resolve `docs/` paths against the parent session's workspace.
 
 ## Does it work
 
-`npm test` runs the pins: one version across the package, the plugin manifest and the marketplace
-entry; every skill directory carries a `SKILL.md` named for its folder; no byte-order marks; the
-method documents carry the version stamp; the vocabulary censuses. `node bin/verify-staged.mjs
---self-test` drives the receipt against a throwaway repository and reports each case.
+`npm test` runs the pins: one version across the package, the plugin manifest, the marketplace entry and
+both method documents' stamps; every skill directory carries a `SKILL.md` named for its folder; no
+byte-order marks; the vocabulary and content censuses; no skill states a format a repository owns, and
+every skill that needs one carries the same find-format line; exactly four repository-owned sections, found
+by the one grep; the loop's own preferences stay stated in the method documents; `init refresh` leaves
+every line outside those sections byte for byte. `node bin/verify-staged.mjs --self-test` drives the
+receipt against a throwaway repository and reports each case.
 
 ## Releasing
 
-The version lives in `package.json` and `.claude-plugin/plugin.json` (they must agree). A `v*` tag
-runs the pins and publishes to npm through trusted publishing; the GitHub release notes are the
-CHANGELOG section for that version. The marketplace serves the plugin from this repository at whatever
-`main` holds, so a CLI install never waits on npm; npm is the runner lane, and a refused publish leaves
-runners one version behind until the trusted publisher on npmjs.com matches this repository and
-`release.yml` (the workflow prints that remedy when it happens).
+The version lives in `package.json`, `.claude-plugin/plugin.json` and `.claude-plugin/marketplace.json`
+(they must agree), in both method documents' stamps, and in a CHANGELOG section. The marketplace serves
+the plugin from this repository at whatever `main` holds, so a CLI install never waits on npm; npm is the
+runner lane.
+
+To release: push the release commit to `main`, publish it to npm from the repository root (`npm login`,
+then `npm publish --access public`), then push its `v*` tag. The tag's workflow runs the pins, finds the
+version already on the registry and skips its own publish, and creates the GitHub release from the
+CHANGELOG section. With a trusted publisher linked on npmjs.com for this repository and `release.yml`,
+pushing the tag alone publishes; the workflow prints that remedy when a publish is refused.
 
 ## License
 

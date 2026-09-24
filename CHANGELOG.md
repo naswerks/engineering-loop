@@ -5,6 +5,13 @@ version is the one in `package.json` and `.claude-plugin/plugin.json`, which mus
 
 ## [Unreleased]
 
+### Changed
+
+- `docs-workflow.md` § The repository-owned sections no longer says which words this repository writes for
+  the loop's states; that is § Doc metadata's to say, so a repository that pastes the section verbatim no
+  longer inherits a line that is untrue for it.
+- README: taking a new release is `claude plugin update`; the pins and the release path read as they are.
+
 ## [0.4.0] - 2026-09-23
 
 ### Changed

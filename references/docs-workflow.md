@@ -89,7 +89,7 @@ that replaces the section rewrites alongside it):
 | **This repository's rails** (`engineering-loop.md`) | the policy document, and how a seat reaches it · the gates a commit passes · the suite before a PR · the base branch, the PR target, the branch names and how a PR is opened · the staging rule · the repository's own skills a seat meets | the POLICY row of "Where a rule lives" · the Hard rules, which the rails add to and never subtract from |
 
 **The loop's states.** The skills speak in four states, and § Doc metadata says which word this repository
-writes for each. Here the words are the states themselves.
+writes for each.
 
 | State | Written by | Means |
 |-------|------------|-------|
