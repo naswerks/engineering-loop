@@ -1,6 +1,6 @@
 {
   "name": "naswerks",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "description": "The engineering loop: a knowledge loop (docs-*) and an execution loop (spec-*) for repositories driven by hosted agent sessions, plus init to make a repository ready for both.",
   "author": { "name": "naswerks" },
   "license": "MIT",

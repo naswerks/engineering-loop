@@ -5,6 +5,8 @@ version is the one in `package.json` and `.claude-plugin/plugin.json`, which mus
 
 ## [Unreleased]
 
+## [0.5.0] - 2026-09-24
+
 ### Added
 
 - **The menu declares its shape.** `docs/_meta/doc-index.md` carries `<!-- naswerks-loop: menu=all -->` (it
@@ -22,7 +24,6 @@ version is the one in `package.json` and `.claude-plugin/plugin.json`, which mus
 
 - The map's Doc metadata row no longer asks whether the menu is kept by hand; the menu's shape line says
   what the menu is.
-
 - `docs-workflow.md` § The repository-owned sections no longer says which words this repository writes for
   the loop's states; that is § Doc metadata's to say, so a repository that pastes the section verbatim no
   longer inherits a line that is untrue for it.

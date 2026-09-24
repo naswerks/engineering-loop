@@ -1,6 +1,6 @@
 {
   "name": "@naswerks/engineering-loop",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "description": "The engineering loop as a Claude Code plugin: a knowledge loop (docs-*), an execution loop (spec-*), and init for a fresh repository. The package root is the plugin root.",
   "license": "MIT",
   "type": "module",
