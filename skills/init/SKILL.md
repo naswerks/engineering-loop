@@ -190,13 +190,13 @@ FAIL, so a CI job or a control plane can call it.
 | Row | FAIL | DEGRADE | ok |
 |---|---|---|---|
 | each of the eight folders | missing | README missing | present |
-| `_meta/docs-workflow.md`, `_meta/engineering-loop.md` | missing, or no stamp on line 1 (or on the first line after a frontmatter block) | stamp behind the pack's version (`init refresh` restamps) | stamp equals it |
+| `_meta/docs-workflow.md`, `_meta/engineering-loop.md` | missing, or no stamp on line 1 (or on the first line after a frontmatter block) | stamp's minor version behind the pack's (`init refresh` restamps; a patch never asks a copy to change) | stamp's minor equals the pack's |
 | each repository-owned heading, in its file | — | unmarked (an earlier spelling) or missing — `init refresh` marks or adds it | present |
 | each item of § This repository's rails (repository-owned) | — | missing, or still its absent-line | recorded |
 | `_meta/doc-index.md` and its three slot sections | missing | a slot carries only the absent-line | filled |
 | the menu's shape line | an unknown shape | a curated menu names no index, or an index that does not exist | `menu=all` (also a menu with no shape line), or `menu=curated` with its index |
 | every living doc a `menu=all` menu should list | — | a doc under the four living folders the menu does not name | named |
-| every doc a menu names | the path does not exist (a row saying `not detected` is exempt) | on a curated menu: no status in either header form, the word `draft`, or no `## Key Files` | meets the loop's standard |
+| every doc a menu names | the path does not exist (a row saying `not detected` is exempt) | on a curated menu: no status in either header form, the word `draft`, or no named code (a `## Key Files` section or a frontmatter `related_files` list) | meets the loop's standard |
 | the four floor docs | missing | the word `draft` (read from either header form), or an `<!-- init: -->` left in | a decided status |
 | the seven standard docs | absent AND no doc-index row saying `not detected` | the word `draft` when present; absent with its row | present and decided, or absent with its row |
 | `CLAUDE.md` / `AGENTS.md` stanza · `.claude/settings.json` pin | — | missing | present |

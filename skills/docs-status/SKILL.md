@@ -39,7 +39,8 @@ just counts.
    - **menu drift** — read the menu's shape line (`rg -n 'naswerks-loop: menu=' docs/_meta/doc-index.md`;
      none means `menu=all`). On `menu=all`: a living doc the menu does not name. On `menu=curated`: a doc the
      menu names that falls short of the loop's standard (`docs/_meta/docs-workflow.md` § The
-     repository-owned sections — a header at a decided status and a `## Key Files` section).
+     repository-owned sections — a header at a decided status, and its code named in a `## Key Files`
+     section or a frontmatter `related_files` list).
 
 5. **Open issues.** Grep living docs for an `## Open Issues` section; list which docs/features carry
    unresolved, code-verified problems (and how many) so known risks surface at orientation instead of

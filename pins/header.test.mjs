@@ -227,6 +227,21 @@ test('the version stamp is read after a leading frontmatter block, so a gate tha
   } finally { rmSync(dir, { recursive: true, force: true }); }
 });
 
+test('a stamp a patch behind the pack is current; a stamp a minor behind degrades', () => {
+  const pack = JSON.parse(readFileSync(join(root, '.claude-plugin', 'plugin.json'), 'utf8')).version;
+  const [major, minor] = pack.split('.').map((x) => parseInt(x, 10));
+  const restampTo = (dir, v) => editMeta(dir, 'docs-workflow.md', (t) => t.replace(/version=[0-9][^ ]*/, `version=${v}`));
+  const dir = fixture(meta('current'));
+  try {
+    restampTo(dir, `${major}.${minor}.0`);
+    assert.match(rowFor(runDoctor(dir).out, 'docs/_meta/docs-workflow.md'), /ok .*stamp/);
+    if (minor > 0) {
+      restampTo(dir, `${major}.${minor - 1}.9`);
+      assert.match(rowFor(runDoctor(dir).out, 'docs/_meta/docs-workflow.md'), /DEGRADE .*behind the pack/);
+    }
+  } finally { rmSync(dir, { recursive: true, force: true }); }
+});
+
 test('CONTROL: a method doc with no stamp at all FAILs', () => {
   const dir = fixture(meta('current'));
   try {

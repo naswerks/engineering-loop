@@ -5,6 +5,16 @@ version is the one in `package.json` and `.claude-plugin/plugin.json`, which mus
 
 ## [Unreleased]
 
+## [0.5.1] - 2026-09-24
+
+### Fixed
+
+- A doc on a curated menu meets the loop's standard when it names the code it describes in either form: a
+  `## Key Files` section, or a frontmatter `related_files` list. The doctor checked for the heading alone and
+  flagged docs that name their code in frontmatter.
+- A patch release never asks a copy of the method docs to change, so `init doctor` and `init refresh` read a
+  stamp as behind only when its minor version is.
+
 ## [0.5.0] - 2026-09-24
 
 ### Added

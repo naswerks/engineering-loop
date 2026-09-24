@@ -1,4 +1,4 @@
-<!-- naswerks-loop: version=0.5.0 -->
+<!-- naswerks-loop: version=0.5.1 -->
 # Docs Workflow
 
 > How knowledge flows through `docs/`: the loop, the folder rules, the templates, and the `docs-*` skills.
@@ -110,8 +110,9 @@ it once and never again. A line near its top says which of two shapes it has, an
 | `<!-- naswerks-loop: menu=curated; index={path} -->` | the docs this repository's seats read; `{path}` indexes every doc | into `{path}`, the way that index is kept, and onto the menu only when it meets the loop's standard and a seat should read it |
 
 **The loop's standard for a doc on a curated menu:** it exists, it carries the header § Doc metadata
-prescribes at a decided status (not the word for `draft`), and it has a `## Key Files` section. `init doctor`
-checks exactly that, for every doc a curated menu names.
+prescribes at a decided status (not the word for `draft`), and it names the code it describes — a
+`## Key Files` section, or a frontmatter `related_files` list. `init doctor` checks exactly that, for every doc
+a curated menu names.
 
 **Silence.** A section that says nothing about an item leaves the loop's default: a menu with no shape line
 lists every living doc (`menu=all`), no gate runs on a commit, the base branch is the remote's
@@ -148,7 +149,8 @@ Keep what the skills need to find, change the words to yours:
   the menu then lists only the docs its seats read, each meeting the loop's standard, and every other doc
   stays in the repository's own index, kept the way it already is.
 
-**The version stamp** on line 1 names the pack version whose repository-owned sections this copy carries.
+**The version stamp** on line 1 names the pack version whose repository-owned sections this copy carries. A
+patch release never asks a copy to change, so a stamp is behind only when its minor version is.
 The loop text around them is this repository's copy from whenever it was taken: `init doctor` never grades
 it, and `init refresh` never touches it — refresh adds a section or a rails item a newer pack reads, and
 restamps.

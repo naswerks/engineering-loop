@@ -27,6 +27,32 @@ export function compareVersions(a, b) {
   return 0;
 }
 
+// A patch release never changes what a copy of the method docs carries, so a stamp is behind only when its
+// major.minor is.
+export function compareMinor(a, b) {
+  const pa = a.split(/[.-]/).map((x) => parseInt(x, 10) || 0), pb = b.split(/[.-]/).map((x) => parseInt(x, 10) || 0);
+  for (let i = 0; i < 2; i++) { if ((pa[i] || 0) !== (pb[i] || 0)) return (pa[i] || 0) - (pb[i] || 0); }
+  return 0;
+}
+
+// How many entries a frontmatter key lists: an inline `[a, b]`, indented `- item` lines, or one scalar. Zero
+// when the key is absent or empty.
+export function frontmatterListCount(text, key) {
+  const t = text.replace(/\r\n/g, '\n');
+  if (!t.startsWith('---\n')) return 0;
+  const end = t.indexOf('\n---', 4);
+  if (end < 0) return 0;
+  const lines = t.slice(4, end).split('\n');
+  const i = lines.findIndex((l) => l.startsWith(`${key}:`));
+  if (i < 0) return 0;
+  const inline = lines[i].slice(key.length + 1).trim();
+  if (inline.startsWith('[')) return inline.replace(/^\[|\]$/g, '').split(',').map((x) => x.trim()).filter(Boolean).length;
+  if (inline) return 1;
+  let n = 0;
+  for (let j = i + 1; j < lines.length && /^\s+-\s*\S/.test(lines[j]); j++) n++;
+  return n;
+}
+
 // A file as lines that keep their own terminators, so an untouched line is written back byte for byte.
 export function linesOf(text) {
   return text.match(/[^\n]*\n|[^\n]+$/g) ?? [];

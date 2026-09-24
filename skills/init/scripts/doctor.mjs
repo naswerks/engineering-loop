@@ -5,7 +5,7 @@ import { existsSync, readFileSync, readdirSync, statSync } from 'node:fs';
 import { join, resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { execFileSync } from 'node:child_process';
-import { OWNED, compareVersions, linesOf, bare, h2Index, findSection, railsItems } from './owned.mjs';
+import { OWNED, compareVersions, compareMinor, frontmatterListCount, linesOf, bare, h2Index, findSection, railsItems } from './owned.mjs';
 
 const repo = resolve(process.argv[2] || process.cwd());
 const packRoot = resolve(dirname(fileURLToPath(import.meta.url)), '..', '..', '..');
@@ -40,9 +40,8 @@ for (const name of ['docs-workflow.md', 'engineering-loop.md']) {
   const m = STAMP.exec(firstBodyLine(text));
   if (!m) { row('FAIL', `docs/_meta/${name}`, 'no naswerks-loop stamp on line 1 (or on the first line after a frontmatter block) — an unstamped copy cannot be told from a stale one'); continue; }
   if (!packVersion) { row('DEGRADE', `docs/_meta/${name}`, `stamped ${m[1]}; the pack's own version could not be read`); continue; }
-  const cmp = compareVersions(m[1], packVersion);
-  if (cmp < 0) row('DEGRADE', `docs/_meta/${name}`, `stamp ${m[1]} is behind the pack ${packVersion} — run init refresh: it adds this version's repository-owned sections and restamps, and never touches the loop text`);
-  else row('ok', `docs/_meta/${name}`, `stamp ${m[1]}`);
+  if (compareMinor(m[1], packVersion) < 0) row('DEGRADE', `docs/_meta/${name}`, `stamp ${m[1]} is behind the pack ${packVersion} — run init refresh: it adds this version's repository-owned sections and restamps, and never touches the loop text`);
+  else row('ok', `docs/_meta/${name}`, compareVersions(m[1], packVersion) < 0 ? `stamp ${m[1]} (the pack is ${packVersion}: a patch never asks a copy to change)` : `stamp ${m[1]}`);
 
   // ── 2b. the repository-owned sections: present under the heading a skill looks them up by ─────────
   const lines = linesOf(text);
@@ -123,7 +122,7 @@ function docRow(relPath, required) {
 // every living doc; menu=curated lists the docs the seats read and names the index that lists every doc. A
 // menu with no shape line is menu=all. Every doc a menu names must exist (a row saying `not detected` is
 // exempt); a curated menu's docs must also meet the loop's standard: a status in either header form, not
-// draft, and a `## Key Files` section.
+// draft, and names the code it describes: a `## Key Files` section, or a frontmatter `related_files` list.
 {
   const menu = read(join(repo, 'docs', '_meta', 'doc-index.md'));
   if (menu !== null) {
@@ -151,7 +150,7 @@ function docRow(relPath, required) {
         const st = statusOf(text);
         if (st === null) short.push('no status in either header form');
         else if (st.value === 'draft') short.push('status draft');
-        if (!/^## Key Files\b/m.test(text)) short.push('no ## Key Files');
+        if (!/^## Key Files\b/m.test(text) && frontmatterListCount(text, 'related_files') === 0) short.push('names no code (no ## Key Files section, no related_files list)');
         row(short.length ? 'DEGRADE' : 'ok', `menu: docs/${p}`, short.length ? `below the loop's standard: ${short.join(', ')}` : "meets the loop's standard");
       }
     } else if (shape === 'all') {

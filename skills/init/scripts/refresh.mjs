@@ -6,7 +6,7 @@
 import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 import { join, resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { OWNED, STAMP, compareVersions, linesOf, bare, eolOf, h2Index, findSection, railsItems, stampIndex, mapOf } from './owned.mjs';
+import { OWNED, STAMP, compareVersions, compareMinor, linesOf, bare, eolOf, h2Index, findSection, railsItems, stampIndex, mapOf } from './owned.mjs';
 
 const args = process.argv.slice(2);
 const write = args.includes('--write');
@@ -92,13 +92,14 @@ for (const file of ['docs-workflow.md', 'engineering-loop.md']) {
   const stampAt = stampIndex(lines);
   const current = STAMP.exec(bare(lines[stampAt]))[2];
   const cmp = compareVersions(current, packVersion);
-  if (cmp < 0) {
+  if (compareMinor(current, packVersion) < 0) {
     const raw = lines[stampAt];
     const bom = raw.startsWith('﻿') ? '﻿' : '';
     lines[stampAt] = bom + raw.slice(bom.length).replace(STAMP, `$1${packVersion}$3`);
     row(shown, 'stamp', `${current} to ${packVersion}`);
     changed = true;
   } else if (cmp > 0) row(shown, 'stamp', `${current} — ahead of this pack; left as it is`);
+  else if (cmp < 0) row(shown, 'stamp', `${current} — the pack is ${packVersion}, a patch: a patch never asks a copy to change`);
   else row(shown, 'stamp', `${current} — current`);
 
   if (changed) {

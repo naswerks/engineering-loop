@@ -14,7 +14,7 @@ import { root, readText } from './support.mjs';
 const doctor = join(root, 'skills', 'init', 'scripts', 'doctor.mjs');
 const STANDARD = ['patterns/codegen.md', 'patterns/state-management.md', 'patterns/ui-style-guide.md', 'patterns/design-tokens.md', 'patterns/long-running-workflows.md', 'infrastructure/realtime-events.md', 'infrastructure/background-work.md'];
 const FLOOR = ['code-organization', 'backend-patterns', 'frontend-patterns', 'testing'];
-const doc = (status, { keyFiles = true } = {}) => `---\nstatus: ${status}\nlast_verified: today\n---\n\n# A doc\n\n> One line.\n\n## Overview\n\nText.\n${keyFiles ? '\n## Key Files\n\n| File | Purpose |\n|---|---|\n' : ''}`;
+const doc = (status, { keyFiles = true, related = '' } = {}) => `---\nstatus: ${status}\n${related}last_verified: today\n---\n\n# A doc\n\n> One line.\n\n## Overview\n\nText.\n${keyFiles ? '\n## Key Files\n\n| File | Purpose |\n|---|---|\n' : ''}`;
 
 // A repository the doctor can read end to end, with a menu whose top and rows the test chooses.
 function repoWith({ shapeLine, rows, docs, index }) {
@@ -59,6 +59,35 @@ test('a curated menu: every doc it names is held to the loop\'s standard, and a 
     assert.match(rowFor(out, 'menu: docs/features/drafty.md'), /DEGRADE .*status draft/);
     assert.match(rowFor(out, 'menu: docs/features/nokeys.md'), /DEGRADE .*no ## Key Files/);
     assert.equal(rowFor(out, 'menu: docs/features/unlisted.md'), '', 'a curated menu leaves docs out on purpose');
+  } finally { rmSync(dir, { recursive: true, force: true }); }
+});
+
+test('a curated doc names its code in either form: a ## Key Files section, or a frontmatter related_files list', () => {
+  const dir = repoWith({
+    shapeLine: '<!-- naswerks-loop: menu=curated; index=docs/INDEX.md -->',
+    index: 'docs/INDEX.md',
+    rows: ['| [listed](../features/listed.md) | a block list |', '| [inline](../features/inline.md) | an inline list |'],
+    docs: {
+      'features/listed.md': doc('stable', { keyFiles: false, related: 'related_files:\n  - src/app/feature.ts\n  - src/app/feature.spec.ts\n' }),
+      'features/inline.md': doc('stable', { keyFiles: false, related: 'related_files: [src/app/other.ts]\n' }),
+    },
+  });
+  try {
+    const out = runDoctor(dir).out;
+    assert.match(rowFor(out, 'menu: docs/features/listed.md'), /ok .*meets the loop's standard/, out);
+    assert.match(rowFor(out, 'menu: docs/features/inline.md'), /ok .*meets the loop's standard/);
+  } finally { rmSync(dir, { recursive: true, force: true }); }
+});
+
+test('CONTROL: an empty related_files list names no code', () => {
+  const dir = repoWith({
+    shapeLine: '<!-- naswerks-loop: menu=curated; index=docs/INDEX.md -->',
+    index: 'docs/INDEX.md',
+    rows: ['| [empty](../features/empty.md) | an empty list |'],
+    docs: { 'features/empty.md': doc('stable', { keyFiles: false, related: 'related_files: []\n' }) },
+  });
+  try {
+    assert.match(rowFor(runDoctor(dir).out, 'menu: docs/features/empty.md'), /DEGRADE .*names no code/);
   } finally { rmSync(dir, { recursive: true, force: true }); }
 });
 
