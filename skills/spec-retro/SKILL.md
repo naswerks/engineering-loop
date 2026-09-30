@@ -150,7 +150,7 @@ generalise one park into a law.
 
 **The derived-row path:** the acceptance's durable record is the `## COORDINATOR ACCEPT (final —
 {slice})` anchor in each seat's `tldr.md`, and the receipt DERIVES from it. A board written before this
-vocabulary spells it `## PARENT ACCEPT`, and the control plane reads both, so the grep does too. Reconcile
+vocabulary spells it `## PARENT ACCEPT`; a reader of the anchors takes both spellings, so the grep does too. Reconcile
 file against substrate:
 
 ```bash

@@ -25,7 +25,8 @@ version is the one in `package.json` and `.claude-plugin/plugin.json`, which mus
 - `spec-coordinator` no longer names a `parallel` spawn argument: a shared worktree holds one live seat at a
   time, and parallel seats need separate worktrees, decided when the pipeline is created.
 - The retired-vocabulary census retires `parent` beside `chain` and `child`.
-- `docs-workflow.md` says the ignition brief is written whole at authoring and verified at ignition.
+- `docs-workflow.md` says the ignition brief is written whole at authoring and verified at ignition. The
+  sentence sits in § Templates, which a copy owns: see Upgrading, step 3.
 
 ### Added
 
@@ -42,8 +43,14 @@ version is the one in `package.json` and `.claude-plugin/plugin.json`, which mus
    or `spec-child` after the update finds no such skill.
 2. Re-copy the loop text of both references into `docs/_meta/`, keeping your repository-owned sections;
    `init refresh` restamps and never touches loop text.
-3. If your § The archive convention (repository-owned) names `parent-retrospective.md`, rename it there.
-   The section is yours, so neither refresh nor a re-copy reaches it.
+3. Three places are yours, so neither `init refresh` nor a re-copy reaches them. Change each one that still
+   carries the old text:
+   - § The archive convention (repository-owned): `parent-retrospective.md` is `coordinator-retrospective.md`.
+   - § Templates (repository-owned): the ignition brief is "the coordinator seat's standing orders for the
+     run — written whole at authoring, verified at ignition" (it read "the parent seat's standing orders
+     for the run — two sections completed at ignition").
+   - `docs/_meta/doc-index.md`: the build-seat paragraph `init` wrote from its template names `spec-build`
+     (it read `spec-child`).
 4. Run `init doctor`. A brief whose kick still names a retired skill shows a DEGRADE row; change the kick.
 
 ## [0.5.1] - 2026-09-24

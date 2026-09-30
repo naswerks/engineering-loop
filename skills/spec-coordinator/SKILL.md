@@ -549,8 +549,8 @@ verbs ARE the appends and the machinery writes them for you.
 when the rev ladder exists; notes under `## COORDINATOR NOTE ({context})`. The coordinator-voice
 vocabulary is a CLOSED list of four — `COORDINATOR NOTE` · `COORDINATOR ACCEPT` · `COORDINATOR RULING` ·
 `OPERATOR RULING` — so a fifth anchor you invent counts as nothing. An older board spells the first three
-`PARENT NOTE` · `PARENT ACCEPT` · `PARENT RULING`; the control plane and every grep in this loop read that
-spelling as the same three, and you write only the new one. **Never vary the prefixes**, and **never
+`PARENT NOTE` · `PARENT ACCEPT` · `PARENT RULING`; every reader of the anchors, each grep in this loop
+included, takes that spelling as the same three, and you write only the new one. **Never vary the prefixes**, and **never
 discuss the anchor grammar inside a steering note**: the detector matches the STRING, not your intent,
 and naming an anchor while explaining it derives a spurious acceptance receipt. Refer to it obliquely
 ("the acceptance anchor").

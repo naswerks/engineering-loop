@@ -125,8 +125,8 @@ stable prefixes are the contract: one grep for `## (COORDINATOR|PARENT) RULING` 
 **THE HEADING VOCABULARY IS CLOSED, AND THAT IS THE HAZARD AS WELL AS THE CONTRACT.** The
 coordinator-voice list is exactly four — `COORDINATOR NOTE` · `COORDINATOR ACCEPT` · `COORDINATOR RULING`
 · `OPERATOR RULING` — matched by the control plane on a word boundary, so `## COORDINATOR NOTEBOOK`
-cannot pass. An older board spells the first three `PARENT NOTE` · `PARENT ACCEPT` · `PARENT RULING`; the
-control plane reads that spelling as the same three, which is why the grep above carries both. A fifth
+cannot pass. An older board spells the first three `PARENT NOTE` · `PARENT ACCEPT` · `PARENT RULING`; a
+reader of the anchors takes that spelling as the same three, which is why the grep above carries both. A fifth
 anchor invented later closes nothing and counts as nothing until the control plane learns it. **Section
 boundaries are level-2 headings only** — `### Option A` inside your question block is still inside the
 question, deliberately, so a ruling never arrives having truncated your options.
