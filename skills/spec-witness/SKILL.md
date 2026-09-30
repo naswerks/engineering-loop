@@ -78,13 +78,16 @@ git — agree.
    are a zero-token heartbeat per seat — a growing ladder is a live session, a frozen one dates its last
    turn. `seat_content` reads the board; read `tldr.md` top-to-bottom and it IS the session's whole
    conversation in message-flow order — the fastest "where is this seat" there is. The coordinator's
-   voice is a greppable anchor: `## PARENT RULING (plan rev N — {verdict})` and `## PARENT NOTE (…)`
-   (actor-suffixed when known) on the hosted plane; the same prefixes without the rev counter under
-   `docs/research/{topic}/sessions/{spec-slug}/` hand-cranked — so grep the prefix, never the full form.
+   voice is a greppable anchor: `## COORDINATOR RULING (plan rev N — {verdict})` and `## COORDINATOR NOTE
+   (…)` (actor-suffixed when known) on the hosted plane; the same prefixes without the rev counter under
+   `docs/research/{topic}/sessions/{spec-slug}/` hand-cranked — so grep the prefix, never the full form,
+   and grep both spellings: an older board writes `## PARENT RULING` / `## PARENT NOTE`
+   (`rg -n "## (COORDINATOR|PARENT) (RULING|NOTE)"`).
    **Honest delivery verdicts:** a ruling act's reply states recorded-vs-delivered truthfully —
    "recorded, not delivered" is NORMAL (the seats run substrate-first; the board is load-bearing, the
    pointer is best-effort). A delivery miss is only a finding if the seat ALSO never acted on the
-   substrate. **Blessed close-outs:** a seat's post-push `## [child·…] CLOSE-OUT RECEIPT` append does NOT
+   substrate. **Blessed close-outs:** a seat's post-push `## [seat·…] CLOSE-OUT RECEIPT` append (an older
+   board's `[child·…]`) does NOT
    stale its acceptance — a reap without a fresh acceptance after such an append is correct behaviour,
    not a skipped step.
 3. **Change-detection monitors, not tails:** emit only rows past a high-water mark + a terminal-state
@@ -216,7 +219,7 @@ Disciplines that don't fit a numbered step:
   trusting their silence — silence from a dead monitor looks identical to a quiet run.
 
 ## Related
-- `spec-parent` (the seat that rules) · `spec-child` (the seats that act) · `spec-seat` (their shared
+- `spec-coordinator` (the seat that rules) · `spec-build` (the seats that act) · `spec-seat` (their shared
   contract — read it to know what the seats you are watching were told)
 - **You are one of the three kinds that do NOT compose `spec-seat`** — this skill is your whole
   contract, and the control plane's seed says so rather than merely omitting it.

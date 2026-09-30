@@ -7,6 +7,7 @@ import { existsSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { execFileSync } from 'node:child_process';
 import { root, walk, readText } from './support.mjs';
+import { KIND_SKILLS } from '../skills/init/scripts/owned.mjs';
 
 const CONTENT_FOLDERS = ['skills', 'references', 'templates'];
 
@@ -103,10 +104,12 @@ test('the parser contracts the control plane reads still hold', () => {
   const seat = readText(join(root, 'skills', 'spec-seat', 'SKILL.md'));
   assert.ok(/default set.*role|role.*default set/.test(seat), 'spec-seat: the reading-floor line names the default set and the role');
   assert.ok(seat.includes('NOT BLOCKING') && seat.includes('MID-BUILD UPDATE'));
-  const child = readText(join(root, 'skills', 'spec-child', 'SKILL.md'));
-  for (const row of ['| **frontend** |', '| **backend** |', '| **mixed** |']) assert.ok(child.includes(row), `spec-child: ${row}`);
+  const build = readText(join(root, 'skills', KIND_SKILLS.build, 'SKILL.md'));
+  for (const row of ['| **frontend** |', '| **backend** |', '| **mixed** |']) assert.ok(build.includes(row), `${KIND_SKILLS.build}: ${row}`);
   for (const skill of ['spec-pipeline', 'spec-ignite']) {
-    assert.ok(readText(join(root, 'skills', skill, 'SKILL.md')).includes('You are the COORDINATOR of the {topic} pipeline.'), `${skill}: the kick text`);
+    const text = readText(join(root, 'skills', skill, 'SKILL.md'));
+    assert.ok(text.includes('You are the COORDINATOR of the {topic} pipeline.'), `${skill}: the kick text`);
+    assert.ok(text.includes(`Invoke the \`${KIND_SKILLS.coordinator}\` skill`), `${skill}: the kick names the coordinator's skill`);
   }
   const pipeline = readText(join(root, 'skills', 'spec-pipeline', 'SKILL.md'));
   for (const anchor of ['00-ignition-brief.md', '01-{topic}.md', 'project-status.md', 'live-checks.md', 'sessions/', 'AN ESCAPE HATCH', 'Six things every slice carries']) {

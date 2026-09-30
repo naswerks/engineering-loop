@@ -21,6 +21,32 @@ export const OWNED = [
 
 export const STAMP = /^(<!-- naswerks-loop: version=)([0-9]+\.[0-9]+\.[0-9]+[^ ]*)( -->)/;
 
+// The seat kinds a pipeline row may name, checked the way the control plane checks a brief's sequence.
+export const KINDS = ['coordinator', 'build', 'fixit', 'review', 'retro', 'witness', 'docs-process'];
+
+// The skill each kind runs as its job. A spec seat's skill is named for its kind, so a skill's name says
+// which seat runs it: `fixit` is the build job's no-spec variant, and `docs-process` is the knowledge
+// loop's own skill, seated by a pipeline as its last row.
+export const KIND_SKILLS = {
+  coordinator: 'spec-coordinator',
+  build: 'spec-build',
+  fixit: 'spec-build',
+  review: 'spec-review',
+  retro: 'spec-retro',
+  witness: 'spec-witness',
+  'docs-process': 'docs-process',
+};
+
+// Words shaped like a skill name that name no skill: the method doc, the placeholders, and the compounds
+// the prose uses. Every other spec-* or docs-* word the pack writes is a skill it carries.
+export const NOT_SKILLS = ['docs-workflow', 'spec-slug', 'spec-path', 'spec-doc', 'spec-driven', 'docs-only'];
+
+// Every skill-shaped word in a text. A word followed by `*` or `-*` names a family (docs-*, docs-audit-*),
+// never one skill.
+export function skillTokens(text) {
+  return [...text.matchAll(/\b(?:spec|docs)-[a-z]+(?:-[a-z]+)*\b(?![-*])/g)].map((m) => m[0]);
+}
+
 export function compareVersions(a, b) {
   const pa = a.split(/[.-]/).map((x) => parseInt(x, 10) || 0), pb = b.split(/[.-]/).map((x) => parseInt(x, 10) || 0);
   for (let i = 0; i < 3; i++) { if ((pa[i] || 0) !== (pb[i] || 0)) return (pa[i] || 0) - (pb[i] || 0); }

@@ -1,6 +1,6 @@
 ---
 name: spec-ignite
-description: Become the IGNITION COPILOT for a spec pipeline — verify the committed ignition brief against live state, verify every step by receipt, and kick on the human's word. Authoring belongs to spec-pipeline; this seat VERIFIES, so it can run cold. Use right after spec-pipeline when the pipeline will run hosted (the manual alternative is spec-parent), or fresh with a topic whose specs are already authored. Two verbal gates: nothing moves before "stage it"; nothing spawns before "kick it".
+description: Become the IGNITION COPILOT for a spec pipeline — verify the committed ignition brief against live state, verify every step by receipt, and kick on the human's word. Authoring belongs to spec-pipeline; this seat VERIFIES, so it can run cold. Use right after spec-pipeline when the pipeline will run hosted (the manual alternative is spec-coordinator), or fresh with a topic whose specs are already authored. Two verbal gates: nothing moves before "stage it"; nothing spawns before "kick it".
 ---
 
 # spec-ignite
@@ -119,10 +119,10 @@ injects** — the human keyboard and the hardened ladders are the only submit pa
 
 The coordinator's task is the brief's own **`## The kick`** section, copied verbatim. Roughly:
 
-> You are the COORDINATOR of the {topic} pipeline. Invoke the `spec-parent` skill, then read
+> You are the COORDINATOR of the {topic} pipeline. Invoke the `spec-coordinator` skill, then read
 > `docs/research/{topic}/00-ignition-brief.md` and follow it. Your branch is `{the effort's branch}`.
 
-**Do not draft a constitution here.** The seat's PROCEDURE is the `spec-parent` skill; its POLICY rides the
+**Do not draft a constitution here.** The seat's PROCEDURE is the `spec-coordinator` skill; its POLICY rides the
 un-skippable policy suffix the control plane supplies at open (you do not paste it, and you cannot
 override it); its HANDS are the coordinator charter the control plane attaches to a `coordinator` seed
 and to no other kind. This RUN's choreography is the committed brief. A task string cannot be diffed or
@@ -271,7 +271,7 @@ you found rather than working around it.
   anomalies that may change it — surprises are findings, not adjustments.
 
 ## Related
-- `spec-pipeline` (authors what you ignite, including the brief you verify) · `spec-parent` (the
-  coordinator's procedure, and the HAND-CRANKED alternative) · `spec-seat` + `spec-child` (what the
+- `spec-pipeline` (authors what you ignite, including the brief you verify) · `spec-coordinator` (the
+  coordinator's procedure, and the HAND-CRANKED alternative) · `spec-seat` + `spec-build` (what the
   control plane seeds into every build seat) · `spec-retro` (the close-out audit) · `spec-witness`
   (point one at the run you just ignited)

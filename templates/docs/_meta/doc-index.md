@@ -54,7 +54,7 @@
 
 ## Role reading lists
 
-The docs a build seat reads on top of the floor every seat reads (`spec-seat` Step 0). The `spec-child`
+The docs a build seat reads on top of the floor every seat reads (`spec-seat` Step 0). The `spec-build`
 skill names the loop's standard docs by path; this table is the repository's reserved space — one row per
 doc, saying which roles read it. The coordinator copies a role's rows into every seat's seed as
 `EXTRA DOCS`, so a seat sees paths, not this index. Add a row for any doc of your own a role should read;

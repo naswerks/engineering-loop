@@ -13,8 +13,8 @@ today that perspective evaporates the moment the run closes. This skill turns it
 **Find the format first.** This repository writes its formats (the doc header and status words, where an effort is filed, its rails) in the sections `rg -n '^#+ .*\(repository-owned\)' docs/_meta/` lists; read the one a step names before that step writes. This skill names the section, never the format.
 
 Run it as the **last act of the coordinator seat**, after the final session's close-out commit — before or
-after the PR is cut, either works. Output: `docs/research/{topic}/sessions/parent-retrospective.md`. It is
-a scoped write on the pipeline's branch, so it rides the PR to the base branch either way.
+after the PR is cut, either works. Output: `docs/research/{topic}/sessions/coordinator-retrospective.md`.
+It is a scoped write on the pipeline's branch, so it rides the PR to the base branch either way.
 
 **You are one of the three kinds that do NOT compose `spec-seat`** — this skill is your whole contract,
 and the control plane's seed says so rather than merely omitting it.
@@ -54,7 +54,7 @@ document** — a number whose lane you cannot name is testimony, not an audit.
 
 **If the argless sweep is not runnable at your run's scale, that is a day-one escalation, not a
 close-out discovery.** A few thousand rows can exceed the lane's page budget; you cannot retroactively
-obtain the audit your own doctrine mandates. `spec-parent` carries this as a run-time obligation.
+obtain the audit your own doctrine mandates. `spec-coordinator` carries this as a run-time obligation.
 
 **Two instruments that share no code are the only way a ceremony audit means anything** — on one
 instrument you are grading your own homework with your own pencil. Where the control plane offers a
@@ -148,11 +148,13 @@ could not tell. And do not flatten predicates that were measured apart: a conten
 stales a PUSH; a close-out-receipt append does not stale a REAP. Report what you observe; never
 generalise one park into a law.
 
-**The derived-row path:** the acceptance's durable record is the `## PARENT ACCEPT (final — {slice})`
-anchor in each seat's `tldr.md`, and the receipt DERIVES from it. Reconcile file against substrate:
+**The derived-row path:** the acceptance's durable record is the `## COORDINATOR ACCEPT (final —
+{slice})` anchor in each seat's `tldr.md`, and the receipt DERIVES from it. A board written before this
+vocabulary spells it `## PARENT ACCEPT`, and the control plane reads both, so the grep does too. Reconcile
+file against substrate:
 
 ```bash
-rg -n "## PARENT ACCEPT" docs/research/{topic}/sessions/*/tldr.md
+rg -n "## (COORDINATOR|PARENT) ACCEPT" docs/research/{topic}/sessions/*/tldr.md
 ```
 
 **AUDIT THE QUESTION LANE THE SAME WAY — it is a heading grep, not a row query.** A seat asks by appending
@@ -163,8 +165,8 @@ run whose seats asked repeatedly and changed a ruling by it.
 **AND ON THE HOSTED PLANE THE FILE IS NOT THE CLOSE PREDICATE — audit BOTH halves, because they answer
 different questions.** *Was one asked?* is a fact about the file (the heading grep below, mirroring the
 control plane's grammar). *Was it answered?* is a fact about the LEDGER — the ruling act carrying the
-asking post's id — and it is deliberately not read from the file, because a seat can type a parent-voice
-heading into its own blackboard. **A retro that audits only the file can be shown a question that
+asking post's id — and it is deliberately not read from the file, because a seat can type a
+coordinator-voice heading into its own blackboard. **A retro that audits only the file can be shown a question that
 answered itself.** Reconcile the grep's hits against the ruling acts, and report any hit with no act as an
 unanswered question whatever the file says.
 
@@ -177,11 +179,12 @@ prefixed and plural headings, and the lane has TWO headings: `## QUESTIONS` (rec
 rg -niE '^##[[:space:]]*(\[[^]]*\][[:space:]]*)?(MID-BUILD[[:space:]]+)?QUESTIONS?\b' docs/research/{topic}/sessions/*/tldr.md | rg -viE 'QUESTIONS?[[:space:]]+ANSWERED'
 ```
 
-Reconcile each hit against the parent-voice append that answered it (`## PARENT RULING` / `## PARENT NOTE`
-in the same file) — an unanswered question is the finding. **Your audit instrument must be at least as
-tolerant as the code it audits.**
+Reconcile each hit against the coordinator-voice append that answered it (`## COORDINATOR RULING` /
+`## COORDINATOR NOTE` in the same file, or `## PARENT RULING` / `## PARENT NOTE` on an older board) — an
+unanswered question is the finding. **Your audit instrument must be at least as tolerant as the code it
+audits.**
 
-- **Hosted:** N `## PARENT ACCEPT` anchors imply N acceptance acts (rev-bound: the act carries the tldr
+- **Hosted:** N acceptance anchors (`## (COORDINATOR|PARENT) ACCEPT`) imply N acceptance acts (rev-bound: the act carries the tldr
   rev, the HEAD and a content hash). An anchor with no act means the derivation failed (LOUD in the
   logs — find it); an act with no anchor is a cockpit accept (legitimate; the act says so).
   Acceptance-shaped PROSE without the anchor writes nothing by design — flag it as a ceremony miss.
@@ -374,7 +377,7 @@ is the look of a record with none of a record's properties.
    session's `tldr.md`, and the working docs.
 2. **Query** the substrate for §§2-5. Verify each query FIRES on a known-positive row before trusting a
    clean result.
-3. **Write** `docs/research/{topic}/sessions/parent-retrospective.md` — NATIVELY, in the tree you were born
+3. **Write** `docs/research/{topic}/sessions/coordinator-retrospective.md` — NATIVELY, in the tree you were born
    in: the coordinator lives in the effort's worktree, so the scoped write (the effort home's own `.md`
    files, `sessions/`, the tracker, `live-checks.md` and the specs) lands on the effort's branch and rides
    its PR. Every write earns its loud audit row. **If the write REFUSES, that is a PLATFORM DEFECT:**
@@ -396,6 +399,6 @@ is the look of a record with none of a record's properties.
    leaves an identical belief standing in a sibling that words it differently has to be made twice.
 
 ## Related
-- `spec-parent` (the seat, and the run-time half of this skill's close-out demands) · `spec-child` (the
-  builders) · `spec-seat` (their shared contract) · `spec-witness` (the read-only verifier) ·
+- `spec-coordinator` (the seat, and the run-time half of this skill's close-out demands) · `spec-build`
+  (the builders) · `spec-seat` (their shared contract) · `spec-witness` (the read-only verifier) ·
   `spec-pipeline` (which authored the specs you are grading)

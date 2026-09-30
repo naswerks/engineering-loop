@@ -24,7 +24,7 @@ else's job.
   Reading it anchors you on that grade and the pipeline pays for two opinions to get one.
 - **You do not fix anything.** Findings get classified and filed. A reviewer that repairs its own findings
   cannot be trusted to count them.
-- **You do not decide whether a fixit runs — you classify.** The parent rules on it. A reviewer that can
+- **You do not decide whether a fixit runs — you classify.** The coordinator rules on it. A reviewer that can
   trigger work is grading its own necessity.
 - **Every TLDR, spec, and doc claim is TESTIMONY to verify, never a fact to build on.** That includes
   anything your coordinator tells you: if a ruling arrives in your `tldr.md`, record it and treat it as a
@@ -194,8 +194,9 @@ testimony.
 
 ## The report — `sessions/code-review.md`
 
-Files beside `parent-retrospective.md` in the pipeline's `sessions/` folder. It is a pipeline artifact,
-not a chat transcript, and it archives with the effort.
+Files beside the coordinator's retrospective in the pipeline's `sessions/` folder
+(`coordinator-retrospective.md`, or `parent-retrospective.md` in an effort begun before that name). It is
+a pipeline artifact, not a chat transcript, and it archives with the effort.
 
 ```markdown
 # Code + session review — {topic}, pipeline {id}
@@ -244,7 +245,7 @@ that does not exist yet (an unauthored row, an unwritten charter) is NOT homed: 
 
 ## Lineage   _(where § Doc metadata (repository-owned) keeps the footer)_
 - **Pipeline** — the tracker · the umbrella · sessions 02..NN
-- **Counterpart** — `parent-retrospective.md` (the inside look; written after this)
+- **Counterpart** — `coordinator-retrospective.md` (the inside look; written after this)
 ```
 
 ## Ceremony
@@ -254,7 +255,7 @@ TLDR with beliefs and numbered questions, the question lane, the parked-call dis
 vocabulary, the six-section FINAL TLDR, and the close-out order. You commit `sessions/code-review.md` on
 your coordinator's call like any seat.
 
-**The close-out receipt's heading token is the literal `child·` for you too** — it is a protocol anchor,
+**The close-out receipt's heading token is the literal `seat·` for you too** — it is a protocol anchor,
 not a description of your seat, and writing `[review·…]` stales your own acceptance. `spec-seat` carries
 the detail.
 
@@ -267,7 +268,7 @@ Your baselines are reads, not builds: you run the suites to confirm the pipeline
 number you cannot reproduce is a finding.
 
 ## Related
-- `spec-parent` (rules on your fixit candidates; writes the retro after you) · `spec-child` (the seats you
+- `spec-coordinator` (rules on your fixit candidates; writes the retro after you) · `spec-build` (the seats you
   are reviewing) · `spec-retro` (the inside look) · `spec-witness` (the live read-only seat; its ledger, if
   one exists, is evidence like any other artifact) · `docs-process` (consumes this report and gives every
   finding a disposition)

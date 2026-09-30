@@ -1,12 +1,12 @@
 ---
-name: spec-parent
-description: Assume the COORDINATOR seat for a spec-pipeline effort — quarterback the build seats (one per spec) via prompts, TLDR reviews, verification, and commit calls. Use immediately after spec-pipeline in the same session (the author is already context-loaded), or in a fresh session with the topic name to resume/take a prepped effort. Run spec-parent {topic}.
+name: spec-coordinator
+description: Assume the COORDINATOR seat for a spec-pipeline effort — quarterback the build seats (one per spec) via prompts, TLDR reviews, verification, and commit calls. Use immediately after spec-pipeline in the same session (the author is already context-loaded), or in a fresh session with the topic name to resume/take a prepped effort. Run spec-coordinator {topic}.
 ---
 
-# spec-parent
+# spec-coordinator
 
 Turn this session into the **coordinator** for a `docs/research/{topic}/` spec pipeline. This is
-phase 3 of the backlog model (`docs-backlog`, `spec-pipeline`, **`spec-parent`**, seats build,
+phase 3 of the backlog model (`docs-backlog`, `spec-pipeline`, **`spec-coordinator`**, seats build,
 `docs-process`).
 
 **Find the format first.** This repository writes its formats (the doc header and status words, where an effort is filed, its rails) in the sections `rg -n '^#+ .*\(repository-owned\)' docs/_meta/` lists; read the one a step names before that step writes. This skill names the section, never the format.
@@ -117,7 +117,7 @@ read the board and answer on first receipt rather than spending a round-trip.
    corrected.
 
    **Pick the docs:** the floor and the loop's standard docs are settled (`spec-seat`'s Step 0 +
-   `spec-child`'s role table). **This repository's own docs are yours to seed, by path, every time:** copy
+   `spec-build`'s role table). **This repository's own docs are yours to seed, by path, every time:** copy
    the seat's role rows from `docs/_meta/doc-index.md` § Role reading lists into the prompt's `EXTRA DOCS`
    line — a seat follows a path in its prompt and does not reliably follow an index. Then add the extras
    the task itself warrants. When in doubt, seed the doc: a seat reading one extra doc is cheaper than a
@@ -420,10 +420,12 @@ so read them as run-time obligations, not close-out ones:
   wait or to reshape the command — not to complete a run or curl past the fence. **And a park that sails
   through anyway is DATA:** record it immediately as an incident, because a fence that failed silently once
   will fail silently again, and your record is the only trace.
-- **`parallel:true` is for specs that share no files — that is its whole purpose.** A refused spawn means
-  the previous seat is still holding the shared effort worktree and needs reaping; the answer is to reap
-  it, or to wait if it has not closed out yet. Reaching for `parallel` there is a category error rather
-  than a shortcut: it does not free the worktree, it just puts two seats in it.
+- **A shared worktree holds one live seat at a time, and nothing but you enforces it.** `seat_spawn`
+  refuses a terminal seat, a seat that already has a live session and a runner it cannot reach — it does
+  NOT refuse a second seat while another is still live in the shared tree, so spawning early puts two
+  seats in one worktree. Reap the previous seat first, or wait if it has not closed out yet. Parallel
+  seats need separate worktrees, which is the pipeline's shape, decided at create — and only for specs
+  that share no files.
 
 ## The steering channel — shape your callouts by SOLICITATION
 
@@ -442,10 +444,10 @@ send context attached to a ruling instead.
 
 ## The seat prompt template
 
-The ceremony rides the **`spec-child` skill** — the prompt is an IGNITER, not a ceremony restatement.
+The ceremony rides the **`spec-build` skill** — the prompt is an IGNITER, not a ceremony restatement.
 
 ```
-You are a BUILD SEAT in a coordinator-run effort: invoke the spec-child skill with
+You are a BUILD SEAT in a coordinator-run effort: invoke the spec-build skill with
 role={backend | frontend | mixed} before anything else, and ALWAYS after `spec-seat`: the seat header
 names `spec-seat` first, the job skill second.
 
@@ -473,7 +475,7 @@ THE TASK: {compressed spec restatement with the load-bearing specifics inline.}
 
 For investigation-first work, add **STEP 0 — INVESTIGATE, REPORT, STOP** before the task, or use
 `role={...} fixit` for no-spec defect sessions (the skill carries the fix-it ceremony). Fallback: if the
-seat can't invoke skills, paste the ceremony from the `spec-child` skill inline.
+seat can't invoke skills, paste the ceremony from the `spec-build` skill inline.
 
 ### The bookend rows (R and P) get a MANIFEST instead of prior shapes
 
@@ -514,7 +516,7 @@ P it is the difference between archiving this effort and sweeping somebody else'
 ## Ruling template (plan review / question answers)
 
 ```
-PARENT RESPONSE — PLAN TLDR {ACCEPTED / ACCEPTED WITH RIDERS / BLOCKING-PRECONDITION}.
+COORDINATOR RESPONSE — PLAN TLDR {ACCEPTED / ACCEPTED WITH RIDERS / BLOCKING-PRECONDITION}.
 {Verdict vocabulary: accept · accept-with-riders (numbered rulings anchored to the SEAT'S OWN item
 numbers — it folds them in and GOES, no re-approval round-trip; the dominant verdict) ·
 blocking-precondition ("accept, but step 0 first") · read-full-plan (not a verdict you send — you
@@ -543,14 +545,17 @@ asking for a paste (`read-full-plan` = read `plan.md`, a pull, never force-fed).
 verbs ARE the appends and the machinery writes them for you.
 
 **Anchor grammar (canonical — the witness greps these):** rulings land under
-`## PARENT RULING (plan — {verdict})` hand-cranked, `## PARENT RULING (plan rev N — {verdict})` when the
-rev ladder exists; notes under `## PARENT NOTE ({context})`. The parent-voice vocabulary is a CLOSED list
-of four — `PARENT NOTE` · `PARENT ACCEPT` · `PARENT RULING` · `OPERATOR RULING` — so a fifth anchor you
-invent counts as nothing. **Never vary the prefixes**, and **never discuss the anchor grammar inside a
-steering note**: the detector matches the STRING, not your intent, and naming an anchor while explaining
-it derives a spurious acceptance receipt. Refer to it obliquely ("the acceptance anchor").
-**Point, don't paste:** steer with *"read your `tldr.md` under `## PARENT RULING`"*, never by re-pasting a
-multi-KB block into a composer.
+`## COORDINATOR RULING (plan — {verdict})` hand-cranked, `## COORDINATOR RULING (plan rev N — {verdict})`
+when the rev ladder exists; notes under `## COORDINATOR NOTE ({context})`. The coordinator-voice
+vocabulary is a CLOSED list of four — `COORDINATOR NOTE` · `COORDINATOR ACCEPT` · `COORDINATOR RULING` ·
+`OPERATOR RULING` — so a fifth anchor you invent counts as nothing. An older board spells the first three
+`PARENT NOTE` · `PARENT ACCEPT` · `PARENT RULING`; the control plane and every grep in this loop read that
+spelling as the same three, and you write only the new one. **Never vary the prefixes**, and **never
+discuss the anchor grammar inside a steering note**: the detector matches the STRING, not your intent,
+and naming an anchor while explaining it derives a spurious acceptance receipt. Refer to it obliquely
+("the acceptance anchor").
+**Point, don't paste:** steer with *"read your `tldr.md` under `## COORDINATOR RULING`"*, never by
+re-pasting a multi-KB block into a composer.
 
 **When to read (hand-cranked):** the human's nudge is your wake signal, and the human is the ONLY bus — so
 before cutting each next prompt, sweep `sessions/*/tldr.md` mtimes for appends you were never nudged
@@ -564,7 +569,7 @@ plan-approval click is the human's counterpart of the product's accept-gate — 
 ## Docs-write + commit call template
 
 ```
-PARENT RESPONSE — FINAL TLDR ACCEPTED {(+ what I verified myself)}.
+COORDINATOR RESPONSE — FINAL TLDR ACCEPTED {(+ what I verified myself)}.
 1. Run docs-write. Carry: {departures, honest gaps, deferred findings verbatim, gotchas}.
 2. COMMIT CALL — approved. Stage explicitly (never git add -A): YOUR diff + working doc,
    PLUS docs/research/{topic}/project-status.md — my ledger rides your commit,
@@ -583,7 +588,7 @@ PARENT RESPONSE — FINAL TLDR ACCEPTED {(+ what I verified myself)}.
 ```
 
 **THE ACCEPTANCE IS A RECEIPT VERB, AND PROSE IS NOT A RECEIPT.** Send the acceptance act carrying your
-text; it lands in the seat's `tldr.md` under `## PARENT ACCEPT (final — {slice})` and the rev-bound
+text; it lands in the seat's `tldr.md` under `## COORDINATOR ACCEPT (final — {slice})` and the rev-bound
 receipt derives from it. **An acceptance delivered as a steering note records zero rows** — and the push
 bar reads the row, not the paragraph.
 
@@ -591,10 +596,10 @@ bar reads the row, not the paragraph.
 (the receipt binds pre-commit), then the seat commits and pushes. **The receipt is rev-bound:** it covers
 the tldr rev + HEAD it was written against — if the seat re-posts its TLDR CONTENT after your acceptance,
 the unattended push parks naming both revs, and one **argless re-accept** is the cheap repair, **sent with
-the retry order in the same act**. A seat's post-push `## [child·…] CLOSE-OUT RECEIPT` append does NOT
+the retry order in the same act**. A seat's post-push `## [seat·…] CLOSE-OUT RECEIPT` append does NOT
 stale your acceptance — reap without a re-accept after it.
 
-**Hand-cranked:** append the same `## PARENT ACCEPT (final — {slice})` heading to the seat's
+**Hand-cranked:** append the same `## COORDINATOR ACCEPT (final — {slice})` heading to the seat's
 `sessions/{slug}/tldr.md` yourself — there is no machinery and no derivation; the anchor + your tracker
 row ARE the receipts.
 
@@ -617,7 +622,7 @@ post-merge.
   corrections, what you verified yourself, mid-build directives, and anything you don't want to forget —
   written when it happens, never reconstructed at close. **The tracker's own section notes say what each
   section holds**; follow them rather than inventing structure. Do **not** add a `## Checkpoint ledger` or
-  a `## Parent decisions` section — the session entry *is* the decision record, and a parallel section
+  a `## Coordinator decisions` section — the session entry *is* the decision record, and a parallel section
   splits one narrative across two places.
 - **If a retro has to supersede your session rows, the ledger was not kept.** A retro confirms the rows
   and adds the audit and economics; it never corrects facts that should already be written.
@@ -644,7 +649,7 @@ post-merge.
   a sequence, and do not treat a stale living doc as something this effort must fix.
 - Periodically remind the human to sweep your doc edits into a small `docs` commit.
 - Counterpart skills: `spec-seat` (the contract of every seat you arm — read it to know what they were
-  told) · `spec-child` (the builders' job skill) · `spec-pipeline` (how the specs came to exist) ·
+  told) · `spec-build` (the builders' job skill) · `spec-pipeline` (how the specs came to exist) ·
   `spec-review` (the outside look, before your retro) · `spec-retro` (your close-out audit) ·
   `spec-witness` (the read-only verifier) · `spec-ignite` (the ignition copilot that puts an authored
   effort onto the plane).

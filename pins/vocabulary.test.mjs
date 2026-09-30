@@ -3,8 +3,8 @@
 //
 //   1. the build instruction never hard-codes one application's path: a repository's applications
 //      are the repository's to name (its docs/_meta/doc-index.md), never the skill's;
-//   2. a retired ceremony vocabulary (chain / child as the unit of work) survives only inside a
-//      section that says it is describing that retired plane.
+//   2. a retired ceremony vocabulary (chain / child as the unit of work, parent as the seat that
+//      coordinates it) survives only inside a section that says it is describing that retired plane.
 //
 // Both are ported from the consuming control plane's own pins, where they caught real drift.
 import { test } from 'node:test';
@@ -30,8 +30,8 @@ test('CONTROL: the build-path regex flags the shipped text and passes the ruled 
 });
 
 const MarkerToken = 'v1 PLANE (still running)';
-const V1Word = /\b(chains?|child(?:ren)?)\b/i;
-const ExemptTokens = /spec-child|spec-chain|spec-pipeline|chain-\d+|child·|chain_rows|chainDefaultTransport|chain_complete/gi;
+const V1Word = /\b(chains?|child(?:ren)?|parents?)\b/i;
+const ExemptTokens = /spec-chain|spec-pipeline|chain-\d+|chain_rows|chainDefaultTransport|chain_complete/gi;
 const Heading = /^#{2,3}\s/;
 const CodeSpan = /`[^`]*`/g;
 
@@ -69,7 +69,7 @@ export function scan(text) {
 }
 
 const family = [
-  'spec-pipeline', 'spec-seat', 'spec-child', 'spec-parent', 'spec-review', 'spec-retro',
+  'spec-pipeline', 'spec-seat', 'spec-build', 'spec-coordinator', 'spec-review', 'spec-retro',
   'spec-witness', 'spec-ignite', 'docs-process', 'docs-write',
 ];
 
@@ -85,6 +85,9 @@ test('retired ceremony vocabulary appears only in sections marked as describing 
 
 test('CONTROL: the census fires on an unmarked v1 word and not on a marked or quoted one', () => {
   assert.equal(scan('## A\nthe chain runs\n').length, 1);
+  assert.equal(scan('## A\nthe parent rules on it\n').length, 1);
+  assert.equal(scan('## A\na child seat builds\n').length, 1);
   assert.equal(scan('## A\n> v1 PLANE (still running)\nthe chain runs\n').length, 0);
   assert.equal(scan('## A\n`the chain` is a name\n').length, 0);
+  assert.equal(scan('## A\nan older board spells it `## PARENT RULING`\n').length, 0);
 });

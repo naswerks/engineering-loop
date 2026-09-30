@@ -48,7 +48,7 @@ test('CONTROL: the census fires on each thing a skill must not spell, and passes
 });
 
 // ── the find-format line: every skill that needs a format carries it, verbatim ────────────────────────
-const NEEDS_A_FORMAT = ['docs-write', 'docs-process', 'docs-status', 'docs-backlog', 'docs-audit-feature', 'docs-audit-full', 'spec-pipeline', 'spec-parent', 'spec-review', 'spec-retro', 'spec-seat', 'init'];
+const NEEDS_A_FORMAT = ['docs-write', 'docs-process', 'docs-status', 'docs-backlog', 'docs-audit-feature', 'docs-audit-full', 'spec-pipeline', 'spec-coordinator', 'spec-review', 'spec-retro', 'spec-seat', 'init'];
 const lacksTheLine = (dirs, read) => dirs.filter((d) => !read(d).includes(FIND_FORMAT));
 
 test('every skill that needs a format carries the find-format line verbatim, and so does every skill that names a section', () => {

@@ -250,5 +250,5 @@ write, offer — and ask before doing either — to fill each new absent-line fr
 - The floor four are always drafted, even in a repository with no frontend — the reading floor must
   RESOLVE for every seat kind, and "No frontend detected — fill this in" is an honest doc. The standard
   seven are drafted only on evidence; their absence is recorded, never papered over.
-- Counterpart skills: `spec-seat` (reads the floor), `spec-child` (reads the role rows), `spec-pipeline`
+- Counterpart skills: `spec-seat` (reads the floor), `spec-build` (reads the role rows), `spec-pipeline`
   (writes the brief `doctor` checks), `docs-write` / `docs-process` (the queue `doctor` reads).

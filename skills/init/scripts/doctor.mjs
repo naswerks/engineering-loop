@@ -5,7 +5,7 @@ import { existsSync, readFileSync, readdirSync, statSync } from 'node:fs';
 import { join, resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { execFileSync } from 'node:child_process';
-import { OWNED, compareVersions, compareMinor, frontmatterListCount, linesOf, bare, h2Index, findSection, railsItems } from './owned.mjs';
+import { OWNED, KINDS, KIND_SKILLS, NOT_SKILLS, skillTokens, compareVersions, compareMinor, frontmatterListCount, linesOf, bare, h2Index, findSection, railsItems } from './owned.mjs';
 
 const repo = resolve(process.argv[2] || process.cwd());
 const packRoot = resolve(dirname(fileURLToPath(import.meta.url)), '..', '..', '..');
@@ -194,7 +194,9 @@ for (const name of ['CLAUDE.md', 'AGENTS.md']) {
 }
 
 // ── 7. every ignition brief, checked the way the control plane checks it ────────────────────────
-const KINDS = new Set(['coordinator', 'build', 'fixit', 'review', 'retro', 'witness', 'docs-process']);
+// The kick is sent verbatim as the coordinator's task, so a skill it names that this pack does not carry
+// (a renamed one, most often) tells the coordinator to invoke nothing.
+const packSkills = new Set(existsSync(join(packRoot, 'skills')) ? readdirSync(join(packRoot, 'skills')) : []);
 const researchDir = join(repo, 'docs', 'research');
 if (existsSync(researchDir)) {
   for (const topic of readdirSync(researchDir)) {
@@ -205,6 +207,7 @@ if (existsSync(researchDir)) {
     const kick = sectionOf(text, '## The kick');
     if (kick === null) problems.push('the brief has no `## The kick` section, so the task text could not be read');
     else if (!kick.split('\n').some((l) => l.trimStart().startsWith('>'))) problems.push('the `## The kick` section carries no blockquote; its whole text stands in for the task');
+    const unknown = kick === null || packSkills.size === 0 ? [] : [...new Set(skillTokens(kick))].filter((t) => !packSkills.has(t) && !NOT_SKILLS.includes(t));
     const seq = sectionOf(text, '## The sequence');
     if (seq === null) problems.push('the brief has no `## The sequence` section, so no seats could be read');
     else {
@@ -213,13 +216,14 @@ if (existsSync(researchDir)) {
       for (const line of tableRows.slice(1)) {
         const cells = line.trim().replace(/^\|/, '').replace(/\|$/, '').split('|').map((c) => c.trim().replace(/^`|`$/g, '').trim());
         if (cells.every((c) => /^[-: ]*$/.test(c))) continue;
-        if (!cells.some((c) => KINDS.has(c))) { problems.push(`a sequence row names no seat kind and composes nothing: \`${line.trim()}\``); continue; }
+        if (!cells.some((c) => KINDS.includes(c))) { problems.push(`a sequence row names no seat kind and composes nothing: \`${line.trim()}\``); continue; }
         const spec = cells.map((c) => /\b(\d{2}-[A-Za-z0-9._-]*?\.md)\b/.exec(c)).find(Boolean);
         if (spec && !existsSync(join(researchDir, topic, spec[1]))) problems.push(`the sequence names \`${spec[1]}\` and it is missing from disk`);
       }
     }
-    if (problems.length) for (const pr of problems) row('FAIL', `docs/research/${topic}/00-ignition-brief.md`, pr);
-    else row('ok', `docs/research/${topic}/00-ignition-brief.md`, 'the kick and the sequence read clean');
+    for (const pr of problems) row('FAIL', `docs/research/${topic}/00-ignition-brief.md`, pr);
+    for (const t of unknown) row('DEGRADE', `docs/research/${topic}/00-ignition-brief.md`, `the kick names \`${t}\`, a skill this pack does not carry; the coordinator's skill is \`${KIND_SKILLS.coordinator}\``);
+    if (!problems.length && !unknown.length) row('ok', `docs/research/${topic}/00-ignition-brief.md`, 'the kick and the sequence read clean');
   }
 }
 

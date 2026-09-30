@@ -1,4 +1,4 @@
-<!-- naswerks-loop: version=0.5.1 -->
+<!-- naswerks-loop: version=0.6.0 -->
 # Docs Workflow
 
 > How knowledge flows through `docs/`: the loop, the folder rules, the templates, and the `docs-*` skills.
@@ -204,9 +204,9 @@ one** (via `spec-pipeline`). The trigger for the layout is simply *"does this ef
                                    (TWO files — questions ride the PLAN TLDR, and there are no
                                     status snapshots, because the tracker is committed live and
                                     its git history carries every revision)
-                                 code-review.md            the review seat's outside look, if
-                                                           the pipeline had a review row
-                                 parent-retrospective.md   the parent's inside look
+                                 code-review.md                the review seat's outside look, if
+                                                               the pipeline had a review row
+                                 coordinator-retrospective.md  the coordinator's inside look
                                These are TESTIMONY: an archive pass repairs links elsewhere and
                                leaves sessions/** byte-untouched. Older archived sessions may
                                still hold questions.md / status-after-*.md; that is historical
@@ -430,8 +430,8 @@ once the code is fixed. Keep entries one line, dated, and pointing at a `file:li
 ### Spec doc (a numbered pipeline — `spec-pipeline`)
 
 When a research idea graduates into a real plan, `spec-pipeline` explodes it into a numbered pipeline in
-`docs/research/{topic}/`: `00-ignition-brief.md` (the parent seat's standing orders for the run — two
-sections completed at ignition) · `01-{topic}.md` (the umbrella) · `02..NN-{slice}.md` (**one
+`docs/research/{topic}/`: `00-ignition-brief.md` (the coordinator seat's standing orders for the run —
+written whole at authoring, verified at ignition) · `01-{topic}.md` (the umbrella) · `02..NN-{slice}.md` (**one
 self-contained spec per planned session**) · `project-status.md` (the tracker, which carries its own
 section notes) · `live-checks.md` (the human's verification rows).
 Each per-session spec uses this template (carries `Builds on`/`Source:` so the chain stays navigable):
@@ -472,13 +472,13 @@ come from this copy, so a repository changes them once, here.
 |-------|------|-------------|
 | `docs-backlog` | Have an idea | Capture it as a research doc in `research/` |
 | `spec-pipeline` | A research idea is graduating into a real plan | Explode the plan into a numbered spec pipeline (umbrella + one self-contained spec per session + `project-status`) in `research/{topic}/`; the plan becomes ephemeral |
-| `spec-parent` | Right after `spec-pipeline` (same session, context-loaded) or to resume an effort fresh | Assume the coordinator seat: cut seat prompts (one per spec), review/verify TLDRs, give commit calls, own `project-status.md` — the same loop hand-cranked or hosted |
+| `spec-coordinator` | Right after `spec-pipeline` (same session, context-loaded) or to resume an effort fresh | Assume the coordinator seat: cut seat prompts (one per spec), review/verify TLDRs, give commit calls, own `project-status.md` — the same loop hand-cranked or hosted |
 | `spec-seat` | **Every** seat a coordinator arms — invoked FIRST, before the job skill | The CONTRACT, not a seat: the shared half of every seat's procedure — beliefs, plain-text PLAN TLDR, numbered questions w/ recommendations, six-section FINAL TLDR, commit only on the relayed call |
-| `spec-child` | Igniting a build or fixit seat — manually or platform-spawned, after `spec-seat` | The BUILD JOB only: one spec, the role's reading list, the pin taxonomy, the suite protocol; `fixit` variant for no-spec defect sessions. Its ceremony comes from `spec-seat` |
+| `spec-build` | Igniting a build or fixit seat — manually or platform-spawned, after `spec-seat` | The BUILD JOB only: one spec, the role's reading list, the pin taxonomy, the suite protocol; `fixit` variant for no-spec defect sessions. Its ceremony comes from `spec-seat` |
 | `spec-witness` | A pipeline looks wedged, actors' claims conflict, or you want a substrate-verified state report | The read-only fourth seat: the control plane's read lanes, transcripts, git; zero writes, zero rulings — the seats act, the human judges, the witness testifies |
-| `spec-ignite` | Right after `spec-pipeline` when the pipeline runs HOSTED (vs `spec-parent` for hand-cranked) | The ignition copilot: verify the committed brief, derive the stage card (the human clicks Create), "kick it", a hosted coordinator runs the pipeline; two verbal gates, everything announced, every UI gap a named finding |
+| `spec-ignite` | Right after `spec-pipeline` when the pipeline runs HOSTED (vs `spec-coordinator` for hand-cranked) | The ignition copilot: verify the committed brief, derive the stage card (the human clicks Create), "kick it", a hosted coordinator runs the pipeline; two verbal gates, everything announced, every UI gap a named finding |
 | `spec-review` | A pipeline's builds are done and it has a review row | The outside look, before the retro and before the PR: code + patterns + composition across session seams + the loop's own comms, in two independent passes. Files `sessions/code-review.md` and classifies which findings earn a fixit. **Its value is having none of the pipeline's context** |
-| `spec-retro` | The parent's LAST act, after any review and any fixit | The inside look: a substrate-verified grade, the ceremony audit (did the acts the seat believes it performed actually write rows?), the ledger reconciliation, the true economics, the blindnesses, and the ranked fixit backlog |
+| `spec-retro` | The coordinator's LAST act, after any review and any fixit | The inside look: a substrate-verified grade, the ceremony audit (did the acts the seat believes it performed actually write rows?), the ledger reconciliation, the true economics, the blindnesses, and the ranked fixit backlog |
 | `docs-status` | Session start | Report what's recently archived, what's in `working/`, what's in `research/`; sweep the meta-comments for the condensed status table |
 | `docs-write` | End of a session | Finalize the working doc; it stays in `working/` (records its `## Archive` target) |
 | `docs-process` | Start of a session, `working/` has docs | Patch living docs from the working doc's checklist (verified vs code), then file the doc into `archive/` |

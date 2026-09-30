@@ -69,9 +69,9 @@ and never touches the rest of the text.
 | `docs-process` | docs | patch living docs from working docs, verified against code, then archive |
 | `docs-audit-feature` · `docs-audit-full` | docs | audit living docs against code |
 | `spec-pipeline` | spec | explode an approved plan into numbered specs |
-| `spec-parent` | spec | the coordinator seat |
+| `spec-coordinator` | spec | the coordinator seat |
 | `spec-seat` | spec | the contract every armed seat follows |
-| `spec-child` | spec | the build job for one spec |
+| `spec-build` | spec | the build job for one spec |
 | `spec-review` | spec | the outside look before the retrospective |
 | `spec-retro` | spec | the coordinator's close-out audit |
 | `spec-witness` | spec | a read-only verifier |

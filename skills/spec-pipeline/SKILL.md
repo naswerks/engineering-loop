@@ -59,14 +59,14 @@ sessions/                        WHO PUTS IT THERE
                                  questions with the coordinator's rulings appended beneath them. Read
                                  top-to-bottom it IS the session's whole conversation, in message order
   code-review.md                 the review seat, in its own commit, if the run has a review row
-  parent-retrospective.md        the coordinator, at the close
+  coordinator-retrospective.md   the coordinator, at the close
   witness-ledger-*.md            a human commit — the witness is zero-writes by contract (its ticket
                                  cannot even carry the write scope), so its testimony reaches the repo
                                  by someone else's hand
 ```
 
 - **Per-seat artifacts go in a `{spec-slug}/` subfolder; effort-wide artifacts sit at the `sessions/`
-  root.** The first seat creates its subfolder and, incidentally, the parent folder; everything after
+  root.** The first seat creates its subfolder and, incidentally, `sessions/` itself; everything after
   writes into what exists.
 - **RE-COPY BOTH FILES ONCE, IMMEDIATELY BEFORE THE FINAL PUSH.** A seat's close-out receipt is written
   AFTER the commit that carries its testimony, so a single copy always lands truncated — and a follow-up
@@ -78,7 +78,7 @@ sessions/                        WHO PUTS IT THERE
   separate questions file, and there are no status snapshots: the tracker is committed live, so its git
   history already carries the progression a snapshot would fake.
 - **Append-only.** `tldr.md` grows; nobody rewrites it. The rev ladder is the history.
-- **Who READS it:** the coordinator reads each TLDR and appends its rulings under `## PARENT RULING` · the
+- **Who READS it:** the coordinator reads each TLDR and appends its rulings under `## COORDINATOR RULING` · the
   review seat reads every session's TLDR as testimony **and reads nothing else** · the retro greps it for
   acceptance anchors and unanswered questions · the witness uses rev counts and mtimes as a zero-cost
   heartbeat.
@@ -214,7 +214,7 @@ sessions/                        WHO PUTS IT THERE
 5. **Name the archive destination when only you can.** Read `docs/_meta/docs-workflow.md` § The archive
    convention (repository-owned). If where a pipeline files depends on something only this session knows
    (which living feature the effort belongs to, say), resolve it now and write the path into the
-   umbrella's blockquote as an `Archive:` line; `spec-parent` hands it to the docs-process row and
+   umbrella's blockquote as an `Archive:` line; `spec-coordinator` hands it to the docs-process row and
    `docs-process` files there. A convention that needs nothing from you needs no line.
 
 6. **Stop.** The specs stay in `research/{topic}/`. Do NOT implement, do NOT touch living docs, do NOT
@@ -320,7 +320,7 @@ cross-reading them; a human row recorded only by the coordinator has ONE, and th
 one whose errors nobody else catches.
 
 ## The kick — paste this verbatim as the coordinator's task
-> You are the COORDINATOR of the {topic} pipeline. Invoke the `spec-parent` skill, then read
+> You are the COORDINATOR of the {topic} pipeline. Invoke the `spec-coordinator` skill, then read
 > `docs/research/{topic}/00-ignition-brief.md` and follow it. Your branch is `{the effort's branch}`.
 
 Deltas true of THIS kick only (a concurrent pipeline, a model override, a one-off probe) go here as a
@@ -328,7 +328,7 @@ short list. Everything else is already in this brief — the task string is a PO
 stays short because a task buried in a run row cannot be diffed or reviewed the way this file can.
 ```
 
-**Do not restate the ceremony here.** The coordinator's procedure lives in `spec-parent` and its policy
+**Do not restate the ceremony here.** The coordinator's procedure lives in `spec-coordinator` and its policy
 is the one § This repository's rails (repository-owned) names, which a hosted run also carries in the
 un-skippable policy suffix the control plane supplies; a brief that re-teaches them accretes
 into prompt-law that breaks the coordinator it was meant to steer. The brief carries THIS RUN's
@@ -410,7 +410,7 @@ viewer because they are instructions to the coordinator, not content for the hum
 |---|---|---|---|
 ```
 
-**Never generate a `## Checkpoint ledger` or a `## Parent decisions` section.** The session section
+**Never generate a `## Checkpoint ledger` or a `## Coordinator decisions` section.** The session section
 *is* the decision record; a parallel section splits one narrative across two places.
 
 ## `live-checks.md`

@@ -1,11 +1,11 @@
-<!-- naswerks-loop: version=0.5.1 -->
+<!-- naswerks-loop: version=0.6.0 -->
 # The Engineering Loop — flow, seats, skills, and the ceremony
 
 > The quick intro to how work gets built with this loop: the two loops (`docs-*` knowledge, `spec-*`
 > execution), the seats (Human / Coordinator / Seat, plus the read-only Witness), the ceremony per
 > session, and a bare-bones exchange showing the back-and-forth. Point newcomers at this plus
 > [doc-index](doc-index.md) + [docs-workflow](docs-workflow.md). Operational templates live in the
-> `spec-parent` skill; the seat contract in `spec-seat`.
+> `spec-coordinator` skill; the seat contract in `spec-seat`.
 <!-- meta: type=guide; status=current; verified={date}; lineage=1 -->
 
 ---
@@ -38,7 +38,7 @@ Plan graduates          -> spec-pipeline         -> docs/research/{topic}/: umbr
                                                     per session + project-status.md (the plan is
                                                     now throwaway — the specs carry every crumb)
 Same session — CHOOSE THE SEAT:
-  hand-cranked          -> spec-parent           -> this session becomes the COORDINATOR and cuts
+  hand-cranked          -> spec-coordinator      -> this session becomes the COORDINATOR and cuts
                                                     Prompt #1 (you relay every message)
   hosted                -> spec-ignite           -> this session becomes the IGNITION COPILOT:
                                                     verify the brief, derive the stage card, YOU
@@ -108,13 +108,13 @@ What a commit and a PR pass here, beyond the loop. These add to the Hard rules b
   just *plan, build, `docs-write`, `docs-process`* — no pipeline, no coordinator, a flat working
   doc. This is the default and it never requires a control plane.
 - **`spec-*` is the execution loop** for work that is more than one session: `spec-pipeline`
-  graduates the plan, `spec-parent` takes the seat, build seats build one spec each. **Each spec is sized
+  graduates the plan, `spec-coordinator` takes the seat, build seats build one spec each. **Each spec is sized
   for ONE session** — recon, plan, build, suite and FINAL TLDR before the session's context compacts —
   and the spec count falls out of that: a pipeline of two specs is a pipeline, and so is one of ten. It
   hands off to the knowledge loop at both ends (research docs in, working docs out).
 - **Either loop runs by hand or hosted.** The manual version is this document's ceremony with the human
   relaying; the hosted version is the control plane running the same ceremony, machine-relayed. When they
-  drift, this doc + the `spec-parent` skill are the requirements; the control plane follows.
+  drift, this doc + the `spec-coordinator` skill are the requirements; the control plane follows.
 
 ## The seats
 
@@ -126,7 +126,7 @@ What a commit and a PR pass here, beyond the loop. These add to the Hard rules b
 | **Witness** *(optional, `spec-witness`)* | a read-only session with substrate access | testifies from rows/transcripts/git when claims conflict or a pipeline looks wedged; answers "whose turn is it" | writes anything; injects anything; rules on anything |
 
 The seat, not the chat, is the product: `project-status.md` must stay current enough that a
-fresh session can resume as coordinator losslessly (`spec-parent {topic}`).
+fresh session can resume as coordinator losslessly (`spec-coordinator {topic}`).
 
 ## The skills
 
@@ -138,10 +138,10 @@ fresh session can resume as coordinator losslessly (`spec-parent {topic}`).
 | `docs-process` | docs | effort done, fresh session | patch living docs (verified vs code), archive |
 | `docs-audit-feature` / `docs-audit-full` | docs | doc suspected stale / monthly | deep-audit docs against code |
 | `spec-pipeline` | spec | a plan came through and you're committing to it | explode the plan into a numbered spec pipeline — *spare no crumb* |
-| `spec-parent` | spec | right after `spec-pipeline` (same session) or fresh with the topic | assume the coordinator seat |
-| `spec-seat` | spec | **every** seat the coordinator arms, invoked FIRST | **the CONTRACT, not a seat** — the shared half of every seat's procedure. `spec-parent` does NOT compose it: the coordinator writes rulings rather than receiving them |
-| `spec-child` | spec | igniting a build or fixit seat — manual (`spec-child {role} {spec}`) or hosted | **the BUILD JOB only** — one spec, the role's adds, the pin taxonomy, the suite protocol, the fixit variant. Its ceremony comes from `spec-seat` |
-| `spec-ignite` | spec | when an authored pipeline runs HOSTED (the `spec-parent` alternative) | the ignition copilot, and it can run COLD: gates, re-verify the brief's baselines + platform state against live HEAD, derive the stage card (human clicks Create), "kick it" with the brief's own kick text as the task; every UI gap a named finding |
+| `spec-coordinator` | spec | right after `spec-pipeline` (same session) or fresh with the topic | assume the coordinator seat |
+| `spec-seat` | spec | **every** seat the coordinator arms, invoked FIRST | **the CONTRACT, not a seat** — the shared half of every seat's procedure. `spec-coordinator` does NOT compose it: the coordinator writes rulings rather than receiving them |
+| `spec-build` | spec | igniting a build or fixit seat — manual (`spec-build {role} {spec}`) or hosted | **the BUILD JOB only** — one spec, the role's adds, the pin taxonomy, the suite protocol, the fixit variant. Its ceremony comes from `spec-seat` |
+| `spec-ignite` | spec | when an authored pipeline runs HOSTED (the `spec-coordinator` alternative) | the ignition copilot, and it can run COLD: gates, re-verify the brief's baselines + platform state against live HEAD, derive the stage card (human clicks Create), "kick it" with the brief's own kick text as the task; every UI gap a named finding |
 | `spec-review` | spec | a pipeline's builds are done, if it has a review row | the OUTSIDE look, before the retro and before the PR: correctness/security/**composition across session seams** · the patterns, with every departure identified · the loop's own comms. Two independent passes, consolidated. Classifies which findings earn a fixit; **its value is having none of the pipeline's context** |
 | `spec-retro` | spec | the coordinator's LAST act, after any review and any fixit | the INSIDE look: a substrate-verified grade, the ceremony audit (did the acts write rows?), the ledger reconciliation, the true economics, the blindnesses, the ranked fixit backlog — *a retrospective that cannot indict its own author is marketing* |
 | `spec-witness` | spec | a pipeline looks wedged, or actors' claims conflict | the read-only fourth seat: substrate access, zero writes, zero rulings |
@@ -155,7 +155,7 @@ The thing that keeps prompts and skills from drifting apart:
 |---|---|---|
 | **POLICY** | the policy document § This repository's rails names — and, hosted, the un-skippable system-prompt suffix the control plane supplies at open | cannot be skipped, present on every turn |
 | **PROCEDURE — shared** | `spec-seat` | the contract for ANY seat the coordinator arms: blackboard, question lane, parked-call discriminator, verdicts, BELIEFS sha, git shapes, six-section FINAL TLDR, close-out order |
-| **PROCEDURE — per job** | `spec-child` · `spec-review` · `docs-process` | what THIS seat does. The job skill **refines** the seat contract and never contradicts it; a genuine conflict is a finding, not a fork |
+| **PROCEDURE — per job** | `spec-build` · `spec-review` · `docs-process` | what THIS seat does. The job skill **refines** the seat contract and never contradicts it; a genuine conflict is a finding, not a fork |
 | **TASK** | the seed prompt + the pipeline's `00-ignition-brief.md` | per-run; dies with the run |
 
 A seed's first act is therefore to **invoke its skills** — `spec-seat`, then the job — not to restate them.
@@ -174,7 +174,7 @@ diff.
 ## The ceremony (one build session)
 
 1. **Coordinator cuts the seat prompt** from the PREVIOUS session's actual shipped shapes — never
-   from the spec's guesses alone. (Template: `spec-parent` skill.)
+   from the spec's guesses alone. (Template: `spec-coordinator` skill.)
 2. **Seat recons, states its beliefs** (HEAD sha, dirty files, versions, baselines), then a
    **PLAN TLDR as plain text** — before any plan-approval presentation — with **questions as
    numbered options + an embedded recommendation, then STOP**. Never an interactive question tool.
@@ -208,7 +208,7 @@ COORDINATOR -> Prompt #N: docs preamble, ##PROMPT##, ONE spec + context docs + p
                + CEREMONY block
 SEAT        -> PLAN TLDR (BELIEFS: head/dirty/versions/baselines · the plan, 5-10 lines ·
                QUESTIONS 1..n, options + recommendation), STOP
-COORDINATOR -> PARENT RESPONSE — PLAN {ACCEPTED / ACCEPTED-WITH-RIDERS / …} · rulings 1..n
+COORDINATOR -> COORDINATOR RESPONSE — PLAN {ACCEPTED / ACCEPTED-WITH-RIDERS / …} · rulings 1..n
                (DECISION — why) · riders · "Go build."
 SEAT        -> (builds free; mid-run question: numbered text, STOP; COORDINATOR ruling; resume)
 SEAT        -> FINAL TLDR — (a) SHIPPED+VERIFICATION (b) VERBATIM RUNNER SUMMARIES (c) HONEST GAPS
@@ -225,7 +225,7 @@ The exchange above is not just chat — it is a pair of FILES per build session:
 
 - **`tldr.md` — the chat.** Append-only, two voices: the seat's PLAN TLDR + numbered
   questions, the coordinator's ruling appended beneath them, optional mid-build updates +
-  `## PARENT NOTE`s, then the FINAL TLDR. Read top-to-bottom it IS the session's whole
+  `## COORDINATOR NOTE`s, then the FINAL TLDR. Read top-to-bottom it IS the session's whole
   conversation, greppable by anchor.
 - **`plan.md` — the document.** The full plan, posted once, corrected on pushback. PULL-only:
   the coordinator reads it on a `read-full-plan` verdict; it is never force-fed into a wake or chat.
@@ -237,11 +237,11 @@ with the effort:
 
 ```
 docs/research/{topic}/sessions/         <- per-session work in {spec-slug}/, effort-wide at the root
-  {spec-slug}/plan.md        each seat   the full plan, posted once, corrected on pushback (PULL-only)
-  {spec-slug}/tldr.md        each seat   the two-voice chat — seat turns AND coordinator rulings interleaved
-  code-review.md             the review  the outside look, if the pipeline had a review row
-  parent-retrospective.md    the coord.  the close-out audit (the inside look)
-  witness-ledger-*.md        a human     the witness is zero-writes, so its ledger arrives by hand
+  {spec-slug}/plan.md           each seat   the full plan, posted once, corrected on pushback (PULL-only)
+  {spec-slug}/tldr.md           each seat   the two-voice chat — seat turns AND coordinator rulings interleaved
+  code-review.md                the review  the outside look, if the pipeline had a review row
+  coordinator-retrospective.md  the coord.  the close-out audit (the inside look)
+  witness-ledger-*.md           a human     the witness is zero-writes, so its ledger arrives by hand
 ```
 
 Two files per build session; questions ride the TLDR, and there are no status snapshots because the
@@ -264,39 +264,40 @@ though it can be fed.**
 **The coordinator's voice is NOT in the seat's file on the hosted plane.** A coordinator answers with
 `callout` (its sixth drive verb, machine-written, the only downward path), which persists on its own
 artifact lane and closes the question in the **acts ledger**. So **the file says whether a question was
-ASKED; the ledger says whether it was ANSWERED**, and a seat typing a parent-voice heading into its own
-TLDR closes nothing. `callout` **refuses when the charge has no live session** — a coordinator must
+ASKED; the ledger says whether it was ANSWERED**, and a seat typing a coordinator-voice heading into its
+own TLDR closes nothing. `callout` **refuses when the charge has no live session** — a coordinator must
 `seat_spawn` before it can rule — and reports **"RULING RECORDED, NOT DELIVERED"** in those words if the
 transport drops it.
 
-The parent-voice block (machinery-written hosted; the hand-cranked coordinator writes it — hand-cranked
-there is no rev counter, so the heading is `## PARENT RULING (plan — {verdict})`; the stable grep prefix
-`## PARENT RULING` is the contract in both modes):
+The coordinator-voice block (machinery-written hosted; the hand-cranked coordinator writes it —
+hand-cranked there is no rev counter, so the heading is `## COORDINATOR RULING (plan — {verdict})`; the
+stable grep prefix `## COORDINATOR RULING` is the contract in both modes, and an older board's
+`## PARENT RULING` is read as the same heading):
 
 ```
-## PARENT RULING (plan rev N — {accept | accept-with-riders | blocking-precondition})
+## COORDINATOR RULING (plan rev N — {accept | accept-with-riders | blocking-precondition})
 
-PARENT RESPONSE — PLAN TLDR {VERDICT}. {one sentence naming the best thing in the plan}
+COORDINATOR RESPONSE — PLAN TLDR {VERDICT}. {one sentence naming the best thing in the plan}
 Answers:
 1. {RULING IN CAPS} — {decision first, then the why}.
 ...
 Go build. Fold the riders in — no re-approval round-trip.
 ```
 
-Callouts and nudges append as `## PARENT NOTE` (actor-suffixed when known, e.g. `(operator)`).
+Callouts and nudges append as `## COORDINATOR NOTE` (actor-suffixed when known, e.g. `(operator)`).
 
 **The seat's own two anchors:**
 
 ```
-## [child·{slug} · run {id}] CLOSE-OUT RECEIPT     <- after the push
-## [child·{slug} · run {id}] HOLDING              <- "I have pushed and I am waiting"
+## [seat·{slug} · run {id}] CLOSE-OUT RECEIPT     <- after the push
+## [seat·{slug} · run {id}] HOLDING              <- "I have pushed and I am waiting"
 ```
 
 **A question heading, a HOLDING and a close-out receipt are ALL non-staling** — the gates bind an
 acceptance to the accepted CONTENT, not to the revision number, so appending your own *state* leaves it
 intact. Only **new content** stales. A seat that has pushed and is waiting is otherwise indistinguishable
 from a seat that has done nothing, and a coordinator reading a wake led by its own acceptance concludes
-there is nothing to rule — the HOLDING anchor is what prevents that. The token is the literal `child·`
+there is nothing to rule — the HOLDING anchor is what prevents that. The token is the literal `seat·`
 whatever seat you are — it is a protocol anchor, not a description of you.
 
 ### Questions ride the same blackboard
@@ -321,4 +322,4 @@ the credential: **a receipt the audited party can mint is not a receipt** — wh
 door takes the human's own token and never a seat's job ticket.
 
 ## Lineage
-- **Related** — [docs-workflow](docs-workflow.md) · [doc-index](doc-index.md) · the `spec-parent` and `spec-seat` skills (the operational templates and the seat contract)
+- **Related** — [docs-workflow](docs-workflow.md) · [doc-index](doc-index.md) · the `spec-coordinator` and `spec-seat` skills (the operational templates and the seat contract)

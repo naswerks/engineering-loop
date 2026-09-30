@@ -24,7 +24,7 @@ test('the plugin is named naswerks and the marketplace engineering-loop', () => 
 
 test('every directory under skills/ carries a SKILL.md whose name is its folder', () => {
   const dirs = skillDirs();
-  assert.ok(dirs.length >= 14, `expected at least the fourteen loop skills, found ${dirs.length}`);
+  assert.ok(dirs.length >= 15, `expected at least the fifteen skills, found ${dirs.length}`);
   for (const dir of dirs) {
     const file = join(root, 'skills', dir, 'SKILL.md');
     assert.ok(existsSync(file), `skills/${dir}/ has no SKILL.md`);

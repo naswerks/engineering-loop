@@ -1,6 +1,6 @@
 ---
 name: spec-seat
-description: The CONTRACT for any seat a pipeline coordinator arms — the blackboard, the question lane, the parked-call discriminator, the verdict vocabulary, the BELIEFS sha, git shapes, the six-section FINAL TLDR, and the close-out order. Invoked FIRST, then the job skill (spec-child | spec-review | docs-process). Not a seat of its own; the shared half of every seat's procedure.
+description: The CONTRACT for any seat a pipeline coordinator arms — the blackboard, the question lane, the parked-call discriminator, the verdict vocabulary, the BELIEFS sha, git shapes, the six-section FINAL TLDR, and the close-out order. Invoked FIRST, then the job skill (spec-build | spec-review | docs-process). Not a seat of its own; the shared half of every seat's procedure.
 ---
 
 # spec-seat
@@ -10,13 +10,13 @@ the review row, the docs-process row — runs THIS, then its own job skill:
 
 | Seat kind | Composes |
 |---|---|
-| `build` · `fixit` | `spec-seat` + **`spec-child`** |
+| `build` · `fixit` | `spec-seat` + **`spec-build`** |
 | `review` | `spec-seat` + **`spec-review`** |
 | `docs-process` | `spec-seat` + **`docs-process`** |
 
 **THE PAIRING IS SEVEN-WAY AND NON-UNIFORM, and the three kinds missing from that table are missing
 DELIBERATELY.** `coordinator`, `retro` and `witness` each carry their OWN whole contract
-(`spec-parent` · `spec-retro` · `spec-witness`) and are **never** told to invoke this file — prefixing
+(`spec-coordinator` · `spec-retro` · `spec-witness`) and are **never** told to invoke this file — prefixing
 `spec-seat` onto a skill that already carries a whole contract ships a seed contradicting the skill it
 points at. The control plane composes each kind's seed from this table and has no catch-all: an unknown
 kind is refused by name (`seat-kind-has-no-seed`) rather than ignited wrongly.
@@ -26,7 +26,7 @@ contradicts it. Where they genuinely conflict, that is **a finding to report**, 
 quietly — say so in your PLAN TLDR and let the coordinator rule.
 
 **The coordinator does NOT compose this.** It writes rulings rather than receiving them, owns the tracker,
-and holds the close — a different contract, and `spec-parent` carries it whole.
+and holds the close — a different contract, and `spec-coordinator` carries it whole.
 
 **Why this file exists:** a base contract that every seat kind shared, with the build job mixed in, sent
 the review row into the umbrella its own charter excluded and offered the docs-process row a `docs-write`
@@ -100,7 +100,7 @@ FINAL TLDR — **append, never overwrite**) are FILES, not just chat text.
 
 - **Hand-cranked:** create them under `docs/research/{topic}/sessions/{slug}/` at plan time and end your
   turn announcing the path. The coordinator reads `tldr.md` with normal file tools and APPENDS its ruling
-  under `## PARENT RULING`, so read the answer in your own file and proceed. The full plan is PULL — it is
+  under `## COORDINATOR RULING`, so read the answer in your own file and proceed. The full plan is PULL — it is
   read only on a read-full-plan verdict; never paste it into chat. (If your harness has a plan-approval
   mode that forbids writes: give the chat summary, get the human's approve, THEN post and stop.)
 - **Hosted (a seat inside a pipeline):** the same two files are yours to edit with normal file tools, then
@@ -118,29 +118,33 @@ Either way, `tldr.md` read top-to-bottom is the session's whole conversation in 
 
 **Greppable turn anchors:** every append gets a stable heading carrying actor + identity —
 `## [{seat}·{slug} · run {id}] {phase}` when your seat has a run identity, `## [{seat}·{slug}] {phase}`
-hand-cranked. The coordinator's voice is always `## PARENT RULING …` / `## PARENT NOTE …`. The stable
-prefixes are the contract: one grep for `## PARENT RULING` across every session's `tldr.md` lists every
-ruling in the effort.
+hand-cranked. The coordinator's voice is always `## COORDINATOR RULING …` / `## COORDINATOR NOTE …`. The
+stable prefixes are the contract: one grep for `## (COORDINATOR|PARENT) RULING` across every session's
+`tldr.md` lists every ruling in the effort.
 
-**THE HEADING VOCABULARY IS CLOSED, AND THAT IS THE HAZARD AS WELL AS THE CONTRACT.** The parent-voice
-list is exactly four — `PARENT NOTE` · `PARENT ACCEPT` · `PARENT RULING` · `OPERATOR RULING` — matched
-by the control plane on a word boundary, so `## PARENT NOTEBOOK` cannot pass. A fifth anchor invented
-later closes nothing and counts as nothing until the control plane learns it. **Section boundaries are
-level-2 headings only** — `### Option A` inside your question block is still inside the question,
-deliberately, so a ruling never arrives having truncated your options.
+**THE HEADING VOCABULARY IS CLOSED, AND THAT IS THE HAZARD AS WELL AS THE CONTRACT.** The
+coordinator-voice list is exactly four — `COORDINATOR NOTE` · `COORDINATOR ACCEPT` · `COORDINATOR RULING`
+· `OPERATOR RULING` — matched by the control plane on a word boundary, so `## COORDINATOR NOTEBOOK`
+cannot pass. An older board spells the first three `PARENT NOTE` · `PARENT ACCEPT` · `PARENT RULING`; the
+control plane reads that spelling as the same three, which is why the grep above carries both. A fifth
+anchor invented later closes nothing and counts as nothing until the control plane learns it. **Section
+boundaries are level-2 headings only** — `### Option A` inside your question block is still inside the
+question, deliberately, so a ruling never arrives having truncated your options.
 
-**Point, don't paste:** to direct anyone at content, say *"read `tldr.md` under `## PARENT RULING`"* —
-never re-paste a multi-KB block into a composer.
+**Point, don't paste:** to direct anyone at content, say *"read `tldr.md` under `## COORDINATOR
+RULING`"* — never re-paste a multi-KB block into a composer.
 
 **If `tldr.md` already exists when you go to create your blackboard, APPEND** — machinery may have written
-before you, and recreating the file clobbers it (the platform refuses a shrinking rewrite).
+before you, and recreating the file clobbers it (the platform refuses a shrinking rewrite). **And every
+heading already on your board stays exactly as written, an older spelling included:** the platform refuses
+a revision whose earlier headings changed, so never tidy an old heading into the current vocabulary.
 
 **Re-read `tldr.md` immediately before every append.** The coordinator appends into the SAME file between
 your turns — an edit whose old text no longer matches almost always means the conversation moved.
 Re-read, fold what's new, then append. Never resolve the mismatch by rewriting the whole file; the rev
 ladder is the history.
 
-**`## PARENT NOTE (FYI — no reply needed)` is the NO-TURN lane:** the coordinator can leave you
+**`## COORDINATOR NOTE (FYI — no reply needed)` is the NO-TURN lane:** the coordinator can leave you
 informational context WITHOUT waking you — it lands durably in your `tldr.md` and costs you nothing.
 The re-read above is where you pick FYIs up: fold them as context, owe no reply, and never treat one as
 a ruling — an FYI cannot answer an open question (only a ruling heading does).
@@ -149,7 +153,7 @@ a ruling — an FYI cannot answer an open question (only a ruling heading does).
 
 **When you need a decision at ANY point:** append a question section to your own `tldr.md`, post
 (`post_tldr`), and **END YOUR TURN.** Your coordinator is woken with your text, and its ruling under a
-parent-voice heading is your answer — pick it up from your own file and resume.
+coordinator-voice heading is your answer — pick it up from your own file and resume.
 
 **TWO literal headings, one lane — pick by phase, and use a real `##` heading either way:**
 
@@ -170,7 +174,7 @@ every section and answers `Blocking` / `NotBlocking` / `Undeclared`. Markdown ar
 - **Never let a reader turn your declaration into liveness.** It is a claim made at the instant you
   typed it; a seat that wrote `BLOCKING:` and then kept working was telling the truth.
 
-**Both poke the coordinator identically** — same wake, same re-raise, same parent-voice answer. The split
+**Both poke the coordinator identically** — same wake, same re-raise, same coordinator-voice answer. The split
 is for the READER (a recon fork and a mid-build discovery are different kinds of news), never for the
 machinery. A question under any OTHER heading — or as a bare `QUESTIONS:` label with no `##` — gets no
 banner and **the re-raise can never fire**, so it can sit unanswered indefinitely. And never use
@@ -194,13 +198,13 @@ the pipeline a round-trip and nothing else.
 The latch reads the ACTS LEDGER: a ruling closes your question only when it is delivered as a `callout`
 carrying your post's act id as `answeringActId`. A `callout` without one steers you and closes nothing.
 **The reason is a security property, not tidiness:** `tldr.md` is written BY YOU, so a file-side close
-predicate is a string the audited party can type — a seat could write `## PARENT RULING` into its own file
+predicate is a string the audited party can type — a seat could write `## COORDINATOR RULING` into its own file
 and switch off the very re-raise that exists to stop it waiting forever. The question is therefore split
 in two: *was one asked?* — a fact about the file, where forgery only wakes your own coordinator — versus
 *was it answered?* — a fact about what the coordinator DID, read from the ledger.
 
 **The honest rendering of your file is unchanged**: an open-questions read of the file still clears on the
-parent-voice heading, because that is what the file SAYS. What differs is what a DECISION may be
+coordinator-voice heading, because that is what the file SAYS. What differs is what a DECISION may be
 predicated on.
 
 ### THREE CONTRACT LINES, all earned by one kind of silence
@@ -238,7 +242,7 @@ Ask what the park is protecting:
 
 - **A park on a STATE condition** — the park text names a rev, a hash, or a version: it is STATE, not
   approval. Do not re-request, do not reshape; read the substrate for the healing signal (your own acts:
-  the fresh acceptance receipt, or the `## PARENT NOTE (re-accept)` append) and retry ONCE on receipt.
+  the fresh acceptance receipt, or the `## COORDINATOR NOTE (re-accept)` append) and retry ONCE on receipt.
   State parks are machine-healable — one argless re-accept re-binds a stale acceptance. **Never hold for
   one specific lane: whichever arrives first IS your signal, and the substrate outranks the bus.**
 - **A park on your own legitimate in-worktree work** — **re-request it** (no self-imposed cap, no
@@ -342,7 +346,7 @@ naming both. That is why your BELIEFS sha is a contract line and not a courtesy 
 moves mid-build is disclosed FIRST, never absorbed quietly.
 
 **The re-accept signal:** after a rev-bound/stale-acceptance park, the re-accept arrives as a
-`## PARENT NOTE (re-accept)` append plus a callout — retry your held action on receipt. If your next wake
+`## COORDINATOR NOTE (re-accept)` append plus a callout — retry your held action on receipt. If your next wake
 shows the fresh acceptance receipt in your own rows WITHOUT the note, **that row IS your signal** — the
 substrate outranks the bus. Never hold for one specific lane. **A re-accept with no retry order is a
 doorbell with no follow-through**; if you receive one bare, retry anyway and say that you did.
@@ -416,13 +420,13 @@ produces a working doc**, COMMIT CALL with the message). Execute it exactly.
 makes the acceptance stale by design. Append your close-out receipt AFTER the push under this heading:
 
 ```
-## [child·{slug} · run {id}] CLOSE-OUT RECEIPT
+## [seat·{slug} · run {id}] CLOSE-OUT RECEIPT
 ```
 
 ## IF YOU HAVE PUSHED AND ARE WAITING, SAY SO. IT DOES NOT STALE YOU.
 
 ```
-## [child·{slug} · run {id}] HOLDING
+## [seat·{slug} · run {id}] HOLDING
 ```
 
 **Then `post_tldr` and end your turn.** Body: what you pushed, and what you are waiting for
@@ -437,10 +441,11 @@ cost a pipeline hours. Preventing it is your job, and it costs you one append.
 the accepted CONTENT, not to the revision number, so appending your own state or a question leaves it
 intact. Only **new content** stales.
 
-**The token is the literal `child·`, whatever seat you are.** The control plane's close-out matcher keys
-on `[child·…] CLOSE-OUT RECEIPT`, so a review or docs-process seat that writes `[review·…]` or
+**The token is the literal `seat·`, whatever seat you are.** The control plane's close-out matcher keys
+on `[seat·…] CLOSE-OUT RECEIPT`, so a review or docs-process seat that writes `[review·…]` or
 `[process·…]` **fails the match and stales its own acceptance** — costing a re-post and an argless
-re-accept. **It is a PROTOCOL ANCHOR, not a description of you.** A descriptive tail after the marker IS
+re-accept. (An older board's `[child·…]` token matches too; write only `seat·`.) **It is a PROTOCOL
+ANCHOR, not a description of you.** A descriptive tail after the marker IS
 blessed (`… CLOSE-OUT RECEIPT — addendum: the six staged, tree clean`) — an end-anchored pattern on the
 one heading seats are told to write would be a trap that fires on ordinary prose.
 
@@ -489,7 +494,7 @@ why. Silence is not compliance.
 **THE TESTIMONY REGRESS, AND THE DECLARED STOPPING POINT — read this before you copy anything.** The
 order above puts the COMMIT before the CLOSE-OUT RECEIPT, so the copy you commit ends at your FINAL TLDR
 and can contain neither the receipt (hash, session id, staging receipt) nor the coordinator's
-`## PARENT ACCEPT`. **A follow-up commit does not fix this, it moves it:** any receipt ABOUT that commit is
+`## COORDINATOR ACCEPT`. **A follow-up commit does not fix this, it moves it:** any receipt ABOUT that commit is
 also written after it. The regress is infinite and the ceremony does not pretend otherwise.
 
 **So the rule is a declared stopping point rather than a fix: RE-COPY `plan.md` AND `tldr.md` ONCE,
@@ -519,5 +524,5 @@ plane. The publish receipt is written at your turn's STOP and is structurally un
   with a clean rerun builds trust, an undisclosed one destroys it.
 - **A rule recalled from context needs re-reading at the source before it is used to refuse work.** A
   rule already corrected on disk is the commonest thing a seat blocks itself on.
-- Your job skill is next: `spec-child` (build/fixit) · `spec-review` (the outside look) ·
-  `docs-process` (compile the living docs). Counterpart: `spec-parent` (the seat that arms you).
+- Your job skill is next: `spec-build` (build/fixit) · `spec-review` (the outside look) ·
+  `docs-process` (compile the living docs). Counterpart: `spec-coordinator` (the seat that arms you).

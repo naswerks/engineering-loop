@@ -45,7 +45,8 @@ branch, which is the truth for that PR, and you say so at close.
    the seat that does it.
 
    **If the effort was a spec pipeline, you have a SECOND input: `sessions/code-review.md`** — the review
-   seat's outside look, filed beside `parent-retrospective.md`. Read both. **Every review finding gets a
+   seat's outside look, filed beside the coordinator's retrospective (`coordinator-retrospective.md`, or
+   `parent-retrospective.md` in an effort begun before that name). Read both. **Every review finding gets a
    disposition, and the disposition is TOTAL:** a living-doc patch here · an existing fixit seat · a
    chartered follow-up · a new spec pipeline · or killed on record with the reason. **A finding with no named
    home is dropped, not deferred** — and the review's own classification (fixit candidate / deferred /

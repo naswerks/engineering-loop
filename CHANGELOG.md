@@ -5,6 +5,47 @@ version is the one in `package.json` and `.claude-plugin/plugin.json`, which mus
 
 ## [Unreleased]
 
+## [0.6.0] - 2026-09-29
+
+### Changed
+
+- **Two skills are named for the seat kinds that run them.** `spec-parent` is now `spec-coordinator`, and
+  `spec-child` is now `spec-build`. A spec seat's skill is `spec-{kind}` for every kind; `fixit` rides
+  `spec-build`, and `docs-process` is its own skill. Invoke them as `/naswerks:spec-coordinator` and
+  `/naswerks:spec-build`. A control plane that seeds skills by name seeds the new names, with this version
+  as its pack floor.
+- **The coordinator's voice is spelled `COORDINATOR`.** The anchors are `## COORDINATOR RULING`,
+  `## COORDINATOR NOTE` and `## COORDINATOR ACCEPT` (beside `## OPERATOR RULING`), the ruling templates open
+  `COORDINATOR RESPONSE`, and a seat's own anchors are `## [seat·…] CLOSE-OUT RECEIPT` and
+  `## [seat·…] HOLDING`. A board written before this version spells them `## PARENT …` and `[child·…]`:
+  every grep the skills run reads both spellings, a parser that reads the anchors should too, and no seat
+  rewrites a heading already on its board.
+- The coordinator's close-out audit is filed as `sessions/coordinator-retrospective.md`; a reader takes
+  `sessions/parent-retrospective.md` in an effort begun before this version.
+- `spec-coordinator` no longer names a `parallel` spawn argument: a shared worktree holds one live seat at a
+  time, and parallel seats need separate worktrees, decided when the pipeline is created.
+- The retired-vocabulary census retires `parent` beside `chain` and `child`.
+- `docs-workflow.md` says the ignition brief is written whole at authoring and verified at ignition.
+
+### Added
+
+- `pins/names.test.mjs`: every skill name the pack writes is a skill it carries, and every seat kind runs a
+  skill named for it. The kinds, their skills and the words shaped like a skill name that name none are one
+  list in `skills/init/scripts/owned.mjs`, which the doctor reads too.
+- `init doctor` degrades a brief whose `## The kick` names a skill this pack does not carry, and names the
+  coordinator's skill.
+
+### Upgrading from 0.5
+
+1. Take the release (`claude plugin marketplace update engineering-loop`, then
+   `claude plugin update naswerks@engineering-loop`) between efforts: a session that invokes `spec-parent`
+   or `spec-child` after the update finds no such skill.
+2. Re-copy the loop text of both references into `docs/_meta/`, keeping your repository-owned sections;
+   `init refresh` restamps and never touches loop text.
+3. If your § The archive convention (repository-owned) names `parent-retrospective.md`, rename it there.
+   The section is yours, so neither refresh nor a re-copy reaches it.
+4. Run `init doctor`. A brief whose kick still names a retired skill shows a DEGRADE row; change the kick.
+
 ## [0.5.1] - 2026-09-24
 
 ### Fixed

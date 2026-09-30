@@ -1,9 +1,9 @@
 ---
-name: spec-child
-description: The BUILD JOB for a pipeline seat — one spec, the role's reading list, the pin taxonomy, the suite protocol, and the fixit variant. Composed AFTER spec-seat, which carries the seat contract (blackboard, question lane, verdicts, FINAL TLDR, close-out). Use when a prompt says you are a build or fixit session, or run spec-child {role} {spec-path}. Roles: backend | frontend | mixed.
+name: spec-build
+description: The BUILD JOB for a pipeline seat — one spec, the role's reading list, the pin taxonomy, the suite protocol, and the fixit variant. Composed AFTER spec-seat, which carries the seat contract (blackboard, question lane, verdicts, FINAL TLDR, close-out). Use when a prompt says you are a build or fixit session, or run spec-build {role} {spec-path}. Roles: backend | frontend | mixed.
 ---
 
-# spec-child
+# spec-build
 
 **Your seat contract is `spec-seat` — invoke it first if you have not.** It carries the blackboard, the
 question lane, the parked-call discriminator, the verdict vocabulary, the BELIEFS sha, git shapes, the
@@ -14,7 +14,7 @@ You build exactly one spec. The coordinator judges and rules; you recon, plan, b
 Hand-cranked, a human relays messages; hosted inside a pipeline, your coordinator drives you itself and
 the relay is machine-carried — **your contract is identical either way.**
 
-Invoked as `spec-child {role} {spec-path}`, or told "you are a build session" with the spec path.
+Invoked as `spec-build {role} {spec-path}`, or told "you are a build session" with the spec path.
 
 ## Step 1 — with your role and spec in hand
 
@@ -130,7 +130,7 @@ build over a tree they had not touched, and they got a **passing receipt that pr
 false-green genus, embedded in the manual instead of in a test. Name the app you edited and run its
 commands from its root.
 
-## Fix-it variant (`spec-child fixit`)
+## Fix-it variant (`spec-build fixit`)
 
 No spec — your contract is the prompt + the coordinator's ledger (READ-ONLY). **STEP 0 — INVESTIGATE,
 REPORT, STOP:** (1) reproduce/characterize cheaply, (2) find the cheapest reliable RECEIPT for the fixed
@@ -152,6 +152,6 @@ what a truthful partial looks like per named item, **ask for it** before you sta
 - **The spec's anchors are hypotheses; HEAD is the truth.** The biggest catches — stale trees, false
   greens, dropped rulings — are all belief-vs-ledger mismatches. Your beliefs block exists so the
   coordinator can catch them cheaply.
-- Counterpart skills: `spec-seat` (your contract) · `spec-parent` (the seat that arms you) ·
+- Counterpart skills: `spec-seat` (your contract) · `spec-coordinator` (the seat that arms you) ·
   `spec-pipeline` (how your spec came to exist). The hosted version of you runs THIS same pair — the
   control plane's seed names both skills, in this order.
