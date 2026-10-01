@@ -1,4 +1,4 @@
-<!-- naswerks-loop: version=0.6.0 -->
+<!-- naswerks-loop: version=0.7.0 -->
 # Docs Workflow
 
 > How knowledge flows through `docs/`: the loop, the folder rules, the templates, and the `docs-*` skills.
