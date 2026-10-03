@@ -1,4 +1,4 @@
-<!-- naswerks-loop: version=0.6.0 -->
+<!-- naswerks-loop: version=0.7.0 -->
 # The Engineering Loop — flow, seats, skills, and the ceremony
 
 > The quick intro to how work gets built with this loop: the two loops (`docs-*` knowledge, `spec-*`
@@ -253,26 +253,31 @@ repo files, staged at close-out; the coordinator appends rulings with its own fi
 human's relay is a one-line nudge each way).
 
 <!-- control-plane-specific -->
-**Hosted — there is no folder tree the controller can read.** A seat **carries its bytes** to
-`post_plan` / `post_tldr` (verbs under `acts:write`, so a witness ticket structurally cannot post), and
-everything identifying is **server-derived** — pipeline and seat from the verified ticket, and **the rev**
-(newest + 1). *A rev nobody can misstate cannot regress by accident.* The append-only guard is what
-survives the transport: the ladder only climbs, a shorter file is refused, and the same rev with
-different bytes is refused — so the mirror **cannot be clobbered or rewound by a caller that lies, even
-though it can be fed.**
+**Hosted — the same files, read by the controller.** A seat edits its two files with its own tools and
+**pokes**: `post_plan` / `post_tldr` with the file's `path` inside its workspace the first time, then with
+nothing — the control plane reads the file from the seat's runner and mirrors it (verbs under `acts:write`,
+so a witness ticket structurally cannot post). A runner older than periscope 1.4.0 cannot be read; there the
+seat carries its bytes as `content`. Everything identifying is **server-derived** — pipeline and seat from
+the verified ticket, and **the rev** (newest + 1). *A rev nobody can misstate cannot regress by accident.*
+The append-only guard is what survives the transport: the ladder only climbs, a revision that drops a section
+is refused, and the same rev with different bytes is refused — so the mirror **cannot be clobbered or rewound
+by a caller that lies, even though it can be fed.**
 
-**The coordinator's voice is NOT in the seat's file on the hosted plane.** A coordinator answers with
-`callout` (its sixth drive verb, machine-written, the only downward path), which persists on its own
-artifact lane and closes the question in the **acts ledger**. So **the file says whether a question was
-ASKED; the ledger says whether it was ANSWERED**, and a seat typing a coordinator-voice heading into its
-own TLDR closes nothing. `callout` **refuses when the charge has no live session** — a coordinator must
+**The coordinator's voice is in the seat's file in both modes.** The coordinator appends its ruling to the
+seat's `tldr.md` under its coordinator-voice heading, then calls its verb (`accept_plan` · `accept` ·
+`callout`) with a one-line summary: the control plane mirrors the file as a revision in the coordinator's
+voice BEFORE it records the act, and the seat is pointed at the section added. **The file says what was
+said; the ledger says what was decided** — a question closes only on the coordinator's act, so a seat typing
+a coordinator-voice heading into its own TLDR closes nothing, and a revision in the coordinator's voice never
+counts as the seat asking. `callout` **refuses when the charge has no live session** — a coordinator must
 `seat_spawn` before it can rule — and reports **"RULING RECORDED, NOT DELIVERED"** in those words if the
-transport drops it.
+transport drops it. Where the coordinator cannot write the seat's file (a runner older than 1.4.0, a seat in
+its own workspace), the verb carries the words, as before.
 
-The coordinator-voice block (machinery-written hosted; the hand-cranked coordinator writes it —
-hand-cranked there is no rev counter, so the heading is `## COORDINATOR RULING (plan — {verdict})`; the
-stable grep prefix `## COORDINATOR RULING` is the contract in both modes, and an older board's
-`## PARENT RULING` is read as the same heading):
+The coordinator-voice block (the coordinator writes it in both modes; hand-cranked there is no rev counter,
+so the heading is `## COORDINATOR RULING (plan — {verdict})`; the stable grep prefix
+`## COORDINATOR RULING` is the contract in both modes, and an older board's `## PARENT RULING` is read as
+the same heading):
 
 ```
 ## COORDINATOR RULING (plan rev N — {accept | accept-with-riders | blocking-precondition})
@@ -286,19 +291,21 @@ Go build. Fold the riders in — no re-approval round-trip.
 
 Callouts and nudges append as `## COORDINATOR NOTE` (actor-suffixed when known, e.g. `(operator)`).
 
-**The seat's own two anchors:**
+**The seat's own three anchors:**
 
 ```
 ## [seat·{slug} · run {id}] CLOSE-OUT RECEIPT     <- after the push
 ## [seat·{slug} · run {id}] HOLDING              <- "I have pushed and I am waiting"
+## [seat·{slug} · run {id}] ABOUT TO PARK        <- "the next call waits on a human, and here it is"
 ```
 
-**A question heading, a HOLDING and a close-out receipt are ALL non-staling** — the gates bind an
-acceptance to the accepted CONTENT, not to the revision number, so appending your own *state* leaves it
-intact. Only **new content** stales. A seat that has pushed and is waiting is otherwise indistinguishable
+**A question heading, a HOLDING, an ABOUT TO PARK and a close-out receipt are ALL non-staling** — the gates
+bind an acceptance to the accepted CONTENT, not to the revision number, so appending your own *state* leaves
+it intact. Only **new content** stales. A seat that has pushed and is waiting is otherwise indistinguishable
 from a seat that has done nothing, and a coordinator reading a wake led by its own acceptance concludes
-there is nothing to rule — the HOLDING anchor is what prevents that. The token is the literal `seat·`
-whatever seat you are — it is a protocol anchor, not a description of you.
+there is nothing to rule — the HOLDING anchor is what prevents that, and ABOUT TO PARK does the same for a
+seat the gate is holding. The token is the literal `seat·` whatever seat you are — it is a protocol anchor,
+not a description of you.
 
 ### Questions ride the same blackboard
 

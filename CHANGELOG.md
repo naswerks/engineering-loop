@@ -5,6 +5,45 @@ version is the one in `package.json` and `.claude-plugin/plugin.json`, which mus
 
 ## [Unreleased]
 
+## [0.7.0] - 2026-10-01
+
+### Changed
+
+- **The hosted plane runs the hand-cranked ceremony: one file, two voices, a poke each way.** A seat writes
+  its `plan.md` and `tldr.md` with its own tools and posts each by `path` the first time — the control plane
+  reads the file from the seat's runner (periscope 1.4.0's `workspace_read`) — then with nothing. The
+  coordinator appends its ruling to the seat's `tldr.md` under its coordinator-voice heading and calls
+  `accept_plan`, `accept` or `callout` with a one-line summary; the control plane mirrors the file before it
+  records the act, and the seat is pointed at the section added. The act still decides. A runner older than
+  periscope 1.4.0 keeps the old form: the seat posts `content`, and the verb carries the coordinator's words.
+  `spec-seat`, `spec-coordinator` and `engineering-loop.md` § The blackboard say so.
+- `spec-coordinator`: `seat_acts` is the coordinator's census (its mint carries `acts:read`, and
+  `spec-retro` says so too); `read_blackboard` returns a window of a file or only the sections new since a
+  revision; `accept` carries the commit call, and an acceptance written into the seat's file binds to that
+  revision.
+- `spec-seat`: a search is data only as a quoted literal given to a read-only search tool, with no `$`, no
+  backtick, no interpreter and no `xargs` in the pipeline. On a periscope 1.4.0 runner the native reads
+  reach outside the workspace, credential material excepted; on an older one a file outside it is read with
+  a shell command.
+
+### Added
+
+- **`## [seat·…] ABOUT TO PARK`, the seat's third anchor:** the next call waits on a human, and here it is —
+  the verbatim command and what it waits on, posted before the call runs. Non-staling, like `HOLDING`.
+- Both skills: a control-plane verb that fails with a transport error (`ECONNRESET`) is called once more,
+  then disclosed; a refusal has a name and a dropped connection does not.
+
+### Upgrading from 0.6
+
+1. Take the release: `claude plugin marketplace update engineering-loop`, then
+   `claude plugin update naswerks@engineering-loop --scope <scope>`, and a new session.
+2. Re-copy the loop text of `references/engineering-loop.md` into `docs/_meta/engineering-loop.md` — § The
+   blackboard changed — keeping your repository-owned sections. Then `init refresh` restamps both copies; it
+   never touches loop text.
+3. A control plane that reads the seat anchors treats `## [seat·…] ABOUT TO PARK` as it treats
+   `## [seat·…] HOLDING` — a post-acceptance append that does not stale the acceptance. Until it does, the
+   append stales one.
+
 ## [0.6.0] - 2026-09-29
 
 ### Changed

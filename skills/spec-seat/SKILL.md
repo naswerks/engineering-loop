@@ -98,16 +98,26 @@ that is your scope — do not widen it on the theory that more reading is safer.
 `plan.md` (the full plan document) and `tldr.md` (the chat: your PLAN TLDR, any mid-build updates, the
 FINAL TLDR — **append, never overwrite**) are FILES, not just chat text.
 
+**ONE CEREMONY IN BOTH MODES: you write your file, then you poke; your coordinator appends its ruling to the
+SAME file, then pokes you. Nobody pastes a document into a message.**
+
 - **Hand-cranked:** create them under `docs/research/{topic}/sessions/{slug}/` at plan time and end your
   turn announcing the path. The coordinator reads `tldr.md` with normal file tools and APPENDS its ruling
   under `## COORDINATOR RULING`, so read the answer in your own file and proceed. The full plan is PULL — it is
   read only on a read-full-plan verdict; never paste it into chat. (If your harness has a plan-approval
   mode that forbids writes: give the chat summary, get the human's approve, THEN post and stop.)
-- **Hosted (a seat inside a pipeline):** the same two files are yours to edit with normal file tools, then
-  call **`post_plan` / `post_tldr` with the file's whole text as `content`** — the control plane runs on
-  another machine and cannot read your file. It records a revision and wakes your coordinator with ONE
-  LINE naming the act and the rev; the coordinator reads your file from the board; nothing you wrote is
-  pasted into its context (the pointer protocol).
+- **Hosted (a seat inside a pipeline):** the same two files are yours to edit with normal file tools. **Write,
+  then poke:** the first time, call `post_tldr` with `path` — the file's path inside your workspace, relative
+  to its root — and the control plane reads the file from your runner; after that, call `post_tldr` with
+  NOTHING and it reads the same path again (`post_plan` the same way). It records a revision and wakes your
+  coordinator with ONE LINE naming the rev and the sections you added. **Your coordinator's ruling arrives
+  IN YOUR FILE** — it appends under its coordinator-voice heading, and you are poked with one line naming
+  the section (*"Your tldr.md rev 5 adds `## COORDINATOR RULING (plan rev 1 — accept)`"*). Read it with
+  your own file tools; it is never pasted to you.
+  **If the post answers `host-lacks-workspace-read`** (a runner older than periscope 1.4.0) **or asks for
+  `content`** (a control plane that predates reading files), it cannot read your workspace: pass the whole
+  file as `content` instead, and read rulings from your board (`seat_content(kind: "ruling")`) as well as
+  your file.
   **THE FILE IS THE RECORD AND THE ROW MIRRORS IT** — one artifact row per rev carrying the whole file
   verbatim, so the two voices stay interleaved because nothing splits them. The control plane refuses
   `blackboard-rev-regressed` · `blackboard-shrank` · `blackboard-rev-content-mismatch` at the door: **an
@@ -194,9 +204,10 @@ question tool — the relay cannot copy it.
 **An unanswered question re-raises to your coordinator on a cooldown** until a ruling lands. Asking costs
 the pipeline a round-trip and nothing else.
 
-**WHAT ACTUALLY CLOSES A QUESTION.** On the hosted plane **nothing you write into a FILE closes anything.**
-The latch reads the ACTS LEDGER: a ruling closes your question only when it is delivered as a `callout`
-carrying your post's act id as `answeringActId`. A `callout` without one steers you and closes nothing.
+**WHAT ACTUALLY CLOSES A QUESTION.** On the hosted plane **nothing written into a FILE closes anything** —
+not yours, and not your coordinator's section in it. The latch reads the ACTS LEDGER: a ruling closes your
+question only when the coordinator's act carries your post's act id as `answeringActId`. The words arrive in
+your file; the act is what decides. A `callout` without one steers you and closes nothing.
 **The reason is a security property, not tidiness:** `tldr.md` is written BY YOU, so a file-side close
 predicate is a string the audited party can type — a seat could write `## COORDINATOR RULING` into its own file
 and switch off the very re-raise that exists to stop it waiting forever. The question is therefore split
@@ -250,6 +261,9 @@ Ask what the park is protecting:
   the platform's turn, not your failure; routing around it hides the defect the park is surfacing.
 - **A park on a boundary command** (push to the base branch, force-push, branch delete — or a command
   whose *text* merely tripped the scanner) — **never re-request; reshape the command.**
+  **A search is data only in one shape:** a quoted literal pattern given to a read-only search tool (`rg`,
+  `grep`, `git grep`, `Select-String`, `findstr`), with no `$`, no backtick, no interpreter and no `xargs`
+  in the pipeline. Any other command carrying boundary words parks — search for the symbol, not the verb.
   **THE SCANNER MATCHES TEXT, NOT PARSED VERBS, AND THIS IS THE MOST-PAID FENCE IN THE CEREMONY.** It
   fires on read-only commands a careful seat runs to PROVE its work: an `echo` label reading
   `=== remote tip ===` on a `git status`/`git log` block, or `git branch -r --contains <sha>` — a branch
@@ -265,6 +279,16 @@ Ask what the park is protecting:
 
 The test: is the park **blocking your work** (re-request + disclose), **guarding the boundary** (reshape),
 or **a wall** (reshape or escalate — never a click)?
+
+**BEFORE A CALL YOU KNOW WILL PARK, SAY SO.** When your work needs a boundary command — a lane that tests the
+park, a push your coordinator called for from a state the push bar cannot see — append
+
+```
+## [seat·{slug} · run {id}] ABOUT TO PARK
+```
+
+with the verbatim command and what it waits on, post, then run it. A seat held by the gate without saying so
+looks idle to everyone watching. Like `HOLDING`, it is a state report, and it does not stale your acceptance.
 
 **EVERY park is DISCLOSED in your next TLDR — including one you resolved yourself in seconds:** the
 verbatim command AND the verbatim park text. A self-resolved park looks like nothing happened and leaves
@@ -379,7 +403,9 @@ doorbell with no follow-through**; if you receive one bare, retry anyway and say
   parks where the same three commands, sent one at a time, flow unattended. Keep the word "push" out of
   echo text — the deny layer matches text, not parsed verbs.
 - Prefer native read/glob/grep tools for reads; a shell read flows with its row like any other
-  non-boundary call.
+  non-boundary call. On a periscope 1.4.0 runner they reach anything outside your workspace except
+  credential material; on an older runner Read is jailed to your workspace, so read a file outside it —
+  the runner's installed package, say — with a shell command.
 - **Codegen only through the command `patterns/codegen.md` § Running codegen names** (when the repo has
   one) — never hand-write a generated folder.
 - **Never improvise a qualifying path in.** If a push parks and the remedy you can think of is touching a
@@ -449,9 +475,10 @@ ANCHOR, not a description of you.** A descriptive tail after the marker IS
 blessed (`… CLOSE-OUT RECEIPT — addendum: the six staged, tree clean`) — an end-anchored pattern on the
 one heading seats are told to write would be a trap that fires on ordinary prose.
 
-**Any post-accept append that is NOT one of these four — close-out receipt, HOLDING, a question heading, or
-your coordinator's own voice — needs the argless re-accept.** The bar is content, not revision: it asks *is
-what you are publishing still what I approved?*, and a state report is not a change of work.
+**Any post-accept append that is NOT one of these five — close-out receipt, HOLDING, ABOUT TO PARK, a
+question heading, or your coordinator's own voice — needs the argless re-accept.** The bar is content, not
+revision: it asks *is what you are publishing still what I approved?*, and a state report is not a change of
+work.
 
 **FILE YOUR SESSION ARTIFACTS:** copy your final `plan.md` and `tldr.md` into
 `docs/research/{topic}/sessions/{slug}/`. **Two files — that is the whole filing step.** Questions ride the
@@ -524,5 +551,8 @@ plane. The publish receipt is written at your turn's STOP and is structurally un
   with a clean rerun builds trust, an undisclosed one destroys it.
 - **A rule recalled from context needs re-reading at the source before it is used to refuse work.** A
   rule already corrected on disk is the commonest thing a seat blocks itself on.
+- **A control-plane verb that fails with a transport error** (`ECONNRESET`, a socket closed under the call)
+  is the transport, not a refusal: call it once more. If it fails again, say so in your next TLDR and carry
+  on with work that does not need it. A refusal has a name; a dropped connection does not.
 - Your job skill is next: `spec-build` (build/fixit) · `spec-review` (the outside look) ·
   `docs-process` (compile the living docs). Counterpart: `spec-coordinator` (the seat that arms you).

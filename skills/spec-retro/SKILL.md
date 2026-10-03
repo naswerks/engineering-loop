@@ -45,12 +45,10 @@ human and exception rows included. **Start every audit with it: "what happened t
 not ask about."** A verb-filtered read can only confirm suspicions, never surface surprises — a run can
 certify itself "zero-touch" while `approved_by_human` rows sit one unqueried verb away.
 
-**Who holds the instrument, on the hosted plane:** a `retro` seat's ticket carries `acts:read`, so
-`seat_acts` argless IS your sweep. A `coordinator` ticket deliberately does **not** carry it — its mint is
-`seat:read` · `pipeline:read` · `drive:write` — so a coordinator writing this retro from its own seat
-reads `read_blackboard` (argless = the roster) and takes the act sweep from the retro seat, the
-effort's witness, or a credentialed operator. **Say which instrument produced every count in this
-document** — a number whose lane you cannot name is testimony, not an audit.
+**Who holds the instrument, on the hosted plane:** a `retro` seat's ticket and a `coordinator` ticket both
+carry `acts:read`, so `seat_acts` argless IS your sweep whichever of the two writes this retro. **Say which
+instrument produced every count in this document** — a number whose lane you cannot name is testimony, not
+an audit.
 
 **If the argless sweep is not runnable at your run's scale, that is a day-one escalation, not a
 close-out discovery.** A few thousand rows can exceed the lane's page budget; you cannot retroactively
