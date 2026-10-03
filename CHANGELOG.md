@@ -37,8 +37,9 @@ version is the one in `package.json` and `.claude-plugin/plugin.json`, which mus
 
 1. Take the release: `claude plugin marketplace update engineering-loop`, then
    `claude plugin update naswerks@engineering-loop --scope <scope>`, and a new session.
-2. Run `init refresh`: both references' loop text changed (§ The blackboard in `engineering-loop.md`), and the
-   stamps move to 0.7.0. The four repository-owned sections are not touched.
+2. Re-copy the loop text of `references/engineering-loop.md` into `docs/_meta/engineering-loop.md` — § The
+   blackboard changed — keeping your repository-owned sections. Then `init refresh` restamps both copies; it
+   never touches loop text.
 3. A control plane that reads the seat anchors treats `## [seat·…] ABOUT TO PARK` as it treats
    `## [seat·…] HOLDING` — a post-acceptance append that does not stale the acceptance. Until it does, the
    append stales one.
