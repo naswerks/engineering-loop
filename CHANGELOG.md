@@ -5,6 +5,26 @@ version is the one in `package.json` and `.claude-plugin/plugin.json`, which mus
 
 ## [Unreleased]
 
+## [0.7.1] - 2026-10-04
+
+### Changed
+
+- `spec-coordinator` learns the control plane's verbs of 2026-10-04: `seat_spawn` defaults its host to the one
+  carrying the coordinator's own session and takes `model` and `effort` overrides; `accept_plan` and `accept`
+  take `answeringActId`, so one act rules and closes a question — and an act that names no question closes
+  none; the coordinator reads for itself what the owner used to check (`seat_timeline`, `needs_you`, argless
+  `seat_usage`, `seat_parks` with a charge's `seatId` or `all: true`, the roster's host and `re-raises`); it
+  commits its tracker itself, after each reap and never in a seat's commit call; and, hosted, `finish` is its
+  last call — the pipeline moves to `reviewing` and the PR's merge closes it.
+
+### Upgrading from 0.7.0
+
+Take the release (`claude plugin marketplace update engineering-loop`, then
+`claude plugin update naswerks@engineering-loop --scope <scope>`, and a new session). A patch: no loop text
+changed, nothing is restamped, and a hand-cranked repository's coordinator acts as before — every change but
+the tracker's commit discipline is the hosted plane's. A control plane older than 2026-10-04 refuses the new
+arguments and verbs by name.
+
 ## [0.7.0] - 2026-10-01
 
 ### Changed
