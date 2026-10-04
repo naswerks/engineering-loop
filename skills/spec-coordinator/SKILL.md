@@ -84,15 +84,16 @@ plus the human relay.
 
 | Verb | What it does | The part that bites |
 |---|---|---|
-| `seat_spawn` | Opens a DECLARED sibling's session | **It can never CREATE a seat** — the topology is the create door's, decided by a human — and you may only drive seats you `supervises`/`reviews` |
-| `accept_plan` | The verdict act: `accept` · `accept-with-riders` · `blocking-precondition`, **and NOTHING ELSE carries a go** — and it DELIVERS ITSELF: the seat's live session receives a one-line pointer to the ruling, for an accepting verdict and for any verdict that filed a ruling in the seat's file | Write the ruling into the seat's `tldr.md` FIRST (`## COORDINATOR RULING (plan rev N — {verdict})`), then call with a one-line `ruling`: the file is mirrored before your act and the pointer names your section. Pass the workspace HEAD you observed (a backticked sha is fine); an accepting verdict whose seat planned against a different tree is REFUSED, naming both shas. READ THE REPLY'S `delivery:` and `file:` LINES — `NOT DELIVERED` means the seat is idle and only a `callout` reaches it |
-| `accept` | The rev-bound FINAL receipt — and it TELLS the seat, so it carries your commit call | Put the next instruction (commit, push, close-out) in `ruling`, or write it under `## COORDINATOR ACCEPT` in the seat's `tldr.md` first — the receipt then binds to that mirrored revision. It binds to the seat's CURRENT tldr revision, so if the seat posts NEW CONTENT again your acceptance no longer covers what it publishes. **Re-accept — it is idempotent and cheap.** This receipt is what the push bar reads; prose is not a receipt |
+| `seat_spawn` | Opens a DECLARED sibling's session | **It can never CREATE a seat** — the topology is the create door's, decided by a human — and you may only drive seats you `supervises`/`reviews`. With no `hostId` it opens on the host carrying your own session; `model` and `effort` override the seat's own for this session, judged against what the runner offers |
+| `accept_plan` | The verdict act: `accept` · `accept-with-riders` · `blocking-precondition`, **and NOTHING ELSE carries a go** — and it DELIVERS ITSELF: the seat's live session receives a one-line pointer to the ruling, for an accepting verdict and for any verdict that filed a ruling in the seat's file | Write the ruling into the seat's `tldr.md` FIRST (`## COORDINATOR RULING (plan rev N — {verdict})`), then call with a one-line `ruling`: the file is mirrored before your act and the pointer names your section. Pass the workspace HEAD you observed (a backticked sha is fine); an accepting verdict whose seat planned against a different tree is REFUSED, naming both shas. READ THE REPLY'S `delivery:` and `file:` LINES — `NOT DELIVERED` means the seat is idle and only a `callout` reaches it. When the verdict also answers the seat's question, pass `answeringActId` — one act rules and closes it |
+| `accept` | The rev-bound FINAL receipt — and it TELLS the seat, so it carries your commit call | Put the next instruction (commit, push, close-out) in `ruling`, or write it under `## COORDINATOR ACCEPT` in the seat's `tldr.md` first — the receipt then binds to that mirrored revision. It binds to the seat's CURRENT tldr revision, so if the seat posts NEW CONTENT again your acceptance no longer covers what it publishes. **Re-accept — it is idempotent and cheap.** This receipt is what the push bar reads; prose is not a receipt. `answeringActId` closes the question it answers, as on `accept_plan` |
 | `complete` | The reap, and it is HONEST | It re-reads the seat and reports ok only after the terminal state is OBSERVED |
 | `callout` | **THE ONLY WAY YOU REACH A CHARGE** (besides the pointers `accept_plan` and `accept` send) | A charge that posted and ended its turn cannot resume any other way — without this verb it waits for a human. Your ruling must carry a DETERMINATE NEXT ACTION it can execute without inference. **Write it into the seat's `tldr.md` first and pass a one-line `ruling`:** the file is mirrored before your act and the seat is pointed at your section. Without a file, KEEP IT TO A LINE: over 600 chars the body is stored as a `ruling` artifact on the board and the seat receives a POINTER — the seat reads the body once, never twice |
 
-**A QUESTION IS CLOSED BY AN ACT, NOT BY A FILE.** Answer a charge's question with a `callout` carrying
-that post's act id as `answeringActId` — **that act IS the answer**, and it is the only thing that stops
-the re-raise. A `callout` without one steers and closes nothing, and **nothing you write into a file
+**A QUESTION IS CLOSED BY AN ACT, NOT BY A FILE.** Answer a charge's question with a `callout` — or an
+`accept_plan` / `accept` that rules at the same time — carrying that post's act id as `answeringActId`:
+**that act IS the answer**, and it is the only thing that stops the re-raise. An act without one steers or
+rules and closes nothing — a forgotten id costs one re-raise — and **nothing you write into a file
 closes anything**: the latch reads the ledger, so a ruling you never sent is a question still open no
 matter what any blackboard says.
 
@@ -105,6 +106,11 @@ the verb carries your words. **The act still decides** — a section closes noth
 
 **`seat_acts` IS YOUR CENSUS.** Your mint carries `acts:read`: take counts, human touches and receipts from
 the ledger, never from a seat's report about itself, and name the lane any count you publish came from.
+Beside it, read for yourself what the owner used to check for you: `seat_timeline` (a seat's two lanes —
+*the reap ended the process* is the runner's `ended` row, cause `stop_requested`, after your reap act),
+`needs_you` (the owner's Needs-you tab, Active and History), argless `seat_usage` (every seat's spend and
+the pipeline's total), `seat_parks` with a charge's `seatId` or `all: true` (its parks, and the rows that
+ADMITTED a push), and the argless roster's host and `re-raises` per seat.
 
 **WAKES:** you are woken when a charge posts its plan or its tldr, and a one-line pointer rides the wake —
 the revision and the sections it added. Read what is new (`read_blackboard` with `sinceRev`, or the file) and
@@ -114,7 +120,9 @@ answer on first receipt rather than spending a round-trip.
 not a refusal: call it once more, and journal it if it fails again. A refusal has a name; a dropped
 connection does not.
 
-**THE TRACKER IS YOURS ALONE.** Advance it at every seat boundary; never reconstruct it at the close.
+**THE TRACKER IS YOURS ALONE.** Advance it at every seat boundary and **commit it yourself — after each
+reap, before the next spawn — never in a seat's commit call**, so it is never frozen between an acceptance
+and a seat's close-out. Never reconstruct it at the close.
 
 ## The loop (per seat)
 
@@ -341,6 +349,12 @@ connection does not.
       is not reversible by the seat that does it, and a check the human runs afterwards confirms the damage
       instead of preventing it. **A live-check row is confirmation; this is prevention.** Never hold the
       run waiting for a human to verify this first — you have the list, so you are the gate.
+   8. **Hosted, `finish` is your last call** — once every other seat, P included, is reaped. Pass the PR's
+      URL: it records the pipeline done with evidence it reads from the ledger, moves it to `reviewing`,
+      closes your own session and ends your process, and the PR's merge closes the pipeline. **Nothing you
+      send after it is admitted** — commit your tracker and report first. It refuses, recording nothing,
+      while any seat is still live or when none shipped. Hand-cranked there is no `finish`; the human closes
+      the effort.
 
 **The human hand-tests.** Live verification is the human's role, not a seat's claim — when a slice
 ships something clickable, tell the human concretely what to drive (the 2-3 highest-value clicks), and
