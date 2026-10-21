@@ -319,8 +319,10 @@ effort). The pipeline exists to widen the seat's autonomy — **so every wall it
 ### 9. WHAT FELL THROUGH THE CRACKS
 
 Named explicitly, because the alternative is that it stays fallen. Include the open questions the run
-could not settle, and say plainly that they are open. **Check the effort's `live-checks.md`** — unaggregated
-verification rows are the most common thing to fall through.
+could not settle, and say plainly that they are open. **Check that the owner was offered a quick pass** —
+the seats' "what the owner could try" lines that never reached the owner are the most common thing to fall
+through. `live-checks.md` holds only the rows the owner dictated; an unrun dictated row is the owner's open
+item, said so here.
 
 ### 10. THE FINDINGS DISPOSITION PASS — *the drain, and it is the section that decides whether the effort's findings survive it*
 
@@ -341,7 +343,7 @@ not on this list, the honest answer is CLOSED with a reason:
 | Destination | Why a later effort reaches it |
 |---|---|
 | A working doc's **Living-Docs checklist** | `docs-process` patches a living doc; living docs get read |
-| A **`live-checks.md` row** | The owed-checks authority is read at every sitting |
+| A **`live-checks.md` row the owner dictates** | The owner's own checks, read at every sitting — offered to the owner, never written without their word |
 | A named input in the **NEXT pipeline's brief** | The only legal forward-carry — no standing ledgers |
 | An **in-code revisit note at the symbol** | Grep-findable by whoever next opens that file |
 | A **chartered fixit**, with its discharge record | Someone is building it, and the record closes |
@@ -372,7 +374,10 @@ is the look of a record with none of a record's properties.
 ## Ceremony
 
 1. **Read** your own ledger — `docs/research/{topic}/project-status.md`, the one ledger of §4 — every
-   session's `tldr.md`, and the working docs.
+   session's `tldr.md`, the working docs, and **a witness ledger when one exists**
+   (`sessions/witness-ledger-*.md`, or the copy the human hands you). The witness watched from outside the
+   plane with instruments you do not have: carry every observation of it your retro does not already hold,
+   in a section of its own, attributed to the witness — never folded silently into your own findings.
 2. **Query** the substrate for §§2-5. Verify each query FIRES on a known-positive row before trusting a
    clean result.
 3. **Write** `docs/research/{topic}/sessions/coordinator-retrospective.md` — NATIVELY, in the tree you were born

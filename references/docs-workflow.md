@@ -41,7 +41,7 @@ narrative. That's also why it's a separate session, not the tail of the implemen
 | Folder | What it holds | Lifecycle |
 |--------|---------------|-----------|
 | `_meta/` | This system — `doc-index` (the menu) + `docs-workflow` (this file) + `engineering-loop` (the seats and the ceremony) | Maintained as the system evolves; the sections marked **(repository-owned)** are rewritten by each repository to its own conventions |
-| `research/` | The running tab of ideas to do, not yet built. The folder is the queue. | Created by `docs-backlog`; stays through the build, then **archived with its working doc(s)** by `docs-process` |
+| `research/` | The running tab of ideas to do, not yet built. The folder is the queue. | Created by `docs-backlog`; stays through the build, then **archived with its working doc(s)** by `docs-process` — or, when the platform moves past it unbuilt, **retired** to `archive/retired/` |
 | `working/` | Active + finished-but-unprocessed session docs (one effort may chain several). The folder is the queue. | **Leaves via `docs-process`** — research + the whole chain archived together once the living docs are patched |
 | `archive/` | Completed/abandoned session docs, grouped into **topic** folders (or the home "The archive convention" below names for them) | Write-once. Frozen history — never edit archived docs |
 | `guides/` | How to ADD a new thing — step-by-step walkthroughs | Living — patched by `docs-process` |
@@ -83,7 +83,7 @@ that replaces the section rewrites alongside it):
 
 | Section | What the skills read from it | Also echoed in |
 |---------|------------------------------|----------------|
-| **The archive convention** (this file) | the archive home for each kind of effort (hand-cranked, spec pipeline, follow-on round) and for audit reports · the shape inside it · what a working doc's `## Archive` line says, and whether an umbrella carries an `Archive:` line · the links a move repairs · what is frozen once filed | The Loop (the diagram and its prose) · Folders (`research/`, `working/`, `archive/`) · "Living docs vs session docs" · the skills table (`docs-process`) · Conventions (incident receipts, archived docs) · `engineering-loop.md` "The loop at a glance" |
+| **The archive convention** (this file) | the archive home for each kind of effort (hand-cranked, spec pipeline, follow-on round) and for audit reports · the shape inside it · what a working doc's `## Archive` line says, and whether a pipeline's ignition brief carries an `Archive:` line · the links a move repairs · what is frozen once filed | The Loop (the diagram and its prose) · Folders (`research/`, `working/`, `archive/`) · "Living docs vs session docs" · the skills table (`docs-process`) · Conventions (incident receipts, archived docs) · `engineering-loop.md` "The loop at a glance" |
 | **Doc metadata** (this file) | the header — its form and its place · the sweep: one command, one line per doc · the word for each loop state (below) · where the verified date lives, and the rule that moves it · whether `## Lineage` stays · the gates a doc passes, and the folders they exempt | the skills table (`docs-status`) · Conventions (the machine layer; dates in the header) · `engineering-loop.md`'s own header line and its `## Lineage` |
 | **Templates** (this file) | each template's header lines, at the state its writer names | — |
 | **This repository's rails** (`engineering-loop.md`) | the policy document, and how a seat reaches it · the gates a commit passes · the suite before a PR · the base branch, the PR target, the branch names and how a PR is opened · the staging rule · the repository's own skills a seat meets | the POLICY row of "Where a rule lives" · the Hard rules, which the rails add to and never subtract from |
@@ -142,7 +142,7 @@ Keep what the skills need to find, change the words to yours:
   re-sorted, every file keeps its name and its place, `sessions/` rides along untouched, and the effort's
   working docs join the package under `implementation/`, with the tracker still the "read me first" at its
   root. When where a pipeline files depends on something only its authoring session knows, say so —
-  `spec-pipeline` then records the resolved path in the umbrella's blockquote as an `Archive:` line.
+  `spec-pipeline` then records the resolved path in the brief's `## Where it came from` as an `Archive:` line.
 - **Your rails.** Fill each item of `engineering-loop.md` § This repository's rails from what the
   repository already wrote down — a policy document, hooks, CI, a pull-request template.
 - **Your menu.** A repository that already indexes its docs declares its menu curated and names that index:
@@ -196,17 +196,20 @@ one** (via `spec-pipeline`). The trigger for the layout is simply *"does this ef
   ```
   archive/{topic}/
     project-status.md        <- the tracker/index — root, "read me first" (spans both halves)
-    live-checks.md           <- the human's verification rows, accumulated as the pipeline ran
-    specs/                   <- the spec pipeline: 00-ignition-brief · 01 umbrella · 02..NN slices
+    live-checks.md           <- the rows the owner dictated, if any
+    specs/                   <- the spec pipeline: 00-ignition-brief · 01..NN slices
     implementation/          <- the per-session working docs that built it
     sessions/                <- THE PIPELINE'S CONVERSATION, archived intact:
                                  {spec-slug}/plan.md  + {spec-slug}/tldr.md  per build session
                                    (TWO files — questions ride the PLAN TLDR, and there are no
                                     status snapshots, because the tracker is committed live and
                                     its git history carries every revision)
+                                 docs-process/plan.md + tldr.md  the docs-process row's board
+                                 {step-slug}/receipt.md        a human step's receipt
                                  code-review.md                the review seat's outside look, if
                                                                the pipeline had a review row
                                  coordinator-retrospective.md  the coordinator's inside look
+                                 witness-ledger-{date}.md      a witness ledger, filed on the human's word
                                These are TESTIMONY: an archive pass repairs links elsewhere and
                                leaves sessions/** byte-untouched. Older archived sessions may
                                still hold questions.md / status-after-*.md; that is historical
@@ -218,7 +221,7 @@ already-archived effort gets its **own sibling topic folder**, never filed insid
 Rules: (a) name the new topic `{family-prefix}-{subtopic}` so the family groups
 alphabetically; (b) each folder keeps the full split shape (own `project-status.md` at root); (c) the
 **family index is the living feature doc's `## Lineage`** — it accumulates Idea/Spec/Built rows from
-every round; (d) the new pipeline's umbrella/tracker back-link to the prior round's archive (allowed —
+every round; (d) the new pipeline's brief/tracker back-link to the prior round's archive (allowed —
 cross-effort links into archives are historical record). Never reopen a frozen topic folder to add
 a round.
 
@@ -227,12 +230,29 @@ a round.
 working docs' `Source:` to the spec's new path (`../specs/NN-*.md`), the spec / `project-status` links, the
 index's links into `specs/`, and the feature doc's `## Lineage` rows (`Spec` to `specs/…`,
 `Built` to `implementation/…`). **Pre-existing cross-effort links** in archived docs (to *other* topic
-folders / research chains) are **left as historical record** — don't chase those.
+folders / research chains) are **left as historical record** — don't chase those. The one exception is
+provenance: when a doc moves, every link to it from another archived doc's header blockquote (`Source:`,
+`Builds on`) or `## Lineage` footer, or from a line marked `Idea` / `Spec` / `Built` / `Source:`, is repointed,
+`sessions/**` excepted, because that is how a reader replays an effort.
 
-**`archive/audit/` is the one exception to topic-folder grouping.** Audit reports mirror the *living-doc
-groups* instead — `archive/audit/{guides,patterns,infrastructure,features}/{doc}-audit.md` — so each
-report sits beside the docs it audits. The cross-cutting `health-report-{date}.md` (from
-`docs-audit-full`) stays at the `audit/` root.
+**Two homes are the exceptions to topic-folder grouping.**
+
+- **`archive/audit/`** — audit reports mirror the *living-doc groups* instead —
+  `archive/audit/{guides,patterns,infrastructure,features}/{doc}-audit.md` — so each report sits beside the
+  docs it audits. The cross-cutting `health-report-{date}.md` (from `docs-audit-full`) stays at the `audit/`
+  root.
+- **`archive/retired/`** — research the platform moves past without building it (superseded by a different
+  design, its product retired, or the idea dropped), laid out exactly as it stood in `research/`: a folder
+  stays a folder, a loose doc stays loose, names and headers unchanged, and no link inside it is repaired.
+  Before it moves, its still-good ideas go one line each into `research/misc/idea-scratchpad.md`, its
+  code-verified open defects become `## Open Issues` rows in the living doc that owns the code, and a row in
+  `archive/retired/README.md` says why it was retired and where its live parts went. Links into it from
+  living docs and kept research are repaired. Research that shipped is filed with the effort that delivered
+  it; when that effort is already filed, the doc goes into the effort's home (a split effort's `research/`),
+  which completes the effort's own filing and is not a new round. Research that fed several efforts rather
+  than one goes on its theme's shelf (`archive/infrastructure/`, say). A running tab, or a research doc that
+  spanned several efforts, whose shipped parts are already filed with their own efforts retires with its unbuilt remainder; those efforts'
+  provenance links then point at it on the shelf.
 
 ---
 
@@ -301,7 +321,7 @@ links become the `Related` row:
 - **Real lineage only.** Wire a row only where the idea/implementation origin is *genuine* — never on
   coincidental topic overlap (junk links would pollute the graph's communities).
 - Most `patterns/`/`guides/` docs carry only `Related` (maybe `Built`); `features/` carry the full chain.
-- **`Spec` mirrors `Built`; the vision goes to `Idea`.** For a spec-driven effort: put the umbrella +
+- **`Spec` mirrors `Built`; the vision goes to `Idea`.** For a spec-driven effort: put the ignition brief +
   any `00-operating-frame` (the *why/what*) in `Idea`, and list in `Spec` **every per-slice spec that a
   listed `Built` session implemented** — the two rows stay symmetric. A session in `Built` whose spec is
   missing from `Spec` (or vice-versa) is the smell. Don't silently drop chain members because they feel
@@ -430,17 +450,17 @@ once the code is fixed. Keep entries one line, dated, and pointing at a `file:li
 ### Spec doc (a numbered pipeline — `spec-pipeline`)
 
 When a research idea graduates into a real plan, `spec-pipeline` explodes it into a numbered pipeline in
-`docs/research/{topic}/`: `00-ignition-brief.md` (the coordinator seat's standing orders for the run —
-written whole at authoring, verified at ignition) · `01-{topic}.md` (the umbrella) · `02..NN-{slice}.md` (**one
-self-contained spec per planned session**) · `project-status.md` (the tracker, which carries its own
-section notes) · `live-checks.md` (the human's verification rows).
-Each per-session spec uses this template (carries `Builds on`/`Source:` so the chain stays navigable):
+`docs/research/{topic}/`: `00-ignition-brief.md` (the coordinator seat's spec and the charter every seat
+reads — written whole at authoring, verified at ignition) · `01..NN-{slice}.md` (**one self-contained spec
+per build seat** — every numbered file is one seat's spec) · `project-status.md` (the tracker, which carries
+its own section notes) · `live-checks.md` (created empty; the rows the owner dictates).
+Each per-seat spec uses this template (carries `Builds on`/`Source:` so the chain stays navigable):
 
 ```markdown
 # Spec NN — {Slice title}
 
 > {what this slice builds} — {why / the gap it closes}. {what it builds on / supersedes / defers}.
-> Builds on [{prior}]({prior}.md). Source: [{umbrella / research}](...). Written {date}.
+> Builds on [{prior}]({prior}.md). Source: [{brief / research}](...). Written {date}.
 <!-- meta: type=spec; status=draft; verified={date}; lineage=N -->
 
 ## The Problem / The Target
@@ -452,7 +472,7 @@ Each per-session spec uses this template (carries `Builds on`/`Source:` so the c
 ```
 
 Specs stay physically in `research/{topic}/` through the build; when the effort ships, `docs-process` archives
-the umbrella + specs + working docs together into `archive/{topic}/` — a spec-driven effort splits into
+the brief + specs + working docs together into `archive/{topic}/` — a spec-driven effort splits into
 `specs/` + `implementation/` with `project-status.md` at the root (see "Two topic-folder shapes" above). The
 spec set *is* the design history.
 
@@ -471,11 +491,11 @@ come from this copy, so a repository changes them once, here.
 | Skill | When | What it does |
 |-------|------|-------------|
 | `docs-backlog` | Have an idea | Capture it as a research doc in `research/` |
-| `spec-pipeline` | A research idea is graduating into a real plan | Explode the plan into a numbered spec pipeline (umbrella + one self-contained spec per session + `project-status`) in `research/{topic}/`; the plan becomes ephemeral |
+| `spec-pipeline` | A research idea is graduating into a real plan | Explode the plan into a numbered spec pipeline (the ignition brief + one self-contained spec per build seat + `project-status`) in `research/{topic}/`; the plan becomes ephemeral |
 | `spec-coordinator` | Right after `spec-pipeline` (same session, context-loaded) or to resume an effort fresh | Assume the coordinator seat: cut seat prompts (one per spec), review/verify TLDRs, give commit calls, own `project-status.md` — the same loop hand-cranked or hosted |
-| `spec-seat` | **Every** seat a coordinator arms — invoked FIRST, before the job skill | The CONTRACT, not a seat: the shared half of every seat's procedure — beliefs, plain-text PLAN TLDR, numbered questions w/ recommendations, six-section FINAL TLDR, commit only on the relayed call |
+| `spec-seat` | **Every** seat a coordinator arms — invoked FIRST, before the job skill | The CONTRACT, not a seat: the shared half of every seat's procedure — beliefs, plain-text PLAN TLDR, numbered questions w/ recommendations, the hand-cranked relay, six-section FINAL TLDR, commits once the plan is approved |
 | `spec-build` | Igniting a build or fixit seat — manually or platform-spawned, after `spec-seat` | The BUILD JOB only: one spec, the role's reading list, the pin taxonomy, the suite protocol; `fixit` variant for no-spec defect sessions. Its ceremony comes from `spec-seat` |
-| `spec-witness` | A pipeline looks wedged, actors' claims conflict, or you want a substrate-verified state report | The read-only fourth seat: the control plane's read lanes, transcripts, git; zero writes, zero rulings — the seats act, the human judges, the witness testifies |
+| `spec-witness` | A pipeline looks wedged, actors' claims conflict, or you want a substrate-verified state report | The outside watcher — a session outside the plane, never a declared seat, no credential: git, transcripts, board files, the process table; zero writes into the run, zero rulings — the seats act, the human judges, the witness testifies |
 | `spec-ignite` | Right after `spec-pipeline` when the pipeline runs HOSTED (vs `spec-coordinator` for hand-cranked) | The ignition copilot: verify the committed brief, derive the stage card (the human clicks Create), "kick it", a hosted coordinator runs the pipeline; two verbal gates, everything announced, every UI gap a named finding |
 | `spec-review` | A pipeline's builds are done and it has a review row | The outside look, before the retro and before the PR: code + patterns + composition across session seams + the loop's own comms, in two independent passes. Files `sessions/code-review.md` and classifies which findings earn a fixit. **Its value is having none of the pipeline's context** |
 | `spec-retro` | The coordinator's LAST act, after any review and any fixit | The inside look: a substrate-verified grade, the ceremony audit (did the acts the seat believes it performed actually write rows?), the ledger reconciliation, the true economics, the blindnesses, and the ranked fixit backlog |

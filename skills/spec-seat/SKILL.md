@@ -29,21 +29,27 @@ quietly — say so in your PLAN TLDR and let the coordinator rule.
 and holds the close — a different contract, and `spec-coordinator` carries it whole.
 
 **Why this file exists:** a base contract that every seat kind shared, with the build job mixed in, sent
-the review row into the umbrella its own charter excluded and offered the docs-process row a `docs-write`
-it must never run. One base class, three wrong instructions. The contract and the job are therefore two
-files.
+the review row into the coordinator's settled framing its own charter excluded and offered the docs-process
+row a `docs-write` it must never run. One base class, three wrong instructions. The contract and the job are
+therefore two files.
 
 **Find the format first.** This repository writes its formats (the doc header and status words, where an effort is filed, its rails) in the sections `rg -n '^#+ .*\(repository-owned\)' docs/_meta/` lists; read the one a step names before that step writes. This skill names the section, never the format.
 
 ## What you hold (and what you never touch)
 
 - **Yours:** your one assignment; the recon; the plan; the work; your artifacts; your own explicit-path
-  commit (on call).
-- **Never yours:** `project-status.md` (coordinator-owned tracker — READ-ONLY), memory files, other slices'
-  files (cross-slice changes need explicit coordinator approval and get recorded as a departure), the
-  umbrella's declared out-of-scope areas, `docs-write` **on your own initiative** (it arrives as part of
-  the coordinator's close-out call — and for a docs-process seat it never arrives at all, because you are
-  that skill's consumer), any commit/push without the relayed coordinator call.
+  commits and your branch pushes once your plan is approved.
+- **Never yours:** `project-status.md` (coordinator-owned tracker — READ-ONLY), `live-checks.md` (the
+  owner's — its rows are the ones the owner dictates), memory files, other slices' files (cross-slice changes
+  need explicit coordinator approval and get recorded as a departure), what the brief's § What this effort
+  does NOT do names, `docs-write` **on your own initiative** (it arrives as part of your close-out — the
+  relay's run-to-done order hand-cranked, the coordinator's close-out call hosted — and for a docs-process
+  seat it never arrives at all, because you are that skill's consumer), any commit or push before your plan
+  is approved, and any push to the base branch.
+
+**Your charter is the brief.** `00-ignition-brief.md` is the coordinator's spec and the charter every seat
+reads: its sections down to § Platform state bind you, and the owner's rulings in it are settled. Your own
+spec is one numbered file in the same folder.
 
 ## Step 0 — orient NOW (before asking anything; no role or assignment needed)
 
@@ -101,11 +107,19 @@ FINAL TLDR — **append, never overwrite**) are FILES, not just chat text.
 **ONE CEREMONY IN BOTH MODES: you write your file, then you poke; your coordinator appends its ruling to the
 SAME file, then pokes you. Nobody pastes a document into a message.**
 
-- **Hand-cranked:** create them under `docs/research/{topic}/sessions/{slug}/` at plan time and end your
-  turn announcing the path. The coordinator reads `tldr.md` with normal file tools and APPENDS its ruling
-  under `## COORDINATOR RULING`, so read the answer in your own file and proceed. The full plan is PULL — it is
-  read only on a read-full-plan verdict; never paste it into chat. (If your harness has a plan-approval
-  mode that forbids writes: give the chat summary, get the human's approve, THEN post and stop.)
+- **Hand-cranked — THE RELAY.** Post your PLAN TLDR and numbered questions **in the chat**, as plain text,
+  before any plan-approval presentation. The human relays them, and your coordinator's notes come back in
+  ONE message: the verdict, the answers, the riders, and the standing run-to-done order. Fold them in and
+  present your plan; the human approves it. Then create `plan.md` and `tldr.md` under
+  `docs/research/{topic}/sessions/{slug}/`, with the notes transcribed VERBATIM in `tldr.md` under
+  `## COORDINATOR RULING (plan — {verdict})`, and **RUN TO DONE WITHOUT A STOP**: build, suites,
+  `docs-write`, commits with `verify-staged`, your branch pushes (never the base branch; no merge, tag or
+  publish), and your FINAL TLDR in the chat. **The only stops:** a destructive act outside the effort's
+  branches, a credential exposure, a host restart, a `verify-staged` failure. A red you cannot fix takes
+  your spec's escape hatch, and you still close out. A mid-build question goes under
+  `## MID-BUILD QUESTION` in your `tldr.md`, and its ruling is appended there. After your last push your
+  coordinator reviews the FINAL against the tree and writes `## COORDINATOR ACCEPT (final — {slug})` into
+  your `tldr.md` itself. The full plan is PULL — never paste it into chat.
 - **Hosted (a seat inside a pipeline):** the same two files are yours to edit with normal file tools. **Write,
   then poke:** the first time, call `post_tldr` with `path` — the file's path inside your workspace, relative
   to its root — and the control plane reads the file from your runner; after that, call `post_tldr` with
@@ -125,6 +139,11 @@ SAME file, then pokes you. Nobody pastes a document into a message.**
   to keep.**
 
 Either way, `tldr.md` read top-to-bottom is the session's whole conversation in message-flow order.
+
+**Write the board with your file tools — Edit or Write — never through a shell heredoc.** A heredoc board
+post has failed both ways a shell can fail it: on quoting ("unexpected EOF") and on length (the command
+line is too long to spawn), and a heredoc collapses backslashes even when it runs. The file tools have
+none of the three failures.
 
 **Greppable turn anchors:** every append gets a stable heading carrying actor + identity —
 `## [{seat}·{slug} · run {id}] {phase}` when your seat has a run identity, `## [{seat}·{slug}] {phase}`
@@ -272,6 +291,11 @@ Ask what the park is protecting:
   force, reset, branch delete) in any `echo`, comment, `--description` or section label. For upstream
   verification use `git log origin/<branch>..HEAD | wc -l` and `git status -sb`, which carry no colliding
   noun.
+  **RESHAPE MEANS A DIFFERENT COMMAND, NEVER A DISGUISED ONE — NEVER ROUTE AROUND A REFUSAL.** Rewriting a
+  path with a glob or a quote so the scanner no longer sees the word it matched (a `?` in place of one
+  letter of a folder name) defeats every text-scanned rule at once, and the same disguise passes a real
+  boundary command. When the only way through is to hide the word, the park is a false one: disclose it,
+  with the verbatim command and park text, and ask.
 - **A POLICY WALL is none of the three.** If the refusal says `walled-by-policy`, **an approval cannot
   grant it** and re-requesting is walking through a known fail-open. The two routes are **reshape the work**
   (do it by a path the policy allows — often: hand the text to a seat whose scope covers it) or
@@ -302,7 +326,8 @@ Plain text, BEFORE any plan-approval presentation:
 ```
 PLAN TLDR ({your assignment}), recon done against HEAD {sha}, anchors {verified fresh / drift: …}:
 BELIEFS: HEAD {sha}; dirty files I see: {list, whose}; tool versions: {the harness, the runtimes};
-baseline suites: {per lane, as patterns/testing.md names them: N (+known pre-existing reds)}.
+baseline suites: {cited from the brief's § Baselines, per lane: N (+known pre-existing reds); a lane it
+does not name, measured before you edit}.
 CONTROLS: for each probe or pin I will build — its positive control, and what would make it FAIL.
 {one line each: "probe X — control: {the case that must go red}; fails when: {…}"}
 {5-10 lines: what you will do, anchored to real files; the surfaces you will touch; departures flagged.}
@@ -318,7 +343,9 @@ coordinator with your question text and what the re-raise keys on (the two-headi
 **BELIEFS sha — ONE line.** The build-go HEAD check scans for `HEAD` + a 40-hex token **on the same line**
 (fenced or quoted is fine); a markdown break between them reads as a malformed sha and **refuses the
 flip** (fail-closed by design). Paste the verbatim `git rev-parse HEAD` output, never hand-transcribe, no
-wrapping. The checker reads `plan.md` AND `tldr.md`; the line in either satisfies it.
+wrapping. **Put the BELIEFS line near the top of BOTH `plan.md` and `tldr.md`**, and keep it current on
+every revision: a checker that takes the first `HEAD <sha>` it meets reads an old line before a new one, and
+quoted command output carrying another sha above it is read as your belief.
 
 **Cite symbols, not line numbers.** In anything that outlives a commit — a TLDR, a working doc, a handover
 — **name the symbol and use the line as a hint.** A line number is a comment, not an address; an anchor
@@ -417,7 +444,8 @@ doorbell with no follow-through**; if you receive one bare, retry anyway and say
 Plain text — **this is the contract**, whatever your job:
 
 ```
-FINAL TLDR — {your assignment}. Built on HEAD {sha}, nothing committed (awaiting the relayed call).
+FINAL TLDR — {your assignment}. Built on HEAD {sha}; {hand-cranked: committed and pushed — the hashes and
+    branches} {hosted: nothing committed (awaiting the acceptance's commit call)}.
 (a) SHIPPED + VERIFICATION — per item: what + where + the receipt inline.
 (b) VERBATIM RUNNER SUMMARIES — exact blocks, never prose, WITH the invocation command per block;
     deltas vs baseline; any red run DISCLOSED with its rerun. A suite number quoted anywhere
@@ -428,21 +456,24 @@ FINAL TLDR — {your assignment}. Built on HEAD {sha}, nothing committed (awaiti
     `docs/research/{topic}/project-status.md` § `## Deferred findings log`. Number them
     LOCALLY to your tldr; the effort has ONE id sequence and the coordinator allocates from it.
     Each line carries its receipt (file:line) so it can be transcribed without re-deriving.
-(e) LIVE CHECKLIST ENTRIES — click + what PASS looks like, runnable cold, VERBATIM here. The
-    COORDINATOR aggregates these into the effort's `live-checks.md` — never write that file
-    unprompted: two writers on the file the review grades from is a divergence waiting to happen.
-    Touch it only when the coordinator's call names it.
-(f) EXPLICIT STAGING LIST — the exact list `verify-staged` will be run over; a path not on
-    this list is a path nobody will notice missing — + "commit HELD awaiting the relayed call" +
-    which dirty files are NOT mine. SESSION ID + NAME.
+(e) WHAT THE OWNER COULD TRY — in the chat, never a file: a few clicks, each with what passing
+    looks like, runnable cold. Live checks are the owner's; a row reaches `live-checks.md` only
+    when the owner dictates it, and you never write one.
+(f) EXPLICIT STAGING LIST — the exact list `verify-staged` was (hand-cranked) or will be (hosted)
+    run over; a path not on this list is a path nobody will notice missing — + the STAGING
+    VERIFIED receipt, or hosted "commit HELD awaiting the commit call" + which dirty files are NOT
+    mine. SESSION ID + NAME.
 ```
 
 ## Close-out — the order is law
 
-The call arrives (FINAL TLDR ACCEPTED, maybe fix-first, `docs-write` with a carry list **if your job
-produces a working doc**, COMMIT CALL with the message). Execute it exactly.
+**Hand-cranked, the relay's run-to-done order IS the call:** run `docs-write` **if your job produces a
+working doc**, commit with `verify-staged`, push your branch, and post the FINAL TLDR in the chat; your
+coordinator reviews it against the tree and writes its acceptance into your `tldr.md` afterwards.
+**Hosted, the call arrives** (FINAL TLDR ACCEPTED, maybe fix-first, `docs-write` with a carry list **if
+your job produces a working doc**, COMMIT CALL with the message). Execute it exactly.
 
-**Between the coordinator's FINAL acceptance and your push, do not post NEW CONTENT** — a re-posted report
+**Hosted, between the coordinator's FINAL acceptance and your push, do not post NEW CONTENT** — a re-posted report
 makes the acceptance stale by design. Append your close-out receipt AFTER the push under this heading:
 
 ```
@@ -502,11 +533,12 @@ human driving the table files a defect against correct behaviour. Fixes invalida
 what sweeps them.
 
 **AND THE OWNERSHIP SPLIT IS PART OF THE RULE — without it the step is a dead end.** You may not write
-`project-status.md` (coordinator-owned) or anything under `sessions/**` (testimony, byte-untouched). So:
+`project-status.md` (coordinator-owned), a row of `live-checks.md` (the owner's) or anything under
+`sessions/**` (testimony, byte-untouched). So:
 
-- **`live-checks.md`** — correct it directly if your change made a row's stated behaviour wrong.
-- **the tracker and `sessions/**`** — **REPORT the correction in your FINAL TLDR, quoting the line and what
-  it should say.** Your coordinator transcribes it.
+- **your own working doc, code and comments** — correct them in the same commit.
+- **the tracker, a dictated `live-checks.md` row and `sessions/**`** — **REPORT the correction in your FINAL
+  TLDR, quoting the line and what it should say.** Your coordinator applies it.
 
 A partial the seat cannot execute is not an escape hatch, it is a dead end handed to it. Say which
 corrections are yours and which you are handing back.

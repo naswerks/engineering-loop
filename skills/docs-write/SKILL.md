@@ -31,7 +31,7 @@ keeps the doc editable until its living-doc obligations are discharged.
    - **Watch-Outs** — edge cases, gotchas
    - **Living Docs to Update** — the bridge to `docs-process`. For each stale living doc, name it and say what changed and in what form. Be specific ("references `OldEntity`, should be `NewEntity`"), not vague.
 
-3. **Record the archive target — don't move the file.** Add an `## Archive` line to the doc, in the form the session template gives it (`docs/_meta/docs-workflow.md` § Templates (repository-owned)), naming where § The archive convention (repository-owned) files this effort — reuse what that section says to reuse, and name it the way that section names things. When the effort has a spec pipeline whose umbrella carries an `Archive:` line, that path is the target. `docs-process` files it there later. The doc itself **stays in `docs/working/`**.
+3. **Record the archive target — don't move the file.** Add an `## Archive` line to the doc, in the form the session template gives it (`docs/_meta/docs-workflow.md` § Templates (repository-owned)), naming where § The archive convention (repository-owned) files this effort — reuse what that section says to reuse, and name it the way that section names things. When the effort has a spec pipeline whose ignition brief carries an `Archive:` line, that path is the target. `docs-process` files it there later. The doc itself **stays in `docs/working/`**.
 
 4. **Stop.** The finished doc sits in `docs/working/` as the queue. Do NOT patch living docs, do NOT grep for stale references, do NOT file it — all of that is `docs-process`.
 

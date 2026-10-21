@@ -18,9 +18,13 @@ Most of the time a human runs this cold, after a merge, and this section does no
 you have not. It carries the blackboard, the question lane, the PLAN TLDR, the verdict vocabulary, the
 six-section FINAL TLDR, and the close-out order. Two things are yours specifically:
 
-- **You are handed a MANIFEST of this effort's working docs BY NAME. `docs/working/` is a SHARED QUEUE
-  — never infer membership from the folder.** A seat that archives a neighbouring effort's docs cannot
-  undo it. If your prompt did not name them, ask before you move anything.
+- **You are handed a MANIFEST of this effort's working docs BY NAME — every input arrives as a LIST,
+  never a folder. `docs/working/` is a SHARED QUEUE — never infer membership from the folder.** A seat that
+  archives a neighbouring effort's docs cannot undo it. If your prompt did not name them, ask before you move
+  anything.
+- **Your board is `docs/research/{topic}/sessions/docs-process/`** (`plan.md` + `tldr.md`) from the start —
+  never a gitignored folder you copy from later. The folder moves with the effort when you file it, so the
+  board you commit is the board you wrote, close-out receipt included.
 - **Do NOT run `/docs-write`.** You are that skill's CONSUMER, never its caller — a working doc from you
   would be an orphan in the queue you just emptied, for an effort you just archived. Your artifacts are
   the patched living docs and the archive; go straight to the commit call.
@@ -77,7 +81,7 @@ branch, which is the truth for that PR, and you say so at close.
        spec pipeline (the `Spec` row), and the working-doc sequence / `## Archive` target (the `Built` row);
        derive `Related` from existing peer links. Compute any field the header derives from those links the
        way the section says. **Keep `Spec` and `Built` symmetric** — list **every per-slice spec that a
-       `Built` session implemented** (the umbrella + `00-operating-frame` go in `Idea`, not `Spec`); a `Built`
+       `Built` session implemented** (the ignition brief + any `00-operating-frame` go in `Idea`, not `Spec`); a `Built`
        session whose spec is missing from `Spec` is the smell (the `## Lineage` rules § Doc metadata
        (repository-owned) gives).
      - *Patching an existing doc*: update the status if it changed and recompute any field the header
@@ -92,6 +96,8 @@ branch, which is the truth for that PR, and you say so at close.
      section (create the section if absent). Only what you actually saw in the code this pass — never
      speculation. A sizable design idea goes to `docs-backlog` (research/) instead. `docs-status`
      surfaces these so they aren't lost.
+   - **Never add a live check to a living doc.** Live checks are the owner's: a working doc's "the owner
+     could try" lines are not a checklist item, and no living doc grows a row of checks to run.
 
 3. **A new living doc?** If the work added a feature, ensure it has a doc in `docs/features/` (one doc per
    feature). Then register every living doc this run created where the menu's shape line says
@@ -110,11 +116,11 @@ branch, which is the truth for that PR, and you say so at close.
    patched and verified, file the whole effort where `docs/_meta/docs-workflow.md` § The archive convention
    (repository-owned) says, in the shape it gives for this kind of effort (a small effort, a spec pipeline,
    a follow-on round). That section holds the destination, the shape and the links a move repairs; this
-   step holds the procedure, which is the same everywhere. A pipeline whose umbrella carries an `Archive:`
-   line files there.
+   step holds the procedure, which is the same everywhere. A pipeline whose ignition brief carries an
+   `Archive:` line files there.
 
    **FIRST, RECONCILE THE DESTINATIONS — `rg -A1 '^## Archive' <every working doc in the effort>`, plus
-   the umbrella's `Archive:` line when there is a pipeline.**
+   the brief's `Archive:` line when there is a pipeline.**
    This step says *"one archive home"* and *"use the `## Archive` line"* — a singular read over a PLURAL
    source, so the set is checked before any move. **If the docs disagree, STOP and ask.** Do not pick the
    majority, do not pick the first, and do not pick the one you happen to be reading. The failure is not

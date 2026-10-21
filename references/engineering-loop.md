@@ -34,9 +34,11 @@ out-of-pipeline buys a clean PR diff and no contingency. Nothing else about the 
 ```
 Idea                    -> docs-backlog          -> research doc in docs/research/
 Research matures        -> a plan (a plan-approval mode, if the harness has one)
-Plan graduates          -> spec-pipeline         -> docs/research/{topic}/: umbrella + one spec
-                                                    per session + project-status.md (the plan is
-                                                    now throwaway — the specs carry every crumb)
+Plan graduates          -> spec-pipeline         -> docs/research/{topic}/: the ignition brief (the
+                                                    coordinator's spec and the charter every seat
+                                                    reads) + one spec per build seat +
+                                                    project-status.md (the plan is now throwaway —
+                                                    the specs carry every crumb)
 Same session — CHOOSE THE SEAT:
   hand-cranked          -> spec-coordinator      -> this session becomes the COORDINATOR and cuts
                                                     Prompt #1 (you relay every message)
@@ -45,8 +47,9 @@ Same session — CHOOSE THE SEAT:
                                                     click Create, "kick it", a hosted coordinator
                                                     runs the whole pipeline; you own parks +
                                                     completes + the kill-switch
-Per spec (new session)  -> BUILD SEAT            -> recon, PLAN TLDR, rulings, build,
-                                                    FINAL TLDR, docs-write, commit (on call)
+Per spec (new session)  -> BUILD SEAT            -> recon, PLAN TLDR, rulings, build, docs-write,
+                                                    commit + branch push (by hand: on the plan's
+                                                    approval; hosted: on the call), FINAL TLDR
 Builds done, if chosen  -> spec-review           -> the OUTSIDE look, before the retro and before the
   (a pipeline row)                                  PR: code + patterns + composition across seams +
                                                     the loop's own comms; sessions/code-review.md.
@@ -59,21 +62,26 @@ Close (coordinator)     -> spec-retro            -> the INSIDE look: the ceremon
 Effort done             -> docs-process          -> living docs patched (consuming the working docs
   (fresh session, or a                              AND code-review.md); specs + working docs
    pipeline row if chosen)                          archived together to docs/archive/{topic}/
-Then, and ONLY these    -> the human MERGES the PR, and runs the live-checks rows <- THE TWO HUMAN GATES
+Then, and ONLY these    -> the human MERGES the PR, and takes the quick pass   <- THE TWO HUMAN GATES
 Anytime / periodic      -> docs-status, docs-audit-feature, docs-audit-full  <- NEVER a pipeline row
-Alongside, optional     -> spec-witness — a session OUTSIDE the worktree, read-only, zero writes: a
+Alongside, optional     -> spec-witness — a session OUTSIDE the plane, read-only, no credential: a
                            window into a running pipeline so the human can take its pulse without the UI
 ```
 
 **Two things are the human's, permanently and by design:** the **merge** (a person in the merge path is
-the point, not a gap) and the **live-checks** rows (a machine cannot hand-test a UI). Everything between
-`idea` and `archived` a pipeline can do for itself.
+the point, not a gap) and the **live checks** (a machine cannot hand-test a UI). Live checks are the
+owner's — never a seat's job and never a doc's row: the coordinator offers a short, ordered quick pass in
+the chat, and `live-checks.md` holds only the rows the owner dictates. Everything between `idea` and
+`archived` a pipeline can do for itself.
+
+**One pipeline at a time.** A pipeline's GATE is that its predecessor merged — never a seat of another
+pipeline — and the next one starts after it.
 
 **`docs-audit-*` is never a pipeline row.** It runs off-hours and scheduled, over the whole doc tree — not
 inside an effort, and not at an effort's close. A stale living doc is not something a pipeline must stop for.
 
 **The pipeline's SHAPE is decided at authoring, not by a runtime flag.** `spec-pipeline` asks whether the
-effort wants a review row and a docs-process row, and writes them into the row table — so the coordinator
+effort wants a review row and a docs-process row, and writes them into the brief's sequence — so the coordinator
 learns the shape by reading its own sequence, and nothing needs a toggle. A pipeline can be plain,
 `+review`, `+review +process`, or `+process`.
 
@@ -120,10 +128,10 @@ What a commit and a PR pass here, beyond the loop. These add to the Hard rules b
 
 | Seat | Who | Holds | Never does |
 |---|---|---|---|
-| **Human** | you | final approvals (plan-approve click, hard questions, push/publish, hand-testing), the relay in manual mode | writes feature code mid-pipeline |
+| **Human** | you | final approvals (plan-approve click, hard questions, publish, the merge, hand-testing), the relay in manual mode | writes feature code mid-pipeline |
 | **Coordinator** | one long-lived session per effort | the north star + full pipeline context; cuts each seat prompt from the previous session's *actual* results; judges PLAN/FINAL TLDRs; rules with rationale; verifies load-bearing claims itself; owns `project-status.md` | writes feature code; trusts self-reported "N green" |
-| **Seat** | one fresh session per spec | exactly ONE spec; recons the real code first; builds; reports honestly | touches the tracker or memory; commits without the relayed call; runs `docs-write` unprompted |
-| **Witness** *(optional, `spec-witness`)* | a read-only session with substrate access | testifies from rows/transcripts/git when claims conflict or a pipeline looks wedged; answers "whose turn is it" | writes anything; injects anything; rules on anything |
+| **Seat** | one fresh session per spec | exactly ONE spec; recons the real code first; builds; reports honestly | touches the tracker, `live-checks.md` or memory; commits before its plan is approved; pushes to the base branch; runs `docs-write` unprompted |
+| **Witness** *(optional, `spec-witness`)* | a session outside the plane, usually on the runner's machine — never a declared seat, no credential | testifies from git, transcripts, board files and the process table when claims conflict or a pipeline looks wedged; answers "whose turn is it"; drafts messages for the human | writes into the run; injects anything; rules on anything |
 
 The seat, not the chat, is the product: `project-status.md` must stay current enough that a
 fresh session can resume as coordinator losslessly (`spec-coordinator {topic}`).
@@ -144,7 +152,7 @@ fresh session can resume as coordinator losslessly (`spec-coordinator {topic}`).
 | `spec-ignite` | spec | when an authored pipeline runs HOSTED (the `spec-coordinator` alternative) | the ignition copilot, and it can run COLD: gates, re-verify the brief's baselines + platform state against live HEAD, derive the stage card (human clicks Create), "kick it" with the brief's own kick text as the task; every UI gap a named finding |
 | `spec-review` | spec | a pipeline's builds are done, if it has a review row | the OUTSIDE look, before the retro and before the PR: correctness/security/**composition across session seams** · the patterns, with every departure identified · the loop's own comms. Two independent passes, consolidated. Classifies which findings earn a fixit; **its value is having none of the pipeline's context** |
 | `spec-retro` | spec | the coordinator's LAST act, after any review and any fixit | the INSIDE look: a substrate-verified grade, the ceremony audit (did the acts write rows?), the ledger reconciliation, the true economics, the blindnesses, the ranked fixit backlog — *a retrospective that cannot indict its own author is marketing* |
-| `spec-witness` | spec | a pipeline looks wedged, or actors' claims conflict | the read-only fourth seat: substrate access, zero writes, zero rulings |
+| `spec-witness` | spec | a pipeline looks wedged, or actors' claims conflict | the outside watcher: read-only, no credential, never a declared seat; its tools ship in `bin/` |
 | `init` | — | a repository that has none of this yet | create the `docs/` shape, the method docs, first drafts of every doc the skills read; `init doctor` says what is missing |
 
 ### Where a rule lives — policy, procedure, task
@@ -163,7 +171,7 @@ One copy per rule: where a prompt and a skill would say the same thing, the prom
 holds it.
 
 **Why the split exists.** A single base contract every seat kind shared, with the build job mixed in,
-sends the REVIEW row into the umbrella its own charter excludes and offers the DOCS-PROCESS row a
+sends the REVIEW row into the coordinator's settled framing its own charter excludes and offers the DOCS-PROCESS row a
 `docs-write` from a build skill's close-out — the row that has just *emptied* `docs/working/`. One base
 class, three wrong instructions, and none of it visible until the loop runs end to end.
 
@@ -182,19 +190,26 @@ diff.
    `blocking-precondition` / `read-full-plan`), one CAPS ruling per question, decision first
    then the WHY. The coordinator diffs the seat's beliefs against the ledger before ruling.
 4. **Plan-approve = the freedom moment** (manual: approve + bypass-permissions; hosted: the gate
-   flips). The seat builds uninterrupted; mid-run questions repeat the relay loop.
+   flips). The seat builds uninterrupted; mid-run questions repeat the relay loop. **By hand, the seat
+   then runs to done without a stop** — build, suites, `docs-write`, commits with `verify-staged`, its
+   branch pushes (never the base branch) — its notes from the coordinator transcribed verbatim into its
+   `tldr.md` first. Its only stops: a destructive act outside the effort's branches, a credential
+   exposure, a host restart, a `verify-staged` failure.
 5. **Seat ends with the six-section FINAL TLDR** — shipped+verification, verbatim runner
-   summaries (with invocation commands), honest gaps, deferred findings, live checklist
-   entries, staging list + commit HELD + session cost.
+   summaries (with invocation commands), honest gaps, deferred findings, what the owner could try
+   (in the chat, never a file), staging list + its receipt (hosted: commit HELD) + session cost.
 6. **Coordinator verifies one load-bearing claim itself** (receipts compared first; rerun only in
-   doubt), then the **close-out call**: optional fix/rerun, `docs-write` with an itemized
-   carry, COMMIT CALL with the seat's own staging list, push (human approves the push).
+   doubt). By hand it reviews the FINAL against the tree and writes `## COORDINATOR ACCEPT (final —
+   {slice})` into the seat's `tldr.md`; hosted it sends the **close-out call**: optional fix/rerun,
+   `docs-write` with an itemized carry, COMMIT CALL with the seat's own staging list, then the push.
 7. **Coordinator flips the tracker row** to SHIPPED + hash and transcribes deferred findings — the
    seat never writes the tracker. **The coordinator also commits the closing seat's post-push
    close-out append, byte-untouched, as part of closing the row** — the append lands after the
    seat's own commit, so left alone it hands the NEXT seat a dirty tree. Goto 1.
 
-**Hard rules:** no commit/push without the relayed call; explicit staging, never `git add -A`, verified
+**Hard rules:** no commit or push before the plan is approved, and never a push to the base branch —
+approved work includes its commit, its push and the coordinator's PR, and nobody asks for them again;
+explicit staging, never `git add -A`, verified
 with `verify-staged`; codegen only through the command `patterns/codegen.md` names (when the repo has
 one); component files as
 `patterns/frontend-patterns.md` states; additive-only, never amend pushed commits; parallel sessions only
@@ -212,7 +227,7 @@ COORDINATOR -> COORDINATOR RESPONSE — PLAN {ACCEPTED / ACCEPTED-WITH-RIDERS / 
                (DECISION — why) · riders · "Go build."
 SEAT        -> (builds free; mid-run question: numbered text, STOP; COORDINATOR ruling; resume)
 SEAT        -> FINAL TLDR — (a) SHIPPED+VERIFICATION (b) VERBATIM RUNNER SUMMARIES (c) HONEST GAPS
-               (d) DEFERRED FINDINGS (e) LIVE CHECKLIST (f) STAGING + commit HELD + cost
+               (d) DEFERRED FINDINGS (e) WHAT THE OWNER COULD TRY (f) STAGING + receipt + cost
 COORDINATOR -> FINAL TLDR ACCEPTED (+ what the coordinator verified itself) · 1. docs-write, carry: …
                · 2. COMMIT CALL — message: … · then push, report hash
 SEAT        -> books the working doc, commits, pushes, reports hash + post-push status
@@ -239,9 +254,11 @@ with the effort:
 docs/research/{topic}/sessions/         <- per-session work in {spec-slug}/, effort-wide at the root
   {spec-slug}/plan.md           each seat   the full plan, posted once, corrected on pushback (PULL-only)
   {spec-slug}/tldr.md           each seat   the two-voice chat — seat turns AND coordinator rulings interleaved
+  docs-process/plan.md + tldr.md  the P row  its board, here from the start — never a gitignored folder
+  {step-slug}/receipt.md        a human     a `step` row's receipt, in the step's own commit
   code-review.md                the review  the outside look, if the pipeline had a review row
   coordinator-retrospective.md  the coord.  the close-out audit (the inside look)
-  witness-ledger-*.md           a human     the witness is zero-writes, so its ledger arrives by hand
+  witness-ledger-*.md           a human     the witness writes nothing into the run; its ledger is filed on the human's word
 ```
 
 Two files per build session; questions ride the TLDR, and there are no status snapshots because the

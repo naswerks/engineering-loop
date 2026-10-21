@@ -27,7 +27,8 @@ what to audit next.
    `docs/patterns/` docs; note drift.
 
 4. **Research scan** — scan `docs/research/`; flag ideas that look already-implemented (so they can be
-   graduated/removed) and ideas worth surfacing.
+   filed with their effort, or retired as § The archive convention (repository-owned) says) and ideas worth
+   surfacing.
 
 5. **Working/archive sanity** — note any docs lingering in `docs/working/` that look done (should be
    filed via `docs-process`), and confirm the filed efforts are intact where § The archive convention

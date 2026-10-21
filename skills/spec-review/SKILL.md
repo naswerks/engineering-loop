@@ -38,6 +38,8 @@ Your seed carries **no beliefs about the pipeline, and that is deliberate** — 
 - the **topic**, the **branch**, and the **diff range** (`{base}...<branch>` — `{base}` is the base branch
   `docs/_meta/engineering-loop.md` § This repository's rails (repository-owned) names, or the remote's
   default when it names none);
+- **the brief** (`00-ignition-brief.md`) — its sections down to § Platform state, read as claims like the
+  specs, and **never the coordinator's sections after it** (its beliefs, its close-out, its kick);
 - **every numbered spec path** — you read them as claims, not facts;
 - the **`sessions/`** folder, holding each build seat's `plan.md` + `tldr.md`;
 - the **working docs for this effort, named explicitly** — `docs/working/` is a shared queue and you must
@@ -45,14 +47,21 @@ Your seed carries **no beliefs about the pipeline, and that is deliberate** — 
 - the **tracker** (`project-status.md`), which is the process record lens 3 grades from.
 
 **If any of that is missing, ask for it** — a numbered question in your `tldr.md`, same lane as any seat.
-Do not hunt, and do not guess a scope. **What you must NOT be given, and must not accept as fact if it
-arrives anyway:** prior-shapes bullets, a provenance list, or any framing about what is already settled.
-That is testimony; record it and treat it as a claim.
+Do not hunt, and do not guess a scope. **This inventory wins over a narrower instruction:** a brief or a seed
+that tells you to read less (only the diff and your skill, say) does not shrink it — ask for what is missing,
+and say in your report that the instruction was narrower. **What you must NOT be given, and must not accept
+as fact if it arrives anyway:** prior-shapes bullets, a provenance list, or any framing about what is
+already settled. That is testimony; record it and treat it as a claim.
+
+**Say whether this review is COLD or WARM, in your report's first paragraph.** Cold: you were seeded with
+the inventory and nothing else. Warm: you were handed the run's context — a tracker reading before your own
+passes, a coordinator's framing, the owner's briefing. A warm review can be worth having; it is a different
+instrument, and a reader who takes it for a cold one over-trusts its independence.
 
 ## Reading order (it matters)
 
-1. **The specs** — what the pipeline said it would do, per slice, including each escape hatch and the
-   declared out-of-scope.
+1. **The brief, down to § Platform state, and the specs** — what the pipeline said it would do, as a
+   whole and per slice, including each escape hatch, the owner's rulings and the declared out-of-scope.
 2. **The session docs** — every seat's `tldr.md` in `sessions/`. What each seat claims it shipped,
    its honest gaps, its deferred findings, its receipts.
 3. **The working docs** in `docs/working/` — the narrative: what was tried, what failed, what changed.
@@ -203,6 +212,7 @@ a pipeline artifact, not a chat transcript, and it archives with the effort.
 
 > The outside look, written before the retro and before the PR. Two independent passes, consolidated.
 > Reviewed `{base}..{sha}` across N sessions. **This seat did not read the coordinator's retrospective.**
+> **{COLD | WARM}:** {what this seat was seeded with — the inventory alone, or the run's context, and which}.
 {the machine header docs/_meta/docs-workflow.md § Doc metadata (repository-owned) prescribes, at the word for `shipped`}
 
 ## The verdict, first
@@ -232,8 +242,9 @@ the smallest fix that makes the claim true. If none: say NONE, plainly.}
 ## Deferred findings — with their DESTINATIONS
 | R-n | Finding | Found by | Destination |
 {Report-local ids — the coordinator allocates the effort id at the ruling. A DESTINATION is a place that
-exists and that someone reads: a working doc's Living-Docs checklist · a `live-checks.md` row · a
-named input in the NEXT pipeline's brief · an in-code revisit note at the symbol · a chartered fixit ·
+exists and that someone reads: a working doc's Living-Docs checklist · an item for the owner's quick pass
+(offered in the chat; a `live-checks.md` row only when the owner dictates one) · a named input in the NEXT
+pipeline's brief · an in-code revisit note at the symbol · a chartered fixit ·
 or CLOSED with its reason. **"deferred log" is not a destination** — it is the holding pen the
 finding sits in until the retro's disposition pass drains it. A row whose destination is a document
 that does not exist yet (an unauthored row, an unwritten charter) is NOT homed: say so here.}
@@ -244,7 +255,7 @@ that does not exist yet (an unauthored row, an unwritten charter) is NOT homed: 
 {Stated, not omitted.}
 
 ## Lineage   _(where § Doc metadata (repository-owned) keeps the footer)_
-- **Pipeline** — the tracker · the umbrella · sessions 02..NN
+- **Pipeline** — the tracker · the brief · sessions 01..NN
 - **Counterpart** — `coordinator-retrospective.md` (the inside look; written after this)
 ```
 
@@ -252,8 +263,9 @@ that does not exist yet (an unauthored row, an unwritten charter) is NOT homed: 
 
 **Your contract is `spec-seat`** — invoke it first if you have not. It carries recon, the plain-text PLAN
 TLDR with beliefs and numbered questions, the question lane, the parked-call discriminator, the verdict
-vocabulary, the six-section FINAL TLDR, and the close-out order. You commit `sessions/code-review.md` on
-your coordinator's call like any seat.
+vocabulary, the six-section FINAL TLDR, and the close-out order. You commit `sessions/code-review.md` as
+any seat commits its work: hand-cranked on your plan's approval (the relay), hosted on your coordinator's
+call.
 
 **The close-out receipt's heading token is the literal `seat·` for you too** — it is a protocol anchor,
 not a description of your seat, and writing `[review·…]` stales your own acceptance. `spec-seat` carries
