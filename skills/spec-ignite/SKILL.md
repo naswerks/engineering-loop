@@ -30,9 +30,10 @@ the named-finding discipline are UNCHANGED either way — **only the mouse hand 
 1. Confirm the specs are **committed to the base branch** — seats read specs from their checkouts, so
    uncommitted specs reach no worktree. If they are not committed, that commit is the coordinator's call
    first.
-2. Enumerate the **ignition gates** explicitly and check each: dependency efforts landed AND merged (name
-   the PRs); known-blocker fixits landed (name them); the control plane up and a runner connected; the
-   human's words per stage. Report any gate not yet green — you WAIT, never work around.
+2. Enumerate the **ignition gates** explicitly and check each: the predecessor merged (name the PR) — one
+   pipeline runs at a time, so that is the only gate on another pipeline, never one of its seats; known-blocker
+   fixits landed (name them); the control plane up and a runner connected; the human's words per stage.
+   Report any gate not yet green — you WAIT, never work around.
 3. **VERIFY the ignition brief — you do not author it.** `spec-pipeline` wrote `00-ignition-brief.md`
    complete, from the hot session that placed the specs. **You may be a cold session, and that is fine,
    because your job is the check:** re-run the **Baselines** and confirm the quoted numbers; re-verify each
@@ -53,32 +54,33 @@ the named-finding discipline are UNCHANGED either way — **only the mouse hand 
    | Payload field | Derived from | Note |
    |---|---|---|
    | `topic` | the folder name (`docs/research/{topic}/`) | kebab-case, as authored |
-   | `title` | the umbrella `01-*.md` H1 | |
+   | `title` | the brief's H1 (the pipeline's title) | |
    | `specPath` | `docs/research/{topic}/` | **the folder, trailing slash** — a seat's own spec is a different field |
    | `shape` | the brief's `## Birth` | closed set; the create door refuses an unknown by name |
    | `defaultModel` | the brief's `## Birth` | **allowlist-exact** — a near-miss is refused, not coerced |
    | `defaultEffort` | the brief's `## Birth` | |
    | `seats[0]` | **THE COORDINATOR — it is a SEAT, and it is not one of the numbered specs** | omit it and the start door answers `pipeline-has-no-coordinator`; two answer `pipeline-has-many-coordinators` |
-   | `seats[1..]` | the brief's `## The sequence`, in order | one row per numbered spec, plus the review / docs-process rows if the pipeline has them |
+   | `seats[1..]` | the brief's `## The sequence`, in order | one row per numbered spec, plus the review / docs-process rows if the pipeline has them. **A `step` row is shown on the card and never staged** — it is a human act, not a seat |
    | `seats[].kind` | the sequence row's kind, **verbatim from the closed vocabulary** | `build · fixit · review · docs-process · coordinator · retro · witness`. A kind nobody has heard of composes NOTHING; `unknown-seat-kind` names it |
+   | `seats[].role` | the row's `Role` cell, when the sequence has the column | `backend · frontend · mixed`; omitted when absent, and the seat's default applies |
    | `seats[].title` | the spec's H1, or the sequence row's label | |
    | `seats[].specPath` | `docs/research/{topic}/NN-{slug}.md` | **the FILE.** Confirm each exists — a spec named in the sequence and missing from disk reaches no worktree |
    | `seats[].stageOrdinal` / `ordinal` | position in the sequence | sequential unless the brief declares stages |
    | `edges[]` | the shape + the sequence | `fromSeatIndex`/`toSeatIndex` are **indices into your own `seats` array**, not seat ids — the ids do not exist until the create answers. `unknown-seat-relation` names a bad relation |
 
-   **A FIXIT ROW IS NEVER IN THE CREATE PAYLOAD.** `spec-pipeline` authors at most one and only as a
-   possibility — *"MAY materialise… not authored up front; the coordinator charters it from the review's
-   named list."* Staging a seat for it invents a seat the run may never want, and the coordinator cannot
-   un-charter it.
+   **A CONDITIONAL FIXIT IS A PLANNED SEAT, NEVER A SPEC.** `spec-pipeline` authors at most one and only
+   as a possibility — *"MAY materialise… not authored up front; the coordinator charters it from the
+   review's named list."* When the card carries it, the control plane creates it as a planned seat the
+   coordinator supervises, shown as "if needed": it opens only when the coordinator charters it, and
+   `finish` closes it as not chartered when it never opened. Never give it a spec file, and never stage a
+   second one.
 
-   **DERIVING THE CARD *IS* THE THREE-DOCUMENT CHECK, AND THAT IS WHY THIS SEAT DERIVES IT.**
-   `spec-pipeline` requires the sequence to appear in THREE places and agree: the brief's
-   `## The sequence`, the umbrella's row table, and the tracker's `## Session status`. Build the seat
-   list from the brief, then read the other two and confirm they list the same rows in the same order.
-   **A disagreement is a finding, reported to the authoring seat — never something you reconcile
-   silently by picking one.** An effort whose three documents disagree has a seat acting on a shape the
-   others have stopped describing, and the create you are about to stage would make one of them true by
-   force.
+   **DERIVING THE CARD *IS* THE SHAPE CHECK, AND THAT IS WHY THIS SEAT DERIVES IT.** The sequence is
+   written once, in the brief's `## The sequence`; the tracker's `## Session status` carries one status
+   line per row by the brief's ids. Build the seat list from the brief, then confirm every row has its
+   status line and every status line its row. **A disagreement is a finding, reported to the authoring
+   seat — never something you reconcile silently by picking one** — the create you are about to stage
+   would make one of them true by force.
 
    **The card names only controls that exist.** A card that promises a budget cap or an artifact prefix
    the launcher cannot take hands over values the form refuses and omits the ones it needs. **If you want
@@ -105,7 +107,8 @@ the named-finding discipline are UNCHANGED either way — **only the mouse hand 
    if a retry is needed, re-announce and say the failed attempts had zero side effects.
 9. Verify ignition receipts — the coordinator's opening ledger write, its first `seat_spawn`, any scripted
    probe's refusal — and **narrate each beat as it lands**, plain language. A loud row at ignite is
-   information, not a failure.
+   information, not a failure. **When a witness is on duty, hand it the packet** (`spec-witness` § The
+   packet) before you go hands-off: it watches from outside the plane and cannot read the kick for itself.
 10. **HANDS OFF.** Heartbeats only (one line per phase change; long output to files, never into context).
     The human owns the parks, the reaps, and the kill-switch from the first second. If the run wedges:
     report state + STOP — the kill-switch is theirs.
@@ -130,9 +133,10 @@ reviewed the way a committed file can, so anything longer than a pointer is law 
 place — and accumulated prompt-law breaks the coordinator it was meant to steer.
 
 **Your job is to READ it and confirm the brief behind it holds up** — the coordinator reviews the text
-before kick. Before you hand it over, check the brief actually covers: the sequence and roles · the
-coordinator's beliefs with provenance · effort-specific law and per-spec riders · verified baselines ·
-platform state · close-out (artifact filing, live-checks aggregation, what the PR must say). **A gap you
+before kick. Before you hand it over, check the brief actually covers: why the effort exists · the
+sequence and roles · the owner's rulings · the law and per-spec riders · the reference facts · what the
+effort does not do · verified baselines · platform state · the coordinator's beliefs with provenance ·
+close-out (artifact filing, what the PR must say, the owner's quick pass). **A gap you
 find is a finding to report, not a section for you to write** — send it back to the authoring seat.
 
 <!-- control-plane-specific -->

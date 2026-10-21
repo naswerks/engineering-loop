@@ -13,8 +13,13 @@ const PREFERENCES = [
   ['docs-workflow.md', '## Doc metadata (repository-owned)', [
     '<!-- meta: type=', '| Key | Values | Notes |', '### The `## Lineage` footer', '### Obsidian interop',
   ]],
+  ['docs-workflow.md', '## Folders', [
+    'when the platform moves past it unbuilt, **retired** to `archive/retired/`',
+  ]],
   ['docs-workflow.md', '## The archive convention (repository-owned)', [
     'archive/{topic}/', '- **Flat (no specs)**', '- **Split (has specs)**', '**Follow-on pipelines',
+    'provenance: when a doc moves, every link to it', '**Two homes are the exceptions to topic-folder grouping.**',
+    '- **`archive/retired/`** — research the platform moves past',
   ]],
   ['docs-workflow.md', '## Templates (repository-owned)', [
     '<!-- meta: type=working;', '<!-- meta: type=spec;', 'Topic folder: `archive/{topic}/`',

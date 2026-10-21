@@ -24,6 +24,16 @@ export const STAMP = /^(<!-- naswerks-loop: version=)([0-9]+\.[0-9]+\.[0-9]+[^ ]
 // The seat kinds a pipeline row may name, checked the way the control plane checks a brief's sequence.
 export const KINDS = ['coordinator', 'build', 'fixit', 'review', 'retro', 'witness', 'docs-process'];
 
+// The one word for a sequence row that is not a seat (a publish, a merge, a human sitting). No misspelled
+// seat kind can equal it, so a row whose kind is misspelled still fails by name instead of reading as a step.
+export const STEP = 'step';
+
+// The roles a sequence row's optional `Role` cell may carry: which reading list a build seat takes.
+export const ROLES = ['backend', 'frontend', 'mixed'];
+
+// A numbered file a sequence row names: a seat's spec, or the brief itself on the coordinator's row.
+export const SPEC_FILE = /\b(\d{2}-[A-Za-z0-9._-]*?\.md)\b/;
+
 // The skill each kind runs as its job. A spec seat's skill is named for its kind, so a skill's name says
 // which seat runs it: `fixit` is the build job's no-spec variant, and `docs-process` is the knowledge
 // loop's own skill, seated by a pipeline as its last row.

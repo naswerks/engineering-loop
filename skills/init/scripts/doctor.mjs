@@ -5,7 +5,7 @@ import { existsSync, readFileSync, readdirSync, statSync } from 'node:fs';
 import { join, resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { execFileSync } from 'node:child_process';
-import { OWNED, KINDS, KIND_SKILLS, NOT_SKILLS, skillTokens, compareVersions, compareMinor, frontmatterListCount, linesOf, bare, h2Index, findSection, railsItems } from './owned.mjs';
+import { OWNED, KINDS, STEP, ROLES, SPEC_FILE, KIND_SKILLS, NOT_SKILLS, skillTokens, compareVersions, compareMinor, frontmatterListCount, linesOf, bare, h2Index, findSection, railsItems } from './owned.mjs';
 
 const repo = resolve(process.argv[2] || process.cwd());
 const packRoot = resolve(dirname(fileURLToPath(import.meta.url)), '..', '..', '..');
@@ -209,21 +209,33 @@ if (existsSync(researchDir)) {
     else if (!kick.split('\n').some((l) => l.trimStart().startsWith('>'))) problems.push('the `## The kick` section carries no blockquote; its whole text stands in for the task');
     const unknown = kick === null || packSkills.size === 0 ? [] : [...new Set(skillTokens(kick))].filter((t) => !packSkills.has(t) && !NOT_SKILLS.includes(t));
     const seq = sectionOf(text, '## The sequence');
+    const named = new Set();
     if (seq === null) problems.push('the brief has no `## The sequence` section, so no seats could be read');
     else {
       const tableRows = seq.split('\n').filter((l) => l.trim().startsWith('|'));
       if (tableRows.length === 0) problems.push('the `## The sequence` section holds no table, so no seats could be read');
+      const cellsOf = (line) => line.trim().replace(/^\|/, '').replace(/\|$/, '').split('|').map((c) => c.trim().replace(/^`|`$/g, '').trim());
+      // The optional Role column, found by its header; a row's cell there is a role or empty.
+      const roleAt = tableRows.length ? cellsOf(tableRows[0]).findIndex((c) => c.toLowerCase() === 'role') : -1;
       for (const line of tableRows.slice(1)) {
-        const cells = line.trim().replace(/^\|/, '').replace(/\|$/, '').split('|').map((c) => c.trim().replace(/^`|`$/g, '').trim());
+        const cells = cellsOf(line);
         if (cells.every((c) => /^[-: ]*$/.test(c))) continue;
-        if (!cells.some((c) => KINDS.includes(c))) { problems.push(`a sequence row names no seat kind and composes nothing: \`${line.trim()}\``); continue; }
-        const spec = cells.map((c) => /\b(\d{2}-[A-Za-z0-9._-]*?\.md)\b/.exec(c)).find(Boolean);
+        const spec = cells.map((c) => SPEC_FILE.exec(c)).find(Boolean);
+        if (spec) named.add(spec[1]);
+        if (cells.includes(STEP)) continue;
+        if (!cells.some((c) => KINDS.includes(c))) { problems.push(`a sequence row names no seat kind and composes nothing (a row that is not a seat says \`${STEP}\`): \`${line.trim()}\``); continue; }
+        const role = roleAt >= 0 ? (cells[roleAt] ?? '') : '';
+        if (role && !/^[-—]$/.test(role) && !ROLES.includes(role)) problems.push(`a sequence row's role \`${role}\` is not one of ${ROLES.map((r) => `\`${r}\``).join(' · ')}: \`${line.trim()}\``);
         if (spec && !existsSync(join(researchDir, topic, spec[1]))) problems.push(`the sequence names \`${spec[1]}\` and it is missing from disk`);
       }
     }
+    // An old-shape folder carries an umbrella: a `01-` file no sequence row names. It still runs on an older
+    // pack; carry it over before it runs on this one.
+    const umbrellas = seq === null ? [] : readdirSync(join(researchDir, topic)).filter((f) => /^01-.+\.md$/.test(f) && !named.has(f));
     for (const pr of problems) row('FAIL', `docs/research/${topic}/00-ignition-brief.md`, pr);
     for (const t of unknown) row('DEGRADE', `docs/research/${topic}/00-ignition-brief.md`, `the kick names \`${t}\`, a skill this pack does not carry; the coordinator's skill is \`${KIND_SKILLS.coordinator}\``);
-    if (!problems.length && !unknown.length) row('ok', `docs/research/${topic}/00-ignition-brief.md`, 'the kick and the sequence read clean');
+    for (const u of umbrellas) row('DEGRADE', `docs/research/${topic}/00-ignition-brief.md`, `old shape — fold \`${u}\` into the brief (CHANGELOG 0.8.0 § Upgrading)`);
+    if (!problems.length && !unknown.length && !umbrellas.length) row('ok', `docs/research/${topic}/00-ignition-brief.md`, 'the kick and the sequence read clean');
   }
 }
 

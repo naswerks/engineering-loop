@@ -71,7 +71,8 @@ function briefRepo(kickSkill) {
   writeFileSync(join(topic, '00-ignition-brief.md'), [
     '# Demo — Ignition Brief', '',
     '## The sequence', '', '| Seat | Spec | Kind |', '|---|---|---|',
-    '| 0 · coordinator | — | `coordinator` |', '| 02 · a slice | `02-a-slice.md` | `build` |', '',
+    '| 0 · coordinator | — | `coordinator` |', '| 02 · a slice | `02-a-slice.md` | `build` |',
+    '| publish | — | `step` |', '',
     '## The kick', '',
     `> You are the COORDINATOR of the demo pipeline. Invoke the \`${kickSkill}\` skill, then read`,
     '> `docs/research/demo/00-ignition-brief.md` and follow it.', '',

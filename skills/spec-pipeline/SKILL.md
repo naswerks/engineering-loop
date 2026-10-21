@@ -1,6 +1,6 @@
 ---
 name: spec-pipeline
-description: Graduate a plan into a numbered spec pipeline in docs/research/{topic}/ — an umbrella plus one self-contained spec per planned seat. Use when a research idea is "really getting into it" and a plan has come through (a plan-approval mode, if your harness has one) and you want to commit it as specs instead of executing it directly, or run spec-pipeline.
+description: Graduate a plan into a numbered spec pipeline in docs/research/{topic}/ — one ignition brief (the coordinator's spec and the charter every seat reads) plus one self-contained spec per build seat. Use when a research idea is "really getting into it" and a plan has come through (a plan-approval mode, if your harness has one) and you want to commit it as specs instead of executing it directly, or run spec-pipeline.
 ---
 
 # spec-pipeline
@@ -8,7 +8,7 @@ description: Graduate a plan into a numbered spec pipeline in docs/research/{top
 Turn a *plan* into a durable, numbered **spec pipeline** in `docs/research/{topic}/`. This is phase 2 of
 the two-phase backlog model: `docs-backlog` parks an idea; `spec-pipeline` graduates the plan behind it
 into specs. **The plan is throwaway — the specs carry every crumb.** A future session reads ONE spec + the
-umbrella and can build without the plan or the original conversation.
+brief and can build without the plan or the original conversation.
 
 **Find the format first.** This repository writes its formats (the doc header and status words, where an effort is filed, its rails) in the sections `rg -n '^#+ .*\(repository-owned\)' docs/_meta/` lists; read the one a step names before that step writes. This skill names the section, never the format.
 
@@ -24,22 +24,28 @@ umbrella and can build without the plan or the original conversation.
 ## What a pipeline folder contains
 
 > **THIS FOLDER IS THE CREATE PAYLOAD.** Ignition does not compose a pipeline from memory or from a
-> conversation — it DERIVES one from these files: the folder name is the topic, the umbrella's H1 is the
-> title, `## The sequence` is the seat list, and the numbered specs are the seats. Author them knowing
-> they will be read mechanically, and the ignition step becomes a verification rather than a
-> transcription. The mapping is the table in `spec-ignite` § *the stage card is derived*; keep the two
-> in step if either moves.
+> conversation — it DERIVES one from these files: the folder name is the topic, the brief's H1 is the
+> title, its `## The sequence` is the seat list (a `step` row is shown, never a seat), and the numbered
+> specs are the build seats. Author them knowing they will be read mechanically, and the ignition step
+> becomes a verification rather than a transcription. The mapping is the table in `spec-ignite` § *the
+> stage card is derived*; keep the two in step if either moves.
 
 ```
 docs/research/{topic}/
-  00-ignition-brief.md   the coordinator's standing orders for THIS run (template below)
-  01-{topic}.md          the umbrella: vision, the row table, settled decisions, hard constraints
-  02..NN-{slice}.md      one self-contained spec per planned seat, in build order
+  00-ignition-brief.md   the coordinator's spec AND the charter every seat reads (template below);
+                         never a session
+  01..NN-{slice}.md      one self-contained spec per build seat, in build order: every numbered
+                         file is one seat's spec
   project-status.md      the living tracker — the coordinator's journal (template below)
-  live-checks.md         the human's verification rows, accumulated as the run proceeds
+  live-checks.md         created with NO rows: it holds only the rows the owner dictates
   sessions/              the CONVERSATION — see below. NOT authored here: the FIRST seat
                          brings it into existence when it files, so a fresh folder has none
 ```
+
+**Every numbered file is one seat's spec, and the brief is the coordinator's.** The brief carries what
+binds the whole run — why it exists, the sequence, the owner's rulings, the law, the reference facts, what
+it does not do, the baselines, the platform state — so a seat reads its own spec and the brief, and nothing
+else is a charter. The sequence is written once, in the brief.
 
 ### `sessions/` — the conversation, and its durable record
 
@@ -58,11 +64,13 @@ sessions/                        WHO PUTS IT THERE
   {spec-slug}/tldr.md            each build seat, same commit — the two-voice CHAT: its TLDRs and
                                  questions with the coordinator's rulings appended beneath them. Read
                                  top-to-bottom it IS the session's whole conversation, in message order
+  docs-process/plan.md + tldr.md the docs-process row's board, same shape; it lives here from the start,
+                                 never in a gitignored folder, so it moves with the effort when P files it
+  {step-slug}/receipt.md         a human `step` row, in its own commit — see "A HUMAN STEP OWES A RECEIPT"
   code-review.md                 the review seat, in its own commit, if the run has a review row
   coordinator-retrospective.md   the coordinator, at the close
-  witness-ledger-*.md            a human commit — the witness is zero-writes by contract (its ticket
-                                 cannot even carry the write scope), so its testimony reaches the repo
-                                 by someone else's hand
+  witness-ledger-*.md            a human commit — the witness writes nothing into the run, so its
+                                 testimony reaches the repo by someone else's hand, on the human's word
 ```
 
 - **Per-seat artifacts go in a `{spec-slug}/` subfolder; effort-wide artifacts sit at the `sessions/`
@@ -102,7 +110,7 @@ sessions/                        WHO PUTS IT THERE
    slice: recon + plan + build + suite + FINAL TLDR fits in one session with room for two rulings.
 
 2b. **Decide the pipeline's SHAPE — ask the human both questions, with your recommendation.** The bookends
-   are rows in the row table like any other seat, which is why the decision belongs here: nothing
+   are rows in the brief's sequence like any other seat, which is why the decision belongs here: nothing
    downstream needs a flag, and the coordinator learns the shape by reading its own sequence.
 
    **"Do you want a REVIEW row?"** Recommend YES when the run ships a lot of code, touches security or
@@ -123,10 +131,21 @@ sessions/                        WHO PUTS IT THERE
    verbs its credential admits, and a kind nobody has heard of composes NOTHING rather than something
    plausible. Name rows in those words.
 
-   Then write the rows into the row table and the brief's sequence, in this order:
+   **What is not a seat is a `step` row** — a human act in its place in the order (a publish, a merge, a
+   sitting). Its `Kind` cell says `step`, and nothing is staged or seeded for it. `step` is the one
+   non-seat word on purpose: no misspelled seat kind can equal it, so a row whose kind is misspelled is
+   still refused by name rather than read as a step. A PR the coordinator opens at its close is its own
+   close-out, not a row.
+
+   **A seat row may carry a role** — `backend` · `frontend` · `mixed` — in a `Role` column, when the
+   reading list of a build seat should not be left to the default. Leave the column out when no row needs
+   it.
+
+   Then write the rows into the brief's sequence, in this order:
 
    ```
-   02..NN   the build seats
+   0        the coordinator, with the brief as its spec
+   01..NN   the build seats, with any `step` rows in their places
    {R}      REVIEW      — spec-review, if chosen. Runs on `git diff {base}...<branch>` (the rails' base branch); no PR yet
    {F}      FIXIT       — MAY materialise, one maximum, only if the review classifies an (a)+(b)
                           finding AND the coordinator rules it in. Not authored up front; the
@@ -137,17 +156,18 @@ sessions/                        WHO PUTS IT THERE
 
    **The REVIEW row's seed carries NO coordinator beliefs** — no provenance list, no prior-shapes
    bullets, no framing about what is already settled. Every other seat's prompt deliberately carries those;
-   this one must not, because the seat's whole value is the absence of the run's context. **Write that
-   instruction into the brief**, or it will be seeded helpfully and destroy what it is buying.
+   this one must not, because the seat's whole value is the absence of the run's context. It reads the
+   brief's sections down to § Platform state and every numbered spec **as claims**, and never the
+   coordinator's sections after it. **Write that instruction into the brief**, or it will be seeded
+   helpfully and destroy what it is buying.
 
-   **The sequence you just decided lands in THREE documents, and they must agree**: the brief's
-   `## The sequence`, the umbrella's row table, and the tracker's `## Session status`. Write all three
-   in one pass, listing the same rows in the same order. **The coordinator re-checks this at ignition** —
-   an effort whose three documents disagree has one seat acting on a shape the others have stopped
-   describing.
+   **The sequence is written ONCE, in the brief.** The tracker's `## Session status` carries one status
+   line per row, by the brief's ids, and copies nothing else: no second table, no settled-decisions list.
+   **The coordinator compares the two at ignition and before its retro** — a status line with no row, or a
+   row with no status line, is a finding.
 
 3. **Write the specs**, using the spec-doc template in `docs/_meta/docs-workflow.md`. Each per-seat
-   spec opens with the spec-doc blockquote (`Builds on [prior]` + `Source: [umbrella / research]`) and the
+   spec opens with the spec-doc blockquote (`Builds on [prior]` + `Source: [brief / research]`) and the
    machine header `docs/_meta/docs-workflow.md` § Doc metadata (repository-owned) prescribes, at the word for
    `draft`, so the set stays navigable.
 
@@ -201,20 +221,20 @@ sessions/                        WHO PUTS IT THERE
    exists has a blind spot. **A count pinned in a doc needs a named owning session**, or it rots: say
    which spec moves it, and have the others leave it alone.
 
-4. **Name the RESEARCH the effort came from, in the umbrella, by path.** The idea that fed this work
-   archives *with* it — that is how its archive home ends up holding the whole arc from "thing we'd like to
-   do" to "done." When the research doc already lives at `research/{topic}/`, it travels for free. **When
-   it does not** — a standalone `research/{something}.md`, or several — the umbrella's `Source:` / Lineage
-   is the only record that it belongs to this effort.
+4. **Name the RESEARCH the effort came from, in the brief, by path** — its `## Where it came from`. The
+   idea that fed this work archives *with* it — that is how its archive home ends up holding the whole arc
+   from "thing we'd like to do" to "done." When the research doc already lives at `research/{topic}/`, it
+   travels for free. **When it does not** — a standalone `research/{something}.md`, or several — the
+   brief's `## Where it came from` and its Lineage are the only record that it belongs to this effort.
 
    **Say it plainly, because a later seat has to act on it:** whoever archives this gets handed that
    list, and a research doc nobody named is one that stays behind in the running tab after its effort has
-   shipped. Two lines in the umbrella now saves a hunt through a shared folder later.
+   shipped. Two lines in the brief now saves a hunt through a shared folder later.
 
 5. **Name the archive destination when only you can.** Read `docs/_meta/docs-workflow.md` § The archive
    convention (repository-owned). If where a pipeline files depends on something only this session knows
-   (which living feature the effort belongs to, say), resolve it now and write the path into the
-   umbrella's blockquote as an `Archive:` line; `spec-coordinator` hands it to the docs-process row and
+   (which living feature the effort belongs to, say), resolve it now and write the path into the brief's
+   `## Where it came from` as an `Archive:` line; `spec-coordinator` hands it to the docs-process row and
    `docs-process` files there. A convention that needs nothing from you needs no line.
 
 6. **Stop.** The specs stay in `research/{topic}/`. Do NOT implement, do NOT touch living docs, do NOT
@@ -222,8 +242,10 @@ sessions/                        WHO PUTS IT THERE
 
 ## The `00-ignition-brief.md` template
 
-The coordinator's standing orders for this run, and **you write all of it here — every section, nothing
-left blank.**
+The coordinator seat's spec and the charter every seat reads, and **you write all of it here — every
+section, nothing left blank.** The sections down to § Platform state bind every seat; the three after it
+are the coordinator's orders, and a seat whose charter excludes them (the review row) stops at § Platform
+state.
 
 **Why here and not at ignition:** this is the hot session. You just placed the specs, counted the
 populations, and read the code they cite, so you are the only seat that can state the baselines and the
@@ -236,53 +258,74 @@ That includes the **kick text**: write the coordinator's task string here, ready
 requires no authoring at all.
 
 ```markdown
-# {Topic} — Ignition Brief (the coordinator's standing orders)
+# {The pipeline's title}
 
-> You are the COORDINATOR of the {topic} pipeline. Read this, then the umbrella (01-*.md), then the
-> tracker (project-status.md — yours), then EVERY numbered spec before arming the first seat.
+> **Every seat reads this file.** It is the coordinator seat's spec and the charter this pipeline stands on,
+> and it is never a session. The sections down to § Platform state bind every seat; the sections after it
+> are the coordinator's orders. The numbered files `01`–`{NN}` are the build seats' specs.
 {the machine header docs/_meta/docs-workflow.md § Doc metadata (repository-owned) prescribes, at the word for `draft`}
 
 **Last verified against:** {date}, `{sha}`. Ignition re-verifies this brief against live HEAD and
 corrects drift; it does not re-author it.
 
+## Why
+What is wrong today and what the effort makes true — the vision a seat builds toward.
+
 ## Birth
-Topic · spec path · receipt prefix · attended/unattended · branch `{the effort's branch}`.
+Topic · spec path · receipt prefix · mode (hosted, or by hand) · shape · the effort's branch · the rows
+chosen at authoring (review? docs-process?) and why · **the GATE**: only that the predecessor merged, then
+re-verify this brief's § Reference and re-measure § Baselines.
 
 ## The sequence
 | Seat | Spec | Kind | Why it sits here |
 
 **THE `Kind` COLUMN IS THE VOCABULARY WORD, VERBATIM** — `build` · `fixit` · `review` ·
-`docs-process` · `coordinator` · `retro` · `witness` — **not a prose role.** This table is READ, not
-just read by people: ignition derives the create payload from it (`spec-ignite` § the stage card is
-derived), and the create door validates the kind against a closed set and refuses an unknown by name.
-A cell saying "the one that reviews" composes nothing.
+`docs-process` · `coordinator` · `retro` · `witness`, or `step` for a row that is not a seat — **not a
+prose role.** This table is READ, not just read by people: ignition derives the create payload from it
+(`spec-ignite` § the stage card is derived), the create door validates the kind against a closed set and
+refuses an unknown by name, and the doctor fails a row whose kind is none of these. A cell saying "the one
+that reviews" composes nothing. An optional `Role` column carries `backend` · `frontend` · `mixed` for a
+seat whose reading list should not be left to the default.
+
+**This is the only copy of the sequence.** The tracker's status lines name these rows by id and copy
+nothing else.
 
 **AND THE COORDINATOR IS A ROW.** It is a seat on the create payload like any other, it is not one
 of the numbered specs, and a pipeline without exactly one is refused at start
-(`pipeline-has-no-coordinator` / `-has-many-coordinators`). List it first, at stage 0, with the brief
+(`pipeline-has-no-coordinator` / `-has-many-coordinators`). List it first, at stage 0, with this brief
 as its spec.
 
 Include the REVIEW and DOCS-PROCESS rows if the pipeline has them, and say which it does NOT have —
 the coordinator needs to know whether a review precedes its retro. If there is a review row, add:
-**its seed carries no coordinator beliefs, no provenance, no already-settled framing** · a FIXIT row
-may follow it (one maximum, coordinator-ruled from the review's named candidates) · **the retro comes
-after the review and after any fixit**, never before. If docs-process is a row, note that its
-living-doc patches are contingent on the merge.
+**its seed carries no coordinator beliefs, no provenance, no already-settled framing, and it reads this
+brief down to § Platform state as claims** · a FIXIT row may follow it (one maximum, coordinator-ruled
+from the review's named candidates) · **the retro comes after the review and after any fixit**, never
+before. If docs-process is a row, note that its living-doc patches are contingent on the merge.
 
-## The coordinator's beliefs, with provenance
-Each load-bearing claim and which pipeline, row, or commit established it. A seat that finds a mismatch
-has produced something worth more than a build hour. **Never head this section with a claim that
-questioning it counts against the session** — that framing gets pointed at exactly the claims that
-turn out to be wrong.
+## The owner's rulings — settled, don't relitigate
+Each decision the owner made while the plan came through, and its consequence for the run. A seat that
+needs one overturned asks; it never rebuilds an argument the owner already ruled on.
 
-## Pipeline-specific law (beyond the prompt and the skills)
-Only what OVERRIDES a default: the suite/coverage lane, spend fences, ordering constraints that are not
-obvious from the specs, per-spec riders already ruled.
+## Law — what binds every seat beyond the skills
+Only what OVERRIDES a default, in one section: the relay or the hosted ceremony this run uses, the suite
+and coverage lanes, spend fences, ordering constraints that are not obvious from the specs, the stack
+rules, what is frozen. Never a restatement of a skill.
+
+## Reference — the facts the specs stand on
+The symbols, files and states every spec cites, each read against the tree on a stated date. The specs
+point here instead of each re-deriving them.
+
+## Where it came from
+The research that fed this effort, by path — it archives with the effort — and an `Archive:` line when
+only this session can name the archive home (step 5).
+
+## What this effort does NOT do
+The out-of-scope list, each item with where it lives instead. A seat never touches what is named here.
 
 ## Baselines
-MEASURE these — run the suites and quote the real numbers. Ignition re-verifies; it cannot invent them.
-Per lane: the result, **the exact invocation**, and **the environment it was measured in**. Three things
-that each cost a live run:
+MEASURE these — run the suites and quote the real numbers. The GATE re-measures them; every seat cites
+them and measures only a lane this section does not name. Per lane: the result, **the exact invocation**,
+**the environment it was measured in**, and **its duration**. Three things that each cost a live run:
 - **A number without its invocation is not a receipt** — it invites the next reader to widen its scope.
   Say which projects ran, not just a total.
 - **State the environment.** A baseline measured with the stack down is a different number from one
@@ -307,17 +350,22 @@ If this pipeline CHANGES the machinery it runs on — the ledger, the wake diges
 sentinel, the gate — say so here, and tell the coordinator to expect to meet that defect while fixing it.
 Meeting it is a first-hand receipt worth more than the spec's analysis: journal it and cite it in the fix.
 
-## Close-out
-Per-seat artifact filing · live-checks aggregation · what the PR must say · the receipt this pipeline
-owes about itself.
+## The coordinator's beliefs, with provenance
+Each load-bearing claim and which pipeline, row, or commit established it. A seat that finds a mismatch
+has produced something worth more than a build hour. **Never head this section with a claim that
+questioning it counts against the session** — that framing gets pointed at exactly the claims that
+turn out to be wrong.
 
-**A HUMAN ROW OWES A RECEIPT, NOT A NARRATION.** If the pipeline has a human row, carry this rule
-into the brief verbatim: the row is exempt from `plan.md` (there is no build to plan) and is **NOT**
-exempt from an independent record. It files `sessions/{slug}/receipt.md` in the row's own commit —
-each check id, what was run, the literal result, and who observed it. Every other row has TWO
-voices, the seat's tldr and the coordinator's tracker, and the retro's ceremony audit is built on
-cross-reading them; a human row recorded only by the coordinator has ONE, and the one voice is the
-one whose errors nobody else catches.
+## Close-out
+Per-seat artifact filing · what the PR must say · the owner's quick pass (short and ordered, offered in
+the chat) · the receipt this pipeline owes about itself.
+
+**A HUMAN STEP OWES A RECEIPT, NOT A NARRATION.** If the sequence has a human `step` row, carry this rule
+into the brief verbatim: the step is exempt from `plan.md` (there is no build to plan) and is **NOT**
+exempt from an independent record. It files `sessions/{step-slug}/receipt.md` in its own commit — each
+check id, what was run, the literal result, and who observed it. Every seat has TWO voices, the seat's
+tldr and the coordinator's tracker, and the retro's ceremony audit is built on cross-reading them; a step
+recorded only by the coordinator has ONE, and the one voice is the one whose errors nobody else catches.
 
 ## The kick — paste this verbatim as the coordinator's task
 > You are the COORDINATOR of the {topic} pipeline. Invoke the `spec-coordinator` skill, then read
@@ -354,10 +402,11 @@ viewer because they are instructions to the coordinator, not content for the hum
 {one paragraph}
 
 ## Session status
-<!-- ready -> building -> SHIPPED {sha} / PARKED {sha}. One line each, no prose. -->
+<!-- ready -> building -> SHIPPED {sha} / PARKED {sha}. One line per row, by the brief's ids; the sequence
+     itself lives in the brief and is never copied here. -->
 
-## Settled decisions
-<!-- The don't-relitigate list, carried from the umbrella; append rulings that become standing. -->
+## Rulings made during the run
+<!-- Append-only. What was settled at authoring is the brief's; this section holds only what the run rules. -->
 
 ## What's verified (trust basis)
 <!-- What a build session may take on faith, and what it must re-check itself. -->
@@ -415,10 +464,10 @@ viewer because they are instructions to the coordinator, not content for the hum
 
 ## `live-checks.md`
 
-One file at the effort's root, created with the specs. Every parked demo and human-verification row lands
-here — a seat's FINAL TLDR section (e) rows get transcribed into it **at close-out, in the same commit as
-the work**. Rows scattered across five sessions' TLDRs and never aggregated is the most common thing to
-fall through: name the file at authoring time so nobody invents a new one.
+One file at the effort's root, **created with no rows**. **Live checks are the owner's**: the file holds
+only the rows the owner dictates, the coordinator writes a row only when the owner dictates it, and nothing
+is aggregated into it — a seat's FINAL TLDR section (e) is what the owner could try, said in the chat, and
+never a row. Create the file at authoring time so nobody invents a second one.
 
 **The status vocabulary carries a PARTIAL, not just pass/fail:**
 `owed` · `passed` · `failed` (a failure is a finding, not a retry) · `not exercised` (with the reason — an
@@ -430,10 +479,9 @@ single passed/failed cell over a check whose seed half was clean and whose platf
 to invent a status to record the truth. **If you can name two owners while writing the row, write two
 rows.**
 
-**TWO WRITERS ON THIS FILE IS A DIVERGENCE WAITING TO HAPPEN — and it is the file the review grades
-from.** The coordinator dictates rows into a seat's close-out call and the SEAT stages them; a seat never
-writes it unprompted. Author the file knowing that, and do not write instructions telling the coordinator
-to edit it directly.
+**ONE WRITER, ON ONE PERSON'S WORD.** A seat never authors or edits a row. A seat whose change makes a
+dictated row false says so in its FINAL TLDR, quoting the row, and the coordinator corrects it. Author no
+instruction that sends a seat's checks into this file.
 
 ## Notes
 
@@ -444,7 +492,7 @@ to edit it directly.
   folder), the chat transcript, and any subagent reports vanish. Inline their load-bearing content; never
   point at ephemeral state as the source of truth. Cross-links to *other durable docs* are fine.
 - **Lifecycle.** Specs live in `research/{topic}/` through the build. When the effort ships, `docs-process`
-  archives the umbrella + every spec + the working docs together into the home `docs-workflow.md` § The
+  archives the brief + every spec + the working docs together into the home `docs-workflow.md` § The
   archive convention (repository-owned) names, in its shape — the spec set *is* the design history.
 - **Anti-fabrication.** A spec's header verified date is the date it was *authored against the code it
   cites*, not a promise the code stays unchanged. Only write facts you actually checked this run.

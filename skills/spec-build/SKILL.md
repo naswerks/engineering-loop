@@ -22,7 +22,8 @@ Invoked as `spec-build {role} {spec-path}`, or told "you are a build session" wi
 apply** (`spec-seat`, Step 0). This list is for a build seat working from a spec.
 
 1. **Your spec** — fully, INCLUDING any Addendum sections. It is self-contained.
-2. **The umbrella** (`01-{topic}.md`) — settled decisions; don't relitigate them.
+2. **The brief** (`00-ignition-brief.md`) — the charter: its sections down to § Platform state bind you,
+   and the owner's rulings in it are settled; don't relitigate them.
 3. **The tracker** — `docs/research/{topic}/project-status.md`. The coordinator's live journal and
    READ-ONLY to you. Prior session rows, deferred findings, and process incidents are your contract: build
    against what ACTUALLY shipped, not the spec's guesses. **If anything in it disagrees with your spec or
@@ -49,6 +50,9 @@ your role's rows from `docs/_meta/doc-index.md` § Role reading lists into your 
 Read those the same way. If your prompt carries no `EXTRA DOCS` line, read that section yourself once and
 say in your PLAN TLDR which rows you took.
 
+**Your role is the one your prompt names** — the brief's sequence row carries it in a `Role` cell when the
+author set one — and `mixed` when neither says.
+
 A role is *which docs does this build session read* — nothing else. Jobs are SEAT KINDS, not roles:
 `docs-process` is a session type of its own, and a spec that touches a surface with no role of its own is
 `mixed` with that surface's rows.
@@ -63,9 +67,9 @@ minutes while assuming the work is pending rebuilds what already exists.
 Run `git status`; identify which dirty files are yours-to-be vs NOT yours (coordinator-owned docs appear
 mid-run — never stage them). Answer any STANDING RECON QUESTION your spec or prompt carries.
 
-**Measure your own baseline for any lane you touch, BEFORE you edit.** A same-day coordinator-verified
-baseline is an acceptable substitute when cited, but measuring your own is the norm — and a number you
-cannot reproduce is a finding.
+**The floor is cited, never measured in a pipeline.** The brief's § Baselines was measured at authoring
+and re-measured at the GATE: cite it, lane by lane. **Measure only a lane the brief does not name, and
+measure it before you edit.** A number you cannot reproduce when you do run a lane is a finding.
 
 ## Build
 

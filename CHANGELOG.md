@@ -5,6 +5,111 @@ version is the one in `package.json` and `.claude-plugin/plugin.json`, which mus
 
 ## [Unreleased]
 
+## [0.8.0] - 2026-10-21
+
+A minor: the skills act differently, and a repository must act — its method docs take new text, and every
+pipeline folder in the old shape is carried over before it runs on this version (§ Upgrading from 0.7).
+
+### Changed
+
+- **One brief per pipeline.** A pipeline folder is `00-ignition-brief.md` — the coordinator seat's spec and
+  the charter every seat reads, never a session — and `01..NN-{slice}.md`, each one build seat's spec. The
+  umbrella `01-{topic}.md` is gone: its vision, settled decisions, hard constraints and sources live in the
+  brief's `## Why`, `## The owner's rulings`, `## Law`, `## What this effort does NOT do` and
+  `## Where it came from`. The brief's sections down to § Platform state bind every seat; its beliefs,
+  close-out and kick are the coordinator's. Its H1 is the pipeline's title. The sequence is written once, in
+  the brief; the tracker's status lines name its rows by id and copy nothing, and its `## Settled decisions`
+  is `## Rulings made during the run`. `spec-pipeline`'s template, the coordinator's reading order and its
+  one-comparison shape check, `spec-ignite`'s stage card, the build seat's reading list, the review's
+  inventory (the brief down to § Platform state, read as claims), `docs-process` and `docs-write` (the
+  brief's `Archive:` line) all say so. No skill carries a fallback for the old shape.
+- **`step` rows and a role cell.** A sequence row that is not a seat — a publish, a merge, a human sitting
+  — says `step` in its `Kind` cell, and is shown on the stage card and never staged. A misspelled kind is
+  still refused by name, because no misspelling can equal `step`. A seat row may carry `backend`,
+  `frontend` or `mixed` in a `Role` column. A human step files `sessions/{step-slug}/receipt.md`.
+- **The hand-cranked relay.** A seat posts its PLAN TLDR and questions in the chat; the coordinator
+  answers in one message of notes; on the human's approval the seat writes `plan.md` and `tldr.md` with
+  the notes transcribed verbatim and runs to done without a stop — build, suites, `docs-write`, commits with
+  `verify-staged`, its branch pushes — then posts its FINAL TLDR. The coordinator writes its acceptance into
+  the seat's `tldr.md` after the push. The hosted ceremony is unchanged.
+- **Live checks are the owner's.** `live-checks.md` is created with no rows and holds only the rows the
+  owner dictates; the coordinator writes a row only on the owner's word and never aggregates seats' checks
+  into it; a seat's FINAL TLDR section (e) is "what the owner could try", in the chat; the close offers the
+  owner a short, ordered quick pass; `docs-process` adds no live check to a living doc.
+- **The owner's standing rules:** one pipeline at a time (a GATE checks only that the predecessor merged);
+  approved work includes its commit, its push and the coordinator's PR, and nobody asks for them again; the
+  floor is cited from the brief's `## Baselines` and measured only for a lane the brief does not name.
+- **What three watched runs taught the ceremony.** `spec-coordinator`: a ruling that binds a running seat
+  goes onto its board in the same act as the tracker entry; a ruling counts only when its act lands;
+  append at the end of a seat's file; stop instead of sleep-polling when the plane's calls fail; never advise
+  a runner restart while a seat is live; an escalation is an act; keep each seed as sent; the hosted seed
+  stops restating the skills and the role; the commit call no longer stages the tracker. `spec-seat`: write
+  the board with the file tools, never a heredoc; the BELIEFS line near the top of both files; never route
+  around a refusal by disguising a path. `spec-review`: its inventory wins over a narrower brief, and the
+  report says whether it was cold or warm. `docs-process`: its board lives in `sessions/docs-process/`, and
+  every input arrives as a list. `spec-retro`: a witness ledger is an input.
+- **`spec-witness` is the outside watcher's playbook:** a session outside the control plane, usually on
+  the runner's machine, never a declared seat, holding no credential — the packet, pre-registered
+  expectations, the identity map, the instruments that need no credential (git, the transcripts, the board
+  files, the process table, the plane's rows as another session's transcript shows them), what is and is
+  not an event, human touches, the watch, the ledger and the control-plane incident ledger.
+- `references/docs-workflow.md` takes the retire path for research the platform moved past
+  (`archive/retired/`) and the provenance exception to the archive's frozen links.
+
+### Added
+
+- `bin/witness-*.mjs`, the witness's tools: a config-driven watcher (`witness-watch`) and the transcript,
+  git and process probes `spec-witness` names, each with a `--self-test` that `npm test` runs. A run's own
+  facts — its worktree, its folders, the plane's tool prefix, the process pattern, the noise paths — live in
+  a `witness.config.json` beside the witness's folder.
+- `init doctor` reads `step` rows and the role cell, and a pipeline folder whose `01-` file no sequence row
+  names reads DEGRADE: "old shape — fold `01-{topic}.md` into the brief (CHANGELOG 0.8.0 § Upgrading)".
+- Pins: `pins/shape.test.mjs` (a `step` row and its misspelled-kind control, the role cell, the old-shape
+  row and its control, one `## The sequence` in the template, no umbrella in any skill) and
+  `pins/witness-tools.test.mjs`; the content census reads `bin/` too.
+
+### Fixed
+
+- `verify-staged` on a large repository: every listing is read for the expected paths only, and an output
+  past the buffer is an ERROR by name. A full listing over Node's default 1 MiB buffer made
+  `--against head` print "HEAD is unreadable" and call a committed file never-added, and made the index
+  mode fail the same way.
+
+### Upgrading from 0.7
+
+In this order:
+
+1. **Take the release where every session loads it:** `claude plugin marketplace update engineering-loop`,
+   then `claude plugin update naswerks@engineering-loop --scope <scope>`, and a new session. A runner that
+   loads the pack from an npm install takes `@naswerks/engineering-loop@0.8.0` there (its pinned
+   `package.json`, or a global install) and is restarted by its owner with no seat live — a runner left on
+   0.7 serves the 0.7 skills, which read the old shape.
+2. **Re-copy the loop text** of both references into `docs/_meta/`. The four repository-owned sections are
+   yours, so neither the re-copy nor `init refresh` touches them; three carry changed text, offered as
+   replacements you take or fit to your own patterns: § The archive convention (the `research/` retire
+   path, the provenance exception and the `archive/retired/` home, the `specs/` line
+   `00-ignition-brief · 01..NN slices`, the sessions map, the brief in a follow-on's back-link),
+   § Doc metadata (the ignition brief goes in `Idea`), § Templates (the spec-doc preamble and its
+   `Source: [brief / research]`). Then `init refresh` restamps both copies, and `init doctor` lists the
+   folders to carry.
+3. **Carry every old-shape folder over before it runs on 0.8.0** — each one the doctor marks "old shape". A
+   pipeline that is mid-run finishes on its old pack first; never carry a live one. Per folder:
+   - **Fold the umbrella into the brief, section by section, losing nothing:** its vision into `## Why`,
+     its settled decisions into `## The owner's rulings`, its hard constraints into `## Law` and
+     `## What this effort does NOT do`, its research sources into `## Where it came from` (with its
+     `Archive:` line), and anything else into the section that fits or a `## Reference`. The brief's H1
+     becomes the pipeline's title — the umbrella's H1 — and its blockquote says every seat reads it.
+   - **One sequence:** reconcile the brief's `## The sequence` with the umbrella's row table and the
+     tracker, keep it in the brief alone, and write each prose step (a publish, a merge, a human sitting) as
+     a `step` row in its place.
+   - **The tracker stops copying:** its status lines name the brief's rows by id, and
+     `## Settled decisions` becomes `## Rulings made during the run`, holding only what the run ruled.
+   - **Delete the umbrella**, and repair every link to it outside `docs/archive/` and `sessions/**` to point
+     at the brief. Archives and testimony are never edited.
+   - **Keep the specs' numbers.** A spec that was `02-` stays `02-`; the gap at `01` is the umbrella's.
+   - **Check it:** every heading of the old umbrella is found in the brief or named where it merged, and
+     `init doctor` reads the folder with no "old shape" row and no FAIL.
+
 ## [0.7.1] - 2026-10-04
 
 ### Changed
