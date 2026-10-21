@@ -1,4 +1,4 @@
-<!-- naswerks-loop: version=0.7.1 -->
+<!-- naswerks-loop: version=0.8.0 -->
 # The Engineering Loop — flow, seats, skills, and the ceremony
 
 > The quick intro to how work gets built with this loop: the two loops (`docs-*` knowledge, `spec-*`

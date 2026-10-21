@@ -74,7 +74,7 @@ and never touches the rest of the text.
 | `spec-build` | spec | the build job for one spec |
 | `spec-review` | spec | the outside look before the retrospective |
 | `spec-retro` | spec | the coordinator's close-out audit |
-| `spec-witness` | spec | a read-only verifier |
+| `spec-witness` | spec | the outside watcher: read-only, no credential, never a declared seat |
 | `spec-ignite` | spec | the ignition copilot for a hosted run |
 | `init` | — | make a repository ready for both loops; `init doctor` checks one, `init refresh` takes a newer pack's repository-owned sections |
 
@@ -82,7 +82,9 @@ and never touches the rest of the text.
 rewrites where they say (repository-owned);
 `bin/verify-staged` is the staging receipt the seats run between `git add` and `git commit`. A
 marketplace install puts nothing on PATH: `npm i -g @naswerks/engineering-loop` does, and the skills
-carry the fallback `node <pack root>/bin/verify-staged.mjs`.
+carry the fallback `node <pack root>/bin/verify-staged.mjs`. `bin/witness-*.mjs` are the witness's tools —
+a config-driven watcher and the transcript, git and process probes `spec-witness` names — run by path,
+each with a `--self-test`; a run's own facts live in a `witness.config.json` beside the witness's folder.
 
 Running a skill through a child `claude -p` from inside another Claude Code session: scrub the
 `CLAUDE_CODE_*` variables from the child's environment and name the repository root in the prompt,
@@ -92,11 +94,14 @@ or the child may resolve `docs/` paths against the parent session's workspace.
 
 `npm test` runs the pins: one version across the package, the plugin manifest, the marketplace entry and
 both method documents' stamps; every skill directory carries a `SKILL.md` named for its folder; no
-byte-order marks; the vocabulary and content censuses; no skill states a format a repository owns, and
-every skill that needs one carries the same find-format line; exactly four repository-owned sections, found
-by the one grep; the loop's own preferences stay stated in the method documents; the menu's two shapes; `init refresh` leaves
-every line outside those sections byte for byte. `node bin/verify-staged.mjs --self-test` drives the
-receipt against a throwaway repository and reports each case.
+byte-order marks; the vocabulary and content censuses, `bin/` included; no skill states a format a
+repository owns, and every skill that needs one carries the same find-format line; exactly four
+repository-owned sections, found by the one grep; the loop's own preferences stay stated in the method
+documents; the menu's two shapes; `init refresh` leaves every line outside those sections byte for byte;
+the pipeline folder's shape (a `step` row reads ok and a misspelled kind still fails, a role cell, the
+old-shape row, one sequence, no umbrella); and every witness tool's self-test.
+`node bin/verify-staged.mjs --self-test` drives the receipt against throwaway repositories, one of them
+past Node's default 1 MiB listing buffer, and reports each case.
 
 ## Releasing
 
