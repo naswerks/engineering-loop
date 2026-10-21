@@ -9,7 +9,9 @@ import { execFileSync } from 'node:child_process';
 import { root, walk, readText } from './support.mjs';
 import { KIND_SKILLS } from '../skills/init/scripts/owned.mjs';
 
-const CONTENT_FOLDERS = ['skills', 'references', 'templates'];
+// `bin` is content too: the witness tools are ported from a run's notes, and a private name that rode in
+// with them would ship.
+const CONTENT_FOLDERS = ['skills', 'references', 'templates', 'bin'];
 
 function* contentFiles() {
   for (const file of walk(root, CONTENT_FOLDERS)) {
