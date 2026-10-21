@@ -214,6 +214,16 @@ function report(result, mode, pathCount) {
   console.log('  git add -f is a ruling, not a default, and .gitignore is never edited from a seat.');
 }
 
+// A throwaway tree's removal. Windows can still hold files git just wrote, so the removal retries; one that
+// still fails is a warning naming the folder, never a failed self-test — the verdict is the cases'.
+function cleanUp(dir) {
+  try {
+    rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 200 });
+  } catch (e) {
+    console.log(`  warning: could not remove the self-test folder ${dir} (${e.code ?? e.message}); remove it by hand`);
+  }
+}
+
 function selfTest() {
   const tmp = mkdtempSync(join(tmpdir(), 'verify-staged-selftest-'));
   const cases = [];
@@ -262,7 +272,7 @@ function selfTest() {
     console.log(`SELF-TEST FAILED: ${failed} case(s) - do not trust this detector until it fires correctly.`);
     return 1;
   } finally {
-    rmSync(tmp, { recursive: true, force: true });
+    cleanUp(tmp);
   }
 }
 
@@ -305,7 +315,7 @@ function largeTreeCases() {
       },
     ];
   } finally {
-    rmSync(tmp, { recursive: true, force: true });
+    cleanUp(tmp);
   }
 }
 
