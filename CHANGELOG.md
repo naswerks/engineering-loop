@@ -5,6 +5,14 @@ version is the one in `package.json` and `.claude-plugin/plugin.json`, which mus
 
 ## [Unreleased]
 
+### Added
+
+- **The model and the effort a run starts on are named in the brief and read back.** `spec-pipeline`'s `## Birth`
+  names both, each in backticks, because the launcher reads them from that section; a brief that names neither
+  leaves both to the launcher's default. A seat's BELIEFS line states the model and effort its session is running
+  on, as it can read them, and `spec-coordinator` settles a seat on a pair the brief does not name before it rules
+  that seat's plan.
+
 ### Changed
 
 - **Pipelines never intertwine** replaces "one pipeline at a time", in `spec-coordinator`'s hard rules and in

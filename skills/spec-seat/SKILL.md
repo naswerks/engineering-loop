@@ -320,9 +320,9 @@ Plain text, BEFORE any plan-approval presentation:
 
 ```
 PLAN TLDR ({your assignment}), recon done against HEAD {sha}, anchors {verified fresh / drift: …}:
-BELIEFS: HEAD {sha}; dirty files I see: {list, whose}; tool versions: {the harness, the runtimes};
-baseline suites: {cited from the brief's § Baselines, per lane: N (+known pre-existing reds); a lane it
-does not name, measured before you edit}.
+BELIEFS: HEAD {sha}; dirty files I see: {list, whose}; tool versions: {the harness, the runtimes, and the
+model and effort this session is running on}; baseline suites: {cited from the brief's § Baselines, per
+lane: N (+known pre-existing reds); a lane it does not name, measured before you edit}.
 CONTROLS: for each probe or pin I will build — its positive control, and what would make it FAIL.
 {one line each: "probe X — control: {the case that must go red}; fails when: {…}"}
 {5-10 lines: what you will do, anchored to real files; the surfaces you will touch; departures flagged.}
@@ -342,6 +342,10 @@ wrapping. **Put the BELIEFS line near the top of BOTH `plan.md` and `tldr.md`. W
 restate it by appending a new `BELIEFS:` line, never by editing the old one:** the check reads the newest
 line that carries `BELIEFS`, and with none it takes the first `HEAD <sha>` it meets, so quoted command
 output carrying another sha is then read as your belief.
+
+**The model and effort in that line are the ones you can read, never the brief's copied back.** The brief's
+`## Birth` names the pair every seat starts on, and a seat that finds itself on another says so here, before
+its plan. Write *not visible from here* for a part your session cannot see.
 
 **Cite symbols, not line numbers.** In anything that outlives a commit — a TLDR, a working doc, a handover
 — **name the symbol and use the line as a hint.** A line number is a comment, not an address; an anchor

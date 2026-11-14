@@ -272,9 +272,15 @@ corrects drift; it does not re-author it.
 What is wrong today and what the effort makes true — the vision a seat builds toward.
 
 ## Birth
-Topic · spec path · receipt prefix · mode (hosted, or by hand) · shape · the effort's branch · the rows
-chosen at authoring (review? docs-process?) and why · **the GATE**: only that the predecessor merged, then
-re-verify this brief's § Reference and re-measure § Baselines.
+Topic · spec path · receipt prefix · mode (hosted, or by hand) · shape · the effort's branch · **the model
+and the effort every seat starts on** · the rows chosen at authoring (review? docs-process?) and why ·
+**the GATE**: only that the predecessor merged, then re-verify this brief's § Reference and re-measure
+§ Baselines.
+
+**Name the model and the effort, each in backticks** — the word model then the id, the word effort then the
+level (*every seat starts on model `{id}` at effort `{level}`*) — because the launcher reads both from this
+section. Write the id as the runner's catalog offers it. A brief that names neither leaves both to the
+launcher's default; hand-cranked, the same line tells the human which model to open each seat's session on.
 
 ## The sequence
 | Seat | Spec | Kind | Why it sits here |

@@ -439,9 +439,11 @@ so read them as run-time obligations, not close-out ones:
 - **Cite symbols, not bare `file:line`.** In a seed, a ruling, or the tracker, name the symbol and use the
   line as a hint — a line number is a comment, not an address, and the seat documenting why a line matters
   is what moves it.
-- Model policy: seats run **the effort's declared default model** (allowlist-exact, set at creation);
-  investigation-heavy sessions may warrant a reasoning-heavier one. Parallel sessions only when
-  the specs share no files — and sequence the *commits* regardless.
+- Model policy: seats run **the effort's declared default model and effort** — the pair the brief's
+  `## Birth` names (allowlist-exact, set at creation); investigation-heavy sessions may warrant a
+  reasoning-heavier one. **A seat's BELIEFS line states the pair it started on, and one the brief does not
+  name is settled before you rule its plan:** re-open the seat on the named pair, or rule the difference in
+  by name. Parallel sessions only when the specs share no files — and sequence the *commits* regardless.
 - **The gate is inverted (means are free, protocol is law):** benign tools/methods flow with audit rows;
   only the ceremony's boundaries park — in EVERY tier, recon included. Reads, execs, suites, pipes,
   redirects and in-worktree writes all flow pre-accept. **Do not seed tool-avoidance rules the platform
