@@ -68,8 +68,9 @@ now, and again before you cut the retro. **A disagreement is a finding, not a ty
 changed in one place and not the other. Say which is right, fix the other, and journal it.
 
 Then produce a **5-line status readback** — shipped / in flight / next action / next prompt you expect to
-cut — opening with how many docs each of Step 0's two reads took. Hand-cranked that goes to the human so they can confirm the seat transferred; hosted it is your
-opening journal entry in `project-status.md`, which is how anyone watching the cockpit catches up.
+cut — opening with how many docs each of Step 0's two reads took. Hand-cranked that goes to the human so
+they can confirm the seat transferred; hosted it is your opening journal entry in `project-status.md`,
+which is how anyone watching the cockpit catches up.
 
 **Same-session graduation:** you just ran `spec-pipeline`, so you already hold most of Step 1 — confirm
 the tracker exists and cut Prompt #1. **Step 0 still applies.**

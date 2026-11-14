@@ -452,10 +452,11 @@ doorbell with no follow-through**; if you receive one bare, retry anyway and say
     and checks its own contributing rules name, which this repository's lanes never run.
   - **Its commit and pull-request text follow ITS rules:** no effort ids, no board or seat words. Where it
     checks pull requests, open a DRAFT one at your first push and read its checks after every push.
-  - **Push from inside that tree — `cd "$TREE" && git push origin <branch>`, with the variable your seed
-    names in `$TREE`'s place and nothing else on the line.** It is the one push that takes a leading
-    `cd`. Keep the variable out of the push itself: `git -C "$TREE" push` cannot be read, and waits for a
-    person. Your push may wait for one anyway: wait, never reshape it, and report a refusal.
+  - **Push from inside that tree — `cd "$TREE" && git push origin <branch>`, and nothing else on the
+    line,** with the variable your seed names in `$TREE`'s place (hand-cranked, the path your prompt
+    names). It is the one push that takes a leading `cd`. Keep the variable out of the push itself:
+    `git -C "$TREE" push` cannot be read, and waits for a person. Your push may wait for one anyway: wait,
+    never reshape it, and report a refusal.
   - **You never merge, tag or publish there.** A release is a person's act, at the pipeline's `step`.
 - **Codegen only through the command `patterns/codegen.md` § Running codegen names** (when the repo has
   one) — never hand-write a generated folder.
