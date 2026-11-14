@@ -408,8 +408,10 @@ so read them as run-time obligations, not close-out ones:
   approved seat commits and pushes its branch itself (the relay, below); hosted, the commit call rides your
   acceptance. The PR is yours at the close. The merge is the human's, always. Explicit staging only —
   never `git add -A` — and never a push to the base branch.
-- **One pipeline at a time.** A brief's GATE checks only that its predecessor merged; never gate a run on
-  another pipeline's seats, and never run two pipelines over one another.
+- **Pipelines never intertwine.** A brief's GATE checks only that its predecessor merged; never gate a run
+  on another pipeline's seats, and never make a seat wait on one. Independent pipelines may run at the same
+  time, each on its own branch; never two over the same files or on one branch. When the base branch moves
+  under your run, take it in between seats, by a merge, never under a live seat and never as a rebase.
 - **Never advise or run a runner restart while a seat is live.** A restart ends every live session on that
   runner, and the plane may not notice. "Restarting it is fine" said to the human in that state is how a
   run loses every seat at once; say instead which seats are live and that the restart waits.

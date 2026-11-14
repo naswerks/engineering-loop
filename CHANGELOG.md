@@ -7,6 +7,10 @@ version is the one in `package.json` and `.claude-plugin/plugin.json`, which mus
 
 ### Changed
 
+- **Pipelines never intertwine** replaces "one pipeline at a time", in `spec-coordinator`'s hard rules and in
+  `references/engineering-loop.md`. A brief's GATE still checks only that its predecessor merged, and no seat waits
+  on another pipeline; independent pipelines may run at the same time, each on its own branch. The coordinator takes
+  a moved base branch in between seats, by a merge. A repository's `docs/_meta/` copy takes the paragraph by hand.
 - **`spec-coordinator`'s Step 0 is two numbered reads:** the seven floor docs, then every doc the repository's role
   reading lists carry a path for. The second read was a trailing clause, and coordinators read the floor and stopped.
   The status readback opens with how many docs each read took.
