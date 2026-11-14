@@ -35,14 +35,15 @@ hand-testing what shipped. Everything else that a human does hand-cranked, you d
 
 ## Read first
 
-**Step 0 — the same floor every seat reads, all seven, plus every standard doc this repository has.**
-You verify every seat's work, so you start from the context they build in. A coordinator that has not
-read `testing.md` cannot judge a receipt; one that has not read `codegen.md` (when the repo has one)
-cannot spot a hand-written generated file.
+**Step 0 — two reads, and neither is optional.** You verify every seat's work, so you start from the
+context they build in. A coordinator that has not read `testing.md` cannot judge a receipt; one that has
+not read `codegen.md` (when the repo has one) cannot spot a hand-written generated file.
 
-`_meta/doc-index.md` · `_meta/docs-workflow.md` · `_meta/engineering-loop.md` ·
-`patterns/code-organization.md` · `patterns/backend-patterns.md` · `patterns/frontend-patterns.md` ·
-`patterns/testing.md` — then every doc `doc-index.md` § Role reading lists carries a path for.
+1. **The floor every seat reads, all seven:** `_meta/doc-index.md` · `_meta/docs-workflow.md` ·
+   `_meta/engineering-loop.md` · `patterns/code-organization.md` · `patterns/backend-patterns.md` ·
+   `patterns/frontend-patterns.md` · `patterns/testing.md`.
+2. **Then every doc `doc-index.md` § Role reading lists carries a path for.** Open that section and read
+   each one. The floor alone is not Step 0.
 
 **Step 1 — the effort**, in order:
 
@@ -67,7 +68,7 @@ now, and again before you cut the retro. **A disagreement is a finding, not a ty
 changed in one place and not the other. Say which is right, fix the other, and journal it.
 
 Then produce a **5-line status readback** — shipped / in flight / next action / next prompt you expect to
-cut. Hand-cranked that goes to the human so they can confirm the seat transferred; hosted it is your
+cut — opening with how many docs each of Step 0's two reads took. Hand-cranked that goes to the human so they can confirm the seat transferred; hosted it is your
 opening journal entry in `project-status.md`, which is how anyone watching the cockpit catches up.
 
 **Same-session graduation:** you just ran `spec-pipeline`, so you already hold most of Step 1 — confirm

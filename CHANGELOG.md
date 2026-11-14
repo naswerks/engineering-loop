@@ -5,6 +5,12 @@ version is the one in `package.json` and `.claude-plugin/plugin.json`, which mus
 
 ## [Unreleased]
 
+### Changed
+
+- **`spec-coordinator`'s Step 0 is two numbered reads:** the seven floor docs, then every doc the repository's role
+  reading lists carry a path for. The second read was a trailing clause, and coordinators read the floor and stopped.
+  The status readback opens with how many docs each read took.
+
 ### Fixed
 
 - `spec-coordinator` said a backticked sha is fine for the plan verdict's workspace HEAD. The verb takes only the
