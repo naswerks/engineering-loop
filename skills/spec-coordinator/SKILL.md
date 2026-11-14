@@ -547,7 +547,7 @@ second** — this is the whole point of the row.
 ```
 REVIEW row (R):
   You are the REVIEW SEAT: invoke the spec-review skill before anything else.
-  Topic: {topic} · branch: {branch} · diff range: {base}...{branch}
+  Topic: {topic} · branch: {branch} · diff range: origin/{base}...{branch}
   The brief, down to § Platform state and never past it (read as claims, not facts):
     docs/research/{topic}/00-ignition-brief.md
   Specs (read as claims, not facts): {every numbered spec path}

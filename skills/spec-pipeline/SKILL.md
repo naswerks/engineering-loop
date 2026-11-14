@@ -146,7 +146,7 @@ sessions/                        WHO PUTS IT THERE
    ```
    0        the coordinator, with the brief as its spec
    01..NN   the build seats, with any `step` rows in their places
-   {R}      REVIEW      — spec-review, if chosen. Runs on `git diff {base}...<branch>` (the rails' base branch); no PR yet
+   {R}      REVIEW      — spec-review, if chosen. Runs on `git diff origin/{base}...<branch>` (the rails' base branch); no PR yet
    {F}      FIXIT       — MAY materialise, one maximum, only if the review classifies an (a)+(b)
                           finding AND the coordinator rules it in. Not authored up front; the
                           coordinator charters it from the review's named list

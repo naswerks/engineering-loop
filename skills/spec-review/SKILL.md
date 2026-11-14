@@ -35,9 +35,10 @@ else's job.
 Your seed carries **no beliefs about the pipeline, and that is deliberate** — but it should carry an
 **inventory**, because you cannot review what you cannot find:
 
-- the **topic**, the **branch**, and the **diff range** (`{base}...<branch>` — `{base}` is the base branch
-  `docs/_meta/engineering-loop.md` § This repository's rails (repository-owned) names, or the remote's
-  default when it names none);
+- the **topic**, the **branch**, and the **diff range** (`origin/{base}...<branch>` — `{base}` is the base
+  branch `docs/_meta/engineering-loop.md` § This repository's rails (repository-owned) names, or the
+  remote's default when it names none; it is read from the remote's copy, because a local base branch can
+  sit behind it and pull another effort's commits into the range);
 - **the brief** (`00-ignition-brief.md`) — its sections down to § Platform state, read as claims like the
   specs, and **never the coordinator's sections after it** (its beliefs, its close-out, its kick);
 - **every numbered spec path** — you read them as claims, not facts;
@@ -67,7 +68,8 @@ instrument, and a reader who takes it for a cold one over-trusts its independenc
 3. **The working docs** in `docs/working/` — the narrative: what was tried, what failed, what changed.
 4. **The tracker** — `project-status.md`, the coordinator's journal: rulings and their reasoning, recon
    corrections, incidents.
-5. **THEN the diff** — `git diff {base}...<pipeline-branch>`, plus `git log --oneline {base}..<pipeline-branch>`.
+5. **THEN the diff** — `git diff origin/{base}...<pipeline-branch>`, plus `git log --oneline
+   origin/{base}..<pipeline-branch>`.
 
 **Read the artifacts before the code, and the code before you conclude.** Reading the diff first makes
 you review a patch; reading the claims first makes you review whether the pipeline did what it said.
