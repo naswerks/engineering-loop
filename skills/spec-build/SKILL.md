@@ -93,6 +93,10 @@ signal that a VERDICT changed, not that the test is stale.
 Run the suite lanes **SERIALLY** — the lanes and their exact invocations are `patterns/testing.md`
 § Running tests; concurrent runs flake.
 
+**A seat that wrote a further repository runs THAT repository's gate too, inside its tree of it** — the
+lanes its own contributing rules name, serially, never beside this repository's — and reports each
+repository's summaries under its own name. This repository's lanes do not run the code you wrote there.
+
 **Capture FULL runner output to a UTF-8 file and search failures by name** — redirect to a file, then
 search `^failed ` / `Failed!`. Piping through a "last N lines" filter destroys failure names.
 

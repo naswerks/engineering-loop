@@ -161,6 +161,35 @@ test('the parser contracts the control plane reads still hold', () => {
   }
 });
 
+// A control plane that seeds a seat with a further repository says where the seat's tree is and leaves the
+// procedure to spec-seat § Git shapes, so that section must carry every part of it. Line breaks are folded
+// before the search, so a clause may wrap.
+const SecondRepositoryProcedure = [
+  'WHEN YOUR ROW NAMES A FURTHER REPOSITORY, YOU WORK IN TWO TREES',
+  'Your home is this repository',
+  "nothing of the pipeline's record is ever written in the other repository",
+  "in your own tree of it — never its owner's checkout",
+  'read it, never build the path',
+  'an explicit staging list and its `verify-staged` receipt, run inside that tree',
+  'the whole of ITS gate',
+  'follow ITS rules',
+  'open a DRAFT one at your first push and read its checks after every push',
+  'cd "$TREE" && git push origin <branch>',
+  'never reshape it',
+  'You never merge, tag or publish there',
+];
+const folded = (text) => text.replace(/\s+/g, ' ');
+
+test('spec-seat carries the whole procedure for a second repository', () => {
+  const seat = folded(readText(join(root, 'skills', 'spec-seat', 'SKILL.md')));
+  for (const part of SecondRepositoryProcedure) assert.ok(seat.includes(part), `spec-seat § Git shapes: ${part}`);
+});
+
+test('CONTROL: the search finds a clause that wraps, and misses one that is not there', () => {
+  assert.ok(folded('the whole of\n    ITS gate').includes('the whole of ITS gate'));
+  assert.ok(!folded('its gate, in part').includes('the whole of ITS gate'));
+});
+
 test("init's own parts: the doctor parses, the settings pin is two objects, no template leaves an init marker unexplained", () => {
   execFileSync(process.execPath, ['--check', join(root, 'skills', 'init', 'scripts', 'doctor.mjs')]);
   const pin = JSON.parse(readFileSync(join(root, 'templates', 'settings-pin.json'), 'utf8'));

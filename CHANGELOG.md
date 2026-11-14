@@ -14,6 +14,17 @@ version is the one in `package.json` and `.claude-plugin/plugin.json`, which mus
   launcher does, and fails a cell holding a kind word, `step`, a name that is not one path segment of at most 200
   characters, a ninth name, or a name twice. **A pipeline that writes one repository has no such column and is
   unchanged.**
+- **What a seat does in a second repository** (`spec-seat` § Git shapes, `spec-build`). Its home stays this
+  repository and nothing of the pipeline's record is written in the other one. Its code goes in its own tree of
+  that repository, never the owner's checkout: hosted, at the path the variable its seed names holds; by hand, at
+  the path its prompt names. Then a staging list, a `verify-staged` receipt, a commit and a push per repository;
+  that repository's whole gate, run in its tree; its own rules for commit and pull-request text; a draft pull
+  request where it checks them, its checks read after every push; no merge, tag or publish. Its commit there goes
+  on an `ALSO WRITING` line beneath BELIEFS, and its FINAL gives a list and a receipt per repository. A pin holds
+  every clause, because a launcher that knows this version says only where the tree is.
+- **The push in a second repository has its own form:** `cd` into the tree, then the push, and nothing else on the
+  line. `spec-seat` said a leading `cd` disqualifies every push; that is the rule for the home repository, and it
+  now says so.
 - **A conditional fixit that must write a further repository is listed as a row, directly after the review row**
   (`spec-pipeline`). Listed anywhere else, a launcher reads a second fixit beside the one the review implies, and
   the doctor names it.
