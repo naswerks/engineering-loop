@@ -18,6 +18,8 @@ version is the one in `package.json` and `.claude-plugin/plugin.json`, which mus
   of echo labels, section headers and searches. The gate reads the command the shell would run: what parks is the
   operation, at any depth, and an echo label, a branch listing and a quoted search are data unless something on the
   line could run them. Six passages say so now, in fewer lines, and a pin keeps the old rule out.
+- `spec-seat` said the HEAD check takes the first `HEAD <sha>` it meets. It reads the newest line that carries
+  `BELIEFS`, so a seat whose HEAD moved appends a new BELIEFS line and never edits the old one.
 
 ## [0.8.0] - 2026-10-21
 

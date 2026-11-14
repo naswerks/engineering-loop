@@ -338,9 +338,10 @@ coordinator with your question text and what the re-raise keys on (the two-headi
 **BELIEFS sha — ONE line.** The build-go HEAD check scans for `HEAD` + a 40-hex token **on the same line**
 (fenced or quoted is fine); a markdown break between them reads as a malformed sha and **refuses the
 flip** (fail-closed by design). Paste the verbatim `git rev-parse HEAD` output, never hand-transcribe, no
-wrapping. **Put the BELIEFS line near the top of BOTH `plan.md` and `tldr.md`**, and keep it current on
-every revision: a checker that takes the first `HEAD <sha>` it meets reads an old line before a new one, and
-quoted command output carrying another sha above it is read as your belief.
+wrapping. **Put the BELIEFS line near the top of BOTH `plan.md` and `tldr.md`. When your HEAD moves,
+restate it by appending a new `BELIEFS:` line, never by editing the old one:** the check reads the newest
+line that carries `BELIEFS`, and with none it takes the first `HEAD <sha>` it meets, so quoted command
+output carrying another sha is then read as your belief.
 
 **Cite symbols, not line numbers.** In anything that outlives a commit — a TLDR, a working doc, a handover
 — **name the symbol and use the line as a hint.** A line number is a comment, not an address; an anchor
