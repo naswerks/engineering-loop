@@ -77,6 +77,80 @@ test('CONTROL: a misspelled role FAILs by name', () => {
   });
 });
 
+test('a Repository cell naming one repository or several reads ok, and a row may leave it empty', () => {
+  const header = '| Seat | Spec | Kind | Repository |';
+  const rows = [`${COORDINATOR} — |`, `${BUILD} \`a-package\` |`, '| 02 · a page | `02-a-page.md` | `build` | a-package · `another.repo` |', '| the release | — | `step` | |'];
+  withFolder({ header, rows, files: { ...SLICE, '02-a-page.md': '# A page\n' } }, (found) => {
+    assert.equal(found.length, 1, found.join('\n'));
+    assert.match(found[0], /ok .*read clean/);
+  });
+});
+
+test('CONTROL: a kind word, `step` or an illegal name in a Repository cell FAILs by name, and is never read as the row\'s kind', () => {
+  const header = '| Seat | Spec | Kind | Repository |';
+  for (const notAName of ['review', 'step', 'a package', '../elsewhere']) {
+    // The row's own kind cell is misspelled, so only the Repository cell could supply a kind or a step.
+    withFolder({ header, rows: [`${COORDINATOR} — |`, `| 01 · a slice | \`01-a-slice.md\` | \`biuld\` | ${notAName} |`], files: SLICE }, (rows) => {
+      assert.ok(rows.some((r) => /FAIL .*repository `[^`]+` is not a repository's name/.test(r) && r.includes(notAName)), `\`${notAName}\` must FAIL by name:\n${rows.join('\n')}`);
+      assert.ok(!rows.some((r) => /ok .*read clean/.test(r)), `a row whose only kind word sits in its Repository cell must not read clean:\n${rows.join('\n')}`);
+    });
+  }
+});
+
+test('CONTROL: a name past the length a launcher carries, a ninth name and a name twice each FAIL by name', () => {
+  const header = '| Seat | Spec | Kind | Repository |';
+  const cases = [
+    [`a${'b'.repeat(200)}`, /FAIL .*is not a repository's name \(one path segment of at most 200 characters/],
+    [Array.from({ length: 9 }, (_, i) => `r${i}`).join(' · '), /FAIL .*names 9 repositories and a seat writes at most 8/],
+    ['a-package, a-package', /FAIL .*names the repository `a-package` twice/],
+  ];
+  for (const [cell, expected] of cases) {
+    withFolder({ header, rows: [`${COORDINATOR} — |`, `${BUILD} ${cell} |`], files: SLICE }, (rows) => {
+      assert.ok(rows.some((r) => expected.test(r)), `${expected} must be reported:\n${rows.join('\n')}`);
+    });
+  }
+  // The bounds themselves pass: a name of exactly 200 characters, and eight names.
+  for (const cell of ['a'.repeat(200), Array.from({ length: 8 }, (_, i) => `r${i}`).join(', ')]) {
+    withFolder({ header, rows: [`${COORDINATOR} — |`, `${BUILD} ${cell} |`], files: SLICE }, (rows) => {
+      assert.equal(rows.length, 1, rows.join('\n'));
+      assert.match(rows[0], /ok .*read clean/);
+    });
+  }
+});
+
+test('CONTROL: a sequence with no Repository column reads a seat-kind word in any cell as before', () => {
+  withFolder({ rows: [COORDINATOR, BUILD], files: SLICE }, (rows) => {
+    assert.equal(rows.length, 1, rows.join('\n'));
+    assert.match(rows[0], /ok .*read clean/);
+  });
+});
+
+// A listed fixit is the one its review implies only when it is the next seat row after that review.
+const REVIEW = '| R · the review | — | `review` |';
+const FIXIT = '| F · the fixit | — | `fixit` |';
+const DOCS = '| P · docs-process | — | `docs-process` |';
+
+test('a fixit row listed directly after its review reads ok, and a `step` between them does not count', () => {
+  for (const rows of [[COORDINATOR, BUILD, REVIEW, FIXIT, DOCS], [COORDINATOR, BUILD, REVIEW, '| a sitting | — | `step` |', FIXIT, DOCS]]) {
+    withFolder({ rows, files: SLICE }, (found) => {
+      assert.equal(found.length, 1, found.join('\n'));
+      assert.match(found[0], /ok .*read clean/);
+    });
+  }
+});
+
+test('CONTROL: a fixit row listed anywhere else FAILs by name, and a fixit with no review row is left alone', () => {
+  for (const rows of [[COORDINATOR, BUILD, REVIEW, DOCS, FIXIT], [COORDINATOR, FIXIT, BUILD, REVIEW]]) {
+    withFolder({ rows, files: SLICE }, (found) => {
+      assert.ok(found.some((r) => /FAIL .*lists a `fixit` row that is not the next seat row after its `review` row/.test(r)), found.join('\n'));
+    });
+  }
+  withFolder({ rows: [COORDINATOR, BUILD, FIXIT], files: SLICE }, (found) => {
+    assert.equal(found.length, 1, found.join('\n'));
+    assert.match(found[0], /ok .*read clean/);
+  });
+});
+
 test('an old-shape folder — an `01-` file no sequence row names — reads DEGRADE, pointing at the upgrade note', () => {
   const rows = [COORDINATOR, '| 02 · a slice | `02-a-slice.md` | `build` |'];
   withFolder({ rows, files: { '01-demo.md': '# Demo umbrella\n', '02-a-slice.md': '# A slice\n' } }, (found) => {

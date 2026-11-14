@@ -156,7 +156,7 @@ test('the parser contracts the control plane reads still hold', () => {
     assert.ok(text.includes(`Invoke the \`${KIND_SKILLS.coordinator}\` skill`), `${skill}: the kick names the coordinator's skill`);
   }
   const pipeline = readText(join(root, 'skills', 'spec-pipeline', 'SKILL.md'));
-  for (const anchor of ['00-ignition-brief.md', '01..NN-{slice}.md', 'project-status.md', 'live-checks.md', 'sessions/', 'AN ESCAPE HATCH', 'Six things every slice carries', '## The sequence', '`step`', '## Rulings made during the run']) {
+  for (const anchor of ['00-ignition-brief.md', '01..NN-{slice}.md', 'project-status.md', 'live-checks.md', 'sessions/', 'AN ESCAPE HATCH', 'Six things every slice carries', '## The sequence', '`step`', '## Rulings made during the run', 'An optional `Repository` column', 'directly after the']) {
     assert.ok(pipeline.includes(anchor), `spec-pipeline: ${anchor}`);
   }
 });

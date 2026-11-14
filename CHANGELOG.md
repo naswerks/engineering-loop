@@ -7,6 +7,16 @@ version is the one in `package.json` and `.claude-plugin/plugin.json`, which mus
 
 ### Added
 
+- **A seat may also write a second repository: the `Repository` column.** A sequence row names the repositories its
+  seat also writes in, in an optional `Repository` column: one or more names, as the runner serves them. The column
+  never moves a seat: its home is the pipeline's own repository, where its spec, its board and the tracker are, and
+  one pull request still closes the pipeline. `spec-pipeline` states the column. `init doctor` reads it the way a
+  launcher does, and fails a cell holding a kind word, `step`, a name that is not one path segment of at most 200
+  characters, a ninth name, or a name twice. **A pipeline that writes one repository has no such column and is
+  unchanged.**
+- **A conditional fixit that must write a further repository is listed as a row, directly after the review row**
+  (`spec-pipeline`). Listed anywhere else, a launcher reads a second fixit beside the one the review implies, and
+  the doctor names it.
 - **The model and the effort a run starts on are named in the brief and read back.** `spec-pipeline`'s `## Birth`
   names both, each in backticks, because the launcher reads them from that section; a brief that names neither
   leaves both to the launcher's default. A seat's BELIEFS line states the model and effort its session is running

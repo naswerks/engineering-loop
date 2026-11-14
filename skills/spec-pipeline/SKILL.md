@@ -141,6 +141,15 @@ sessions/                        WHO PUTS IT THERE
    reading list of a build seat should not be left to the default. Leave the column out when no row needs
    it.
 
+   **A seat row may name the repositories it ALSO writes in** — in a `Repository` column, when the seat
+   builds something that lives in another repository: a package this repository consumes, say. The cell
+   holds one or more names, as the runner that carries the seat serves them, separated by ` · ` or `,`;
+   an empty cell, `-` or `—` means none. **The column never moves a seat:** its home is always the
+   pipeline's own repository, where the specs, the boards and the tracker are. The pipeline still closes
+   on ONE pull request, its own repository's; a release of the other repository is a `step` row. Leave
+   the column out when no row needs it — most pipelines write one repository, and nothing about them
+   changes.
+
    Then write the rows into the brief's sequence, in this order:
 
    ```
@@ -149,7 +158,10 @@ sessions/                        WHO PUTS IT THERE
    {R}      REVIEW      — spec-review, if chosen. Runs on `git diff origin/{base}...<branch>` (the rails' base branch); no PR yet
    {F}      FIXIT       — MAY materialise, one maximum, only if the review classifies an (a)+(b)
                           finding AND the coordinator rules it in. Not authored up front; the
-                          coordinator charters it from the review's named list
+                          coordinator charters it from the review's named list. Listed as a row
+                          only when it must write a further repository: then directly after the
+                          review row, with its `Repository` cell — anywhere else a launcher reads
+                          a second fixit beside the one the review implies
    —        the coordinator's retro + PR (its own close-out, not a row)
    {P}      DOCS-PROCESS — if chosen
    ```
@@ -291,7 +303,10 @@ prose role.** This table is READ, not just read by people: ignition derives the 
 (`spec-ignite` § the stage card is derived), the create door validates the kind against a closed set and
 refuses an unknown by name, and the doctor fails a row whose kind is none of these. A cell saying "the one
 that reviews" composes nothing. An optional `Role` column carries `backend` · `frontend` · `mixed` for a
-seat whose reading list should not be left to the default.
+seat whose reading list should not be left to the default. An optional `Repository` column names the
+repositories a seat also writes in, by the runner's names; a seat's home is always this repository. Neither
+column's cell may hold a kind word or `step`: the table is read by kind value, and a kind word anywhere in
+a row is read as that row's kind.
 
 **This is the only copy of the sequence.** The tracker's status lines name these rows by id and copy
 nothing else.
