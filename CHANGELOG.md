@@ -5,6 +5,12 @@ version is the one in `package.json` and `.claude-plugin/plugin.json`, which mus
 
 ## [Unreleased]
 
+### Fixed
+
+- `spec-coordinator` said a backticked sha is fine for the plan verdict's workspace HEAD. The verb takes only the
+  bare 40-hex sha and refuses a backticked or quoted one, recording nothing, so a coordinator that followed the skill
+  spent a refused call on every plan ruling. It now says the bare sha; a seat's board may still fence its own.
+
 ## [0.8.0] - 2026-10-21
 
 A minor: the skills act differently, and a repository must act — its method docs take new text, and every
