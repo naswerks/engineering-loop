@@ -10,6 +10,10 @@ version is the one in `package.json` and `.claude-plugin/plugin.json`, which mus
 - `spec-coordinator` said a backticked sha is fine for the plan verdict's workspace HEAD. The verb takes only the
   bare 40-hex sha and refuses a backticked or quoted one, recording nothing, so a coordinator that followed the skill
   spent a refused call on every plan ruling. It now says the bare sha; a seat's board may still fence its own.
+- `spec-coordinator` wrote an amount as a dollar sign before a digit, which a harness that substitutes a skill's
+  arguments by position rewrote at load: the line about uncosted turns read with the invocation's first argument in
+  the amount's place. The amount is spelled out, and a pin holds every skill's text free of a dollar sign before a
+  digit and of the arguments token.
 
 ## [0.8.0] - 2026-10-21
 

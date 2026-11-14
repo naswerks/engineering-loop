@@ -397,7 +397,7 @@ so read them as run-time obligations, not close-out ones:
 - **Verify a query FIRES on a known-positive before you trust a clean result.** A silently-empty result
   is usually a broken query, not an empty table — and a false all-clear on an audit query is worse than
   no query.
-- **Costs: uncosted turns count $0**, so any total is a FLOOR while the uncosted-turn count is above zero.
+- **Costs: an uncosted turn counts as nothing**, so any total is a FLOOR while the uncosted-turn count is above zero.
   Report it with the count. **Never sum across instruments** — session footers ride the seats' wakes and
   omit your own spend.
 

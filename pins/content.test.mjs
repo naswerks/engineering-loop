@@ -82,6 +82,33 @@ test('CONTROL: the archive census fires on an effort folder and passes the desti
   }
 });
 
+// A skill's text is loaded with its invocation's arguments substituted in: `$ARGUMENTS`, and `$0`, `$1`, …
+// by position. A dollar sign written before a digit is therefore rewritten at load — "counts $0" reads
+// "counts <the first argument>" to the session that invoked the skill with one. A skill spells an amount out.
+const ArgumentToken = /\$(?:\d|ARGUMENTS\b)/;
+
+function argumentTokenCensus() {
+  const out = [];
+  for (const file of walk(root, ['skills'])) {
+    if (!file.endsWith('SKILL.md')) continue;
+    for (const hit of hits(ArgumentToken, readText(file))) out.push(`${file.slice(root.length + 1)}:${hit.line} "${hit.match}" - ${hit.text}`);
+  }
+  return out;
+}
+
+test('no skill text carries a token its harness substitutes at load', () => {
+  assert.deepEqual(argumentTokenCensus(), []);
+});
+
+test('CONTROL: the census fires on a dollar sign before a digit and on the arguments token, and passes a spelled-out amount', () => {
+  for (const planted of ['uncosted turns count $0', 'about $12 a run', 'run it on $ARGUMENTS']) {
+    assert.ok(ArgumentToken.test(planted), `must fire on: ${planted}`);
+  }
+  for (const allowed of ['an uncosted turn counts as nothing', 'about twelve dollars a run', 'a `${list}` in a template', 'the $ sign alone']) {
+    assert.ok(!ArgumentToken.test(allowed), `must pass: ${allowed}`);
+  }
+});
+
 test('every docs path a skill or method doc names is one init creates', () => {
   const named = new Set();
   const pattern = /docs\/_meta\/[a-z-]+\.md|(?:patterns|infrastructure|guides|features)\/[a-z-]+\.md/g;
