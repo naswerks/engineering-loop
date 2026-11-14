@@ -278,24 +278,19 @@ Ask what the park is protecting:
 - **A park on your own legitimate in-worktree work** — **re-request it** (no self-imposed cap, no
   workaround, no silent giving-up) AND disclose ("blocked on X, re-requested N times"). A parked call is
   the platform's turn, not your failure; routing around it hides the defect the park is surfacing.
-- **A park on a boundary command** (push to the base branch, force-push, branch delete — or a command
-  whose *text* merely tripped the scanner) — **never re-request; reshape the command.**
-  **A search is data only in one shape:** a quoted literal pattern given to a read-only search tool (`rg`,
-  `grep`, `git grep`, `Select-String`, `findstr`), with no `$`, no backtick, no interpreter and no `xargs`
-  in the pipeline. Any other command carrying boundary words parks — search for the symbol, not the verb.
-  **THE SCANNER MATCHES TEXT, NOT PARSED VERBS, AND THIS IS THE MOST-PAID FENCE IN THE CEREMONY.** It
-  fires on read-only commands a careful seat runs to PROVE its work: an `echo` label reading
-  `=== remote tip ===` on a `git status`/`git log` block, or `git branch -r --contains <sha>` — a branch
-  **listing** — tripping the *"branch deletion is human-only"* backstop. **So the discipline belongs in
-  the prose you write around a command, not only in the command:** no git-verb vocabulary (push, remote,
-  force, reset, branch delete) in any `echo`, comment, `--description` or section label. For upstream
-  verification use `git log origin/<branch>..HEAD | wc -l` and `git status -sb`, which carry no colliding
-  noun.
+- **A park on a boundary command** (push to the base branch, force-push, branch delete — or a command the
+  gate read as one) — **never re-request; reshape the command.**
+  **THE GATE READS THE COMMAND THE SHELL WOULD RUN, NOT ITS WORDS.** What parks is the operation — a
+  publish, a remote change, a branch deletion, a merge — at any depth: wrapped, chained, or named inside
+  another program's words. An `echo` label naming a git verb, a branch listing and a quoted search pattern
+  are data to it. **They stop being data when something on the line could run them:** a shell or an
+  interpreter anywhere on the line, or a `$`, a backtick or an `xargs` in the pipeline. So keep a proof
+  command plain — one program, quoted literals — and give a search to a read-only search tool (`rg`,
+  `grep`, `git grep`, `Select-String`, `findstr`).
   **RESHAPE MEANS A DIFFERENT COMMAND, NEVER A DISGUISED ONE — NEVER ROUTE AROUND A REFUSAL.** Rewriting a
-  path with a glob or a quote so the scanner no longer sees the word it matched (a `?` in place of one
-  letter of a folder name) defeats every text-scanned rule at once, and the same disguise passes a real
-  boundary command. When the only way through is to hide the word, the park is a false one: disclose it,
-  with the verbatim command and park text, and ask.
+  path with a glob or a quote so a word is no longer seen (a `?` in place of one letter of a folder name)
+  is a disguise, and the same disguise passes a real boundary command. When the only way through is to
+  hide the word, the park is a false one: disclose it, with the verbatim command and park text, and ask.
 - **A POLICY WALL is none of the three.** If the refusal says `walled-by-policy`, **an approval cannot
   grant it** and re-requesting is walking through a known fail-open. The two routes are **reshape the work**
   (do it by a path the policy allows — often: hand the text to a seat whose scope covers it) or
@@ -427,8 +422,7 @@ doorbell with no follow-through**; if you receive one bare, retry anyway and say
   qualifies). A push without a refspec parks by design.
 - **EVERY GIT COMMAND GOES ALONE — no shell metacharacters.** The FORM check reads the whole command
   string, so chaining, redirects or substitution disqualify it: `git add … && git commit … && git push …`
-  parks where the same three commands, sent one at a time, flow unattended. Keep the word "push" out of
-  echo text — the deny layer matches text, not parsed verbs.
+  parks where the same three commands, sent one at a time, flow unattended.
 - Prefer native read/glob/grep tools for reads; a shell read flows with its row like any other
   non-boundary call. On a periscope 1.4.0 runner they reach anything outside your workspace except
   credential material; on an older runner Read is jailed to your workspace, so read a file outside it —

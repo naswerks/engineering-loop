@@ -330,9 +330,7 @@ and a seat's close-out. Never reconstruct it at the close.
       `docs/_meta/engineering-loop.md` § This repository's rails (repository-owned) says (when it names no
       route, ask the human once and suggest recording the answer there); if one is already open the push is
       enough. These are your own git — gated and receipted like any other publish. **The
-      push command must be the ENTIRE command** (a leading `cd` disqualifies it), and keep git-verb words
-      out of any echo label around it — the deny layer matches TEXT, not parsed verbs, and a decorative
-      `=== remote tip ===` header over a read-only block will park.
+      push command must be the ENTIRE command** (a leading `cd` disqualifies it).
    6. **Report the close:** commits, receipts, total cost with its uncosted-turn count, the findings ledger,
       and the explicit list of what the human still owns. **The merge is theirs, never yours.**
    7. **If the effort has a DOCS-PROCESS row, it runs last** — after the PR exists, as its own session,
@@ -426,9 +424,9 @@ so read them as run-time obligations, not close-out ones:
 - **The unattended git form, and it binds YOU as much as the seats: one git command per call, no shell
   metacharacters.** The FORM check reads the whole command string, so chaining, redirects or substitution
   disqualify it — `git add … && git commit … && git push …` parks, while the same three sent separately
-  flow. Pushes always name the refspec; a push without one parks by design. Keep git-verb words out of
-  echo text and section labels — **including `branch`**, which parks a read-only branch LISTING on the
-  branch-deletion backstop. The fence fires on the commands a careful seat runs to PROVE its work.
+  flow. Pushes always name the refspec; a push without one parks by design. The gate reads the command
+  the shell would run, not its words: an echo label or a quoted search naming a git verb is data, unless
+  a shell or an interpreter is on the same line.
 - Seats never edit `project-status.md`, `live-checks.md` or memory files; never run `docs-write` unprompted;
   respect the brief's § What this effort does NOT do; codegen only through the command `patterns/codegen.md` § Running codegen
   names (when the repo has one); component files laid out as `patterns/frontend-patterns.md` § Component files states. Run the

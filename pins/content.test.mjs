@@ -109,6 +109,21 @@ test('CONTROL: the census fires on a dollar sign before a digit and on the argum
   }
 });
 
+// The gate a hosted seat's call passes reads the command the shell would run, so a skill that tells a seat
+// the gate matches words sends it to police its echo labels and its searches for nothing.
+const TextMatching = /matches (?:TEXT|text)\b|text-scanned|out of (?:any )?echo (?:text|label)|git-verb (?:words|vocabulary)/;
+
+test('no skill says the gate matches words', () => {
+  assert.deepEqual(census(TextMatching), []);
+});
+
+test('CONTROL: the census fires on each way the stale rule was written, and passes the rule as it stands', () => {
+  for (const planted of ['the deny layer matches TEXT, not parsed verbs', 'the deny layer matches text', 'defeats every text-scanned rule', 'Keep the word "push" out of echo text', 'keep git-verb words out of any echo label']) {
+    assert.ok(TextMatching.test(planted), `must fire on: ${planted}`);
+  }
+  assert.ok(!TextMatching.test('The gate reads the command the shell would run, not its words: an echo label is data'));
+});
+
 test('every docs path a skill or method doc names is one init creates', () => {
   const named = new Set();
   const pattern = /docs\/_meta\/[a-z-]+\.md|(?:patterns|infrastructure|guides|features)\/[a-z-]+\.md/g;

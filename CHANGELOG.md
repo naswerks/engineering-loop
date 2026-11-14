@@ -14,6 +14,10 @@ version is the one in `package.json` and `.claude-plugin/plugin.json`, which mus
   arguments by position rewrote at load: the line about uncosted turns read with the invocation's first argument in
   the amount's place. The amount is spelled out, and a pin holds every skill's text free of a dollar sign before a
   digit and of the arguments token.
+- `spec-seat`, `spec-coordinator` and `spec-retro` said the gate matches text and told a seat to keep git words out
+  of echo labels, section headers and searches. The gate reads the command the shell would run: what parks is the
+  operation, at any depth, and an echo label, a branch listing and a quoted search are data unless something on the
+  line could run them. Six passages say so now, in fewer lines, and a pin keeps the old rule out.
 
 ## [0.8.0] - 2026-10-21
 
