@@ -10,6 +10,8 @@ version is the one in `package.json` and `.claude-plugin/plugin.json`, which mus
 - **`spec-coordinator`'s Step 0 is two numbered reads:** the seven floor docs, then every doc the repository's role
   reading lists carry a path for. The second read was a trailing clause, and coordinators read the floor and stopped.
   The status readback opens with how many docs each read took.
+- **The coordinator edits its tracker and a seat's board with file tools, never a shell heredoc or an interpreter
+  one-liner** (`spec-coordinator`): one collapses backslashes, and one whose text quotes a publish is held.
 
 ### Fixed
 

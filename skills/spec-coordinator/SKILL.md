@@ -686,7 +686,9 @@ post-merge.
 - **The tracker is the seat — ONE ledger, and you write it live.** `project-status.md` is your journal: you
   own it, you advance it at every boundary, and the human never edits it. That file, not the chat, is the
   product of this skill. **The mechanism is ordinary file tools** — edit it exactly as a seat edits
-  `tldr.md`/`plan.md`; the gate permits the path. Git commits are the receipt: timestamped, attributed,
+  `tldr.md`/`plan.md`; the gate permits the path. **Never a shell heredoc or an interpreter one-liner,
+  for the tracker or for a seat's board:** one collapses backslashes in what it writes, and one whose
+  text quotes a publish is held as if it ran it. Git commits are the receipt: timestamped, attributed,
   carrying the diff.
 - **The session entry is a JOURNAL entry, not a status cell.** The ruling *and its reasoning*, recon
   corrections, what you verified yourself, mid-build directives, and anything you don't want to forget —
