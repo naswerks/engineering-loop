@@ -172,6 +172,8 @@ and a seat's close-out. Never reconstruct it at the close.
    call out / hand the human both sides when the call is genuinely theirs.
    **The accepting verdict carries the workspace HEAD you observed, and a seat that planned against a
    different tree is REFUSED with both shas named.** So read the BELIEFS sha before you rule, not after.
+   **A seat whose row names a further repository states that tree too,** on an `ALSO WRITING` line beneath
+   its BELIEFS: diff its commit and branch against that repository's branch, with your own `git` read of it.
    **AND GRADE THE `CONTROLS` LINE — it is a required PLAN TLDR field and you are its only reader.** For
    every probe or pin the seat plans, it must name the positive control and what would make it FAIL. A
    missing or hand-wavy `CONTROLS` line is a rider, not a nit: a control that cannot fail is a green light
@@ -189,6 +191,8 @@ and a seat's close-out. Never reconstruct it at the close.
    But spot-check the riskiest claim yourself (never trust self-reported "N green"), and **verify your own
    rulings were APPLIED** — a ruling can silently drop, and a seat can rebuild the exact problem
    the ruling solved. Diff the shipped behavior against your ruling list before accepting.
+   **A seat that wrote two repositories returns two of everything:** a staging list and its receipt per
+   repository, and each repository's gate under its own name. A green in one says nothing about the other.
    **VERIFY THE CLAIM WHOSE FAILURE WOULD BE SILENT; MACHINE-COMPARE THE REST.** That is the rule that
    keeps your own share of the spend honest — a seat producing receipts that reconcile arithmetically has
    already done the work you would be repeating.
@@ -202,6 +206,10 @@ and a seat's close-out. Never reconstruct it at the close.
 
    **Advance the tracker AT EVERY CHECKPOINT.** Plan accepted: the row says so; final TLDR accepted: the
    row says so; push confirmed: SHIPPED with the hash. A stale tracker is your omission.
+
+   **WHEN A BRANCH A SEAT PUSHES HAS A PULL REQUEST OPEN, READ ITS CHECKS AT EVERY SEAT REPORT,** in
+   whichever repository it is, with your own read and not the seat's sentence about it: a check read at
+   the first commit says nothing about the tenth.
 
    **CLOSING A HUMAN STEP: TAKE THE RECEIPT, DO NOT WRITE IT.** A `step` row has no seat to post a TLDR,
    so the temptation is to transcribe the sitting into your tracker and call the step recorded. **That
@@ -510,6 +518,9 @@ role={backend | frontend | mixed} before anything else, and ALWAYS after `spec-s
 names `spec-seat` first, the job skill second.        <- hand-cranked only; hosted, start at the spec
 
 Your spec: {absolute path to the spec}
+{only when the seat's row names a further repository, one line each; hand-cranked only — hosted, the
+ seed says where:}
+You also write: {repository} — your tree of it is {absolute path}, on branch {branch}. Never its owner's checkout.
 Pipeline context: {brief path} — the charter: its sections down to § Platform state bind you, and the owner's
 rulings in it are settled (don't relitigate) + {project-status.md path}
 (READ-ONLY, coordinator-owned — prior rows, deferred findings, and process incidents are your contract).
@@ -532,6 +543,10 @@ Baselines (cite, don't re-measure): {per lane, from the brief's § Baselines: N 
 THE TASK: {compressed spec restatement with the load-bearing specifics inline.}
 ```
 
+**A seat that also writes a further repository is told WHERE, and nothing else about it:** what it does
+there is `spec-seat` § Git shapes, and a prompt that restates it is a second copy of the contract. A seat
+whose row names none gets no such line, and a prompt exactly as it would have been.
+
 For investigation-first work, add **STEP 0 — INVESTIGATE, REPORT, STOP** before the task, or use
 `role={...} fixit` for no-spec defect sessions (the skill carries the fix-it ceremony). Fallback: if the
 seat can't invoke skills, paste the ceremony from the `spec-build` skill inline.
@@ -550,6 +565,9 @@ second** — this is the whole point of the row.
 REVIEW row (R):
   You are the REVIEW SEAT: invoke the spec-review skill before anything else.
   Topic: {topic} · branch: {branch} · diff range: origin/{base}...{branch}
+  {when the run wrote a further repository, one more line each:}
+  Also: {repository}, at {its path} · diff range: origin/{its base}...{its branch}, or by its release
+    tags ({the release before}...{this run's release}) when the run released it mid-run
   The brief, down to § Platform state and never past it (read as claims, not facts):
     docs/research/{topic}/00-ignition-brief.md
   Specs (read as claims, not facts): {every numbered spec path}

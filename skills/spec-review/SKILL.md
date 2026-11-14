@@ -39,6 +39,8 @@ Your seed carries **no beliefs about the pipeline, and that is deliberate** — 
   branch `docs/_meta/engineering-loop.md` § This repository's rails (repository-owned) names, or the
   remote's default when it names none; it is read from the remote's copy, because a local base branch can
   sit behind it and pull another effort's commits into the range);
+- **one more range per further repository the run wrote**, with that repository's path — by its release
+  tags when the run released it mid-run, since its branch is merged by then;
 - **the brief** (`00-ignition-brief.md`) — its sections down to § Platform state, read as claims like the
   specs, and **never the coordinator's sections after it** (its beliefs, its close-out, its kick);
 - **every numbered spec path** — you read them as claims, not facts;
@@ -69,7 +71,9 @@ instrument, and a reader who takes it for a cold one over-trusts its independenc
 4. **The tracker** — `project-status.md`, the coordinator's journal: rulings and their reasoning, recon
    corrections, incidents.
 5. **THEN the diff** — `git diff origin/{base}...<pipeline-branch>`, plus `git log --oneline
-   origin/{base}..<pipeline-branch>`.
+   origin/{base}..<pipeline-branch>`; and the same pair for each further range your seed names, run inside
+   that repository. Read the two sides of a seam together: what one repository ships and what the other
+   consumes are one claim.
 
 **Read the artifacts before the code, and the code before you conclude.** Reading the diff first makes
 you review a patch; reading the claims first makes you review whether the pipeline did what it said.

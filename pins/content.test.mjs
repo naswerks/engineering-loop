@@ -190,6 +190,37 @@ test('CONTROL: the search finds a clause that wraps, and misses one that is not 
   assert.ok(!folded('its gate, in part').includes('the whole of ITS gate'));
 });
 
+// One repository is the usual case: a line a template gives a further repository sits under a line saying
+// when it applies, so a seat whose row names none reads a template with nothing added to it.
+const RepositoryLine = /^\s*(?:ALSO WRITING|You also write:|Also:) \{repository\}/;
+const RepositoryCondition = /\{(?:only )?when [^}]*further repository/;
+
+function unconditionalRepositoryLines(text) {
+  const lines = text.split(/\r?\n/);
+  const out = [];
+  for (let i = 0; i < lines.length; i++) {
+    if (!RepositoryLine.test(lines[i])) continue;
+    // The condition may wrap, so it is looked for on the two lines above.
+    if (!lines.slice(Math.max(0, i - 2), i).some((line) => RepositoryCondition.test(line))) out.push(`${i + 1}: ${lines[i].trim().slice(0, 80)}`);
+  }
+  return out;
+}
+
+test('every template line for a further repository is conditional on the row naming one', () => {
+  let found = 0;
+  for (const skill of ['spec-seat', 'spec-coordinator']) {
+    const text = readText(join(root, 'skills', skill, 'SKILL.md'));
+    found += text.split(/\r?\n/).filter((line) => RepositoryLine.test(line)).length;
+    assert.deepEqual(unconditionalRepositoryLines(text), [], `${skill}: a further repository's line every seat would read as its own`);
+  }
+  assert.equal(found, 3, 'the seat\'s ALSO WRITING line, the prompt\'s "You also write" line and the review manifest\'s "Also" line');
+});
+
+test('CONTROL: a further repository\'s line with no condition above it is reported, and a wrapped condition passes', () => {
+  assert.deepEqual(unconditionalRepositoryLines('BELIEFS: HEAD {sha}\nALSO WRITING {repository}: commit {sha}'), ['2: ALSO WRITING {repository}: commit {sha}']);
+  assert.deepEqual(unconditionalRepositoryLines('{only when the seat\'s row names a further repository, one line each;\n hosted, the seed says where:}\nYou also write: {repository} — your tree'), []);
+});
+
 test("init's own parts: the doctor parses, the settings pin is two objects, no template leaves an init marker unexplained", () => {
   execFileSync(process.execPath, ['--check', join(root, 'skills', 'init', 'scripts', 'doctor.mjs')]);
   const pin = JSON.parse(readFileSync(join(root, 'templates', 'settings-pin.json'), 'utf8'));

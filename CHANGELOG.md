@@ -25,6 +25,12 @@ version is the one in `package.json` and `.claude-plugin/plugin.json`, which mus
 - **The push in a second repository has its own form:** `cd` into the tree, then the push, and nothing else on the
   line. `spec-seat` said a leading `cd` disqualifies every push; that is the rule for the home repository, and it
   now says so.
+- **The coordinator's and the review's side of a second repository.** `spec-coordinator` tells such a seat where
+  its tree is and nothing else (by hand; hosted, the seed says where), diffs its `ALSO WRITING` line, checks two
+  receipts at the FINAL, reads a pull request's checks at every seat report in whichever repository the branch is,
+  and hands the review one diff range per repository (by release tags when the run released it mid-run).
+  `spec-review` reads each range and the seam between them. A pin holds every template line for a further
+  repository under a line saying when it applies.
 - **A conditional fixit that must write a further repository is listed as a row, directly after the review row**
   (`spec-pipeline`). Listed anywhere else, a launcher reads a second fixit beside the one the review implies, and
   the doctor names it.
