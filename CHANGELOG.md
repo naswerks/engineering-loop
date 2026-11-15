@@ -5,6 +5,11 @@ version is the one in `package.json` and `.claude-plugin/plugin.json`, which mus
 
 ## [Unreleased]
 
+## [0.9.0] - 2026-11-14
+
+A minor: the skills act differently, the doctor can newly fail a brief, and a repository's copy of the loop text
+takes one paragraph (§ Upgrading from 0.8). A pipeline that writes one repository runs as it did.
+
 ### Added
 
 - **A seat may also write a second repository: the `Repository` column.** A sequence row names the repositories its
@@ -70,6 +75,29 @@ version is the one in `package.json` and `.claude-plugin/plugin.json`, which mus
   line could run them. Six passages say so now, in fewer lines, and a pin keeps the old rule out.
 - `spec-seat` said the HEAD check takes the first `HEAD <sha>` it meets. It reads the newest line that carries
   `BELIEFS`, so a seat whose HEAD moved appends a new BELIEFS line and never edits the old one.
+
+### Upgrading from 0.8
+
+In this order:
+
+1. **Take the release where every session loads it:** `claude plugin marketplace update engineering-loop`, then
+   `claude plugin update naswerks@engineering-loop --scope <scope>` for each scope that runs sessions, and a new
+   session. A runner takes `@naswerks/engineering-loop@0.9.0` in the folder its plugin directories name, and is
+   restarted by its owner with no seat live.
+2. **Replace one paragraph of loop text.** In `docs/_meta/engineering-loop.md`, the paragraph that opens
+   **One pipeline at a time.** becomes:
+
+   > **Pipelines never intertwine.** A pipeline's GATE is that its predecessor merged — never a seat of another
+   > pipeline — and no seat waits on another pipeline. Independent pipelines may run at the same time, each on
+   > its own branch, merged one after the other.
+
+   It is the only loop text that changed. `docs/_meta/docs-workflow.md` takes nothing but its stamp, and the four
+   repository-owned sections are yours and are not touched.
+3. **Restamp and check:** `init refresh` (with `--write`) restamps both copies and leaves every other line as it
+   is; then `init doctor`. A repository that read clean on 0.8.0 reads clean, unless a brief lists a `fixit` row
+   away from its `review` row or holds a `Repository` cell that is not a list of names.
+
+No pipeline folder changes shape, and a sequence with no `Repository` column reads as it always has.
 
 ## [0.8.0] - 2026-10-21
 
