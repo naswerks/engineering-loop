@@ -197,6 +197,11 @@ for (const name of ['CLAUDE.md', 'AGENTS.md']) {
 // The kick is sent verbatim as the coordinator's task, so a skill it names that this pack does not carry
 // (a renamed one, most often) tells the coordinator to invoke nothing.
 const packSkills = new Set(existsSync(join(packRoot, 'skills')) ? readdirSync(join(packRoot, 'skills')) : []);
+// A repository's name as a sequence row may write it: one path segment, no separators, no spaces, of at most
+// MAX_REPOSITORY_NAME characters; a row names at most MAX_REPOSITORIES, none twice.
+const REPOSITORY_NAME = /^[A-Za-z0-9][A-Za-z0-9._-]*$/;
+const MAX_REPOSITORY_NAME = 200;
+const MAX_REPOSITORIES = 8;
 const researchDir = join(repo, 'docs', 'research');
 if (existsSync(researchDir)) {
   for (const topic of readdirSync(researchDir)) {
@@ -217,17 +222,38 @@ if (existsSync(researchDir)) {
       const cellsOf = (line) => line.trim().replace(/^\|/, '').replace(/\|$/, '').split('|').map((c) => c.trim().replace(/^`|`$/g, '').trim());
       // The optional Role column, found by its header; a row's cell there is a role or empty.
       const roleAt = tableRows.length ? cellsOf(tableRows[0]).findIndex((c) => c.toLowerCase() === 'role') : -1;
+      // The optional Repository column, found by its header; a row's cell there names the repositories the
+      // seat also writes in, or is empty. The table is read by kind value, so a kind word or `step` in that
+      // cell would be read as the row's kind: it fails by name, before either is looked for.
+      const repositoryAt = tableRows.length ? cellsOf(tableRows[0]).findIndex((c) => c.toLowerCase() === 'repository') : -1;
+      // The seat rows' kinds, in order: where a listed fixit sits is read from them.
+      const seatKinds = [];
       for (const line of tableRows.slice(1)) {
         const cells = cellsOf(line);
         if (cells.every((c) => /^[-: ]*$/.test(c))) continue;
         const spec = cells.map((c) => SPEC_FILE.exec(c)).find(Boolean);
         if (spec) named.add(spec[1]);
+        const repositories = repositoryAt >= 0 ? (cells[repositoryAt] ?? '') : '';
+        const names = !repositories || /^[-—]$/.test(repositories) ? [] : repositories.split(/\s*[·,]\s*/).map((n) => n.replace(/`/g, '').trim()).filter((n) => n !== '');
+        const notNames = names.filter((n) => KINDS.includes(n) || n === STEP || !REPOSITORY_NAME.test(n) || n.length > MAX_REPOSITORY_NAME);
+        if (notNames.length) {
+          for (const n of notNames) problems.push(`a sequence row's repository \`${n.length > 60 ? `${n.slice(0, 60)}…` : n}\` is not a repository's name (one path segment of at most ${MAX_REPOSITORY_NAME} characters; a kind word or \`${STEP}\` there is read as the row's kind): \`${line.trim().slice(0, 200)}\``);
+          continue;
+        }
+        if (names.length > MAX_REPOSITORIES) problems.push(`a sequence row names ${names.length} repositories and a seat writes at most ${MAX_REPOSITORIES}: \`${line.trim()}\``);
+        for (const n of new Set(names.filter((name, i) => names.indexOf(name) !== i))) problems.push(`a sequence row names the repository \`${n}\` twice: \`${line.trim()}\``);
         if (cells.includes(STEP)) continue;
         if (!cells.some((c) => KINDS.includes(c))) { problems.push(`a sequence row names no seat kind and composes nothing (a row that is not a seat says \`${STEP}\`): \`${line.trim()}\``); continue; }
+        seatKinds.push(cells.find((c) => KINDS.includes(c)));
         const role = roleAt >= 0 ? (cells[roleAt] ?? '') : '';
         if (role && !/^[-—]$/.test(role) && !ROLES.includes(role)) problems.push(`a sequence row's role \`${role}\` is not one of ${ROLES.map((r) => `\`${r}\``).join(' · ')}: \`${line.trim()}\``);
         if (spec && !existsSync(join(researchDir, topic, spec[1]))) problems.push(`the sequence names \`${spec[1]}\` and it is missing from disk`);
       }
+      // A listed fixit is the one its review implies only when it is the next seat row after that review. Listed
+      // anywhere else, a launcher reads a second fixit beside the implied one, and that one names no repository.
+      const reviewAt = seatKinds.indexOf('review');
+      const fixitAt = seatKinds.indexOf('fixit');
+      if (reviewAt >= 0 && fixitAt >= 0 && fixitAt !== reviewAt + 1) problems.push('the sequence lists a `fixit` row that is not the next seat row after its `review` row, so a launcher reads two fixits and the extra one names no repository: move the row directly after the review');
     }
     // An old-shape folder carries an umbrella: a `01-` file no sequence row names. It still runs on an older
     // pack; carry it over before it runs on this one.

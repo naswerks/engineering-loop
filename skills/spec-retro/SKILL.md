@@ -73,9 +73,10 @@ population or only its failures.
   silently-empty result is usually a broken query, not an empty table.
 - **A search that times out is not a search that found nothing.** If a sweep backs an ABSENCE claim,
   re-run it on the tool that completes before you report the absence.
-- **A gate scanner matches TEXT.** A query or command whose text contains `git` and `push`, or
-  `git` + `branch` + a `-d` flag, parks by design. **Reshape the command — never re-request it.** (The
-  boundary half of `spec-seat`'s discriminator.)
+- **The gate reads the command the shell would run, not its words.** A quoted search pattern naming a
+  boundary operation is data; the same words handed to an interpreter, or carrying a substitution, are read
+  as something that could run, and park. **Reshape the command — never re-request it.** (The boundary half
+  of `spec-seat`'s discriminator.)
 
 **READS ONLY. Never write to the platform's store.**
 
@@ -393,8 +394,7 @@ is the look of a record with none of a record's properties.
    § This repository's rails (repository-owned) says (when it names no route, ask the human once and suggest
    recording the answer there); one branch, one PR from any seat. **If one is already open, the push is enough.** These three git commands are your own close-out
    lane and they are gated and receipted like any other publish. **The push command must be the ENTIRE
-   command** — a leading `cd` disqualifies it — and keep git-verb words out of any echo label you write
-   around it; the deny layer matches TEXT, not parsed verbs.
+   command** — a leading `cd` disqualifies it.
 6. **Sweep for stale beliefs BY MEANING, NEVER BY PHRASE — and sweep the SIBLINGS that restate a rule, not
    just the rule's own home.** A sweep keyed on wording only finds the wording it thought of. Ask what each
    instruction *depends on being true* — which file it names, which lane it assumes exists, who it thinks

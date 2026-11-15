@@ -1,4 +1,4 @@
-<!-- naswerks-loop: version=0.8.0 -->
+<!-- naswerks-loop: version=0.9.0 -->
 # The Engineering Loop — flow, seats, skills, and the ceremony
 
 > The quick intro to how work gets built with this loop: the two loops (`docs-*` knowledge, `spec-*`
@@ -74,8 +74,9 @@ owner's — never a seat's job and never a doc's row: the coordinator offers a s
 the chat, and `live-checks.md` holds only the rows the owner dictates. Everything between `idea` and
 `archived` a pipeline can do for itself.
 
-**One pipeline at a time.** A pipeline's GATE is that its predecessor merged — never a seat of another
-pipeline — and the next one starts after it.
+**Pipelines never intertwine.** A pipeline's GATE is that its predecessor merged — never a seat of another
+pipeline — and no seat waits on another pipeline. Independent pipelines may run at the same time, each on
+its own branch, merged one after the other.
 
 **`docs-audit-*` is never a pipeline row.** It runs off-hours and scheduled, over the whole doc tree — not
 inside an effort, and not at an effort's close. A stale living doc is not something a pipeline must stop for.

@@ -35,14 +35,15 @@ hand-testing what shipped. Everything else that a human does hand-cranked, you d
 
 ## Read first
 
-**Step 0 — the same floor every seat reads, all seven, plus every standard doc this repository has.**
-You verify every seat's work, so you start from the context they build in. A coordinator that has not
-read `testing.md` cannot judge a receipt; one that has not read `codegen.md` (when the repo has one)
-cannot spot a hand-written generated file.
+**Step 0 — two reads, and neither is optional.** You verify every seat's work, so you start from the
+context they build in. A coordinator that has not read `testing.md` cannot judge a receipt; one that has
+not read `codegen.md` (when the repo has one) cannot spot a hand-written generated file.
 
-`_meta/doc-index.md` · `_meta/docs-workflow.md` · `_meta/engineering-loop.md` ·
-`patterns/code-organization.md` · `patterns/backend-patterns.md` · `patterns/frontend-patterns.md` ·
-`patterns/testing.md` — then every doc `doc-index.md` § Role reading lists carries a path for.
+1. **The floor every seat reads, all seven:** `_meta/doc-index.md` · `_meta/docs-workflow.md` ·
+   `_meta/engineering-loop.md` · `patterns/code-organization.md` · `patterns/backend-patterns.md` ·
+   `patterns/frontend-patterns.md` · `patterns/testing.md`.
+2. **Then every doc `doc-index.md` § Role reading lists carries a path for.** Open that section and read
+   each one. The floor alone is not Step 0.
 
 **Step 1 — the effort**, in order:
 
@@ -67,8 +68,9 @@ now, and again before you cut the retro. **A disagreement is a finding, not a ty
 changed in one place and not the other. Say which is right, fix the other, and journal it.
 
 Then produce a **5-line status readback** — shipped / in flight / next action / next prompt you expect to
-cut. Hand-cranked that goes to the human so they can confirm the seat transferred; hosted it is your
-opening journal entry in `project-status.md`, which is how anyone watching the cockpit catches up.
+cut — opening with how many docs each of Step 0's two reads took. Hand-cranked that goes to the human so
+they can confirm the seat transferred; hosted it is your opening journal entry in `project-status.md`,
+which is how anyone watching the cockpit catches up.
 
 **Same-session graduation:** you just ran `spec-pipeline`, so you already hold most of Step 1 — confirm
 the tracker exists and cut Prompt #1. **Step 0 still applies.**
@@ -88,7 +90,7 @@ plus the human relay.
 | Verb | What it does | The part that bites |
 |---|---|---|
 | `seat_spawn` | Opens a DECLARED sibling's session | **It can never CREATE a seat** — the topology is the create door's, decided by a human — and you may only drive seats you `supervises`/`reviews`. With no `hostId` it opens on the host carrying your own session; `model` and `effort` override the seat's own for this session, judged against what the runner offers |
-| `accept_plan` | The verdict act: `accept` · `accept-with-riders` · `blocking-precondition`, **and NOTHING ELSE carries a go** — and it DELIVERS ITSELF: the seat's live session receives a one-line pointer to the ruling, for an accepting verdict and for any verdict that filed a ruling in the seat's file | Write the ruling into the seat's `tldr.md` FIRST (`## COORDINATOR RULING (plan rev N — {verdict})`), then call with a one-line `ruling`: the file is mirrored before your act and the pointer names your section. Pass the workspace HEAD you observed (a backticked sha is fine); an accepting verdict whose seat planned against a different tree is REFUSED, naming both shas. READ THE REPLY'S `delivery:` and `file:` LINES — `NOT DELIVERED` means the seat is idle and only a `callout` reaches it. When the verdict also answers the seat's question, pass `answeringActId` — one act rules and closes it |
+| `accept_plan` | The verdict act: `accept` · `accept-with-riders` · `blocking-precondition`, **and NOTHING ELSE carries a go** — and it DELIVERS ITSELF: the seat's live session receives a one-line pointer to the ruling, for an accepting verdict and for any verdict that filed a ruling in the seat's file | Write the ruling into the seat's `tldr.md` FIRST (`## COORDINATOR RULING (plan rev N — {verdict})`), then call with a one-line `ruling`: the file is mirrored before your act and the pointer names your section. Pass the workspace HEAD you observed as the bare 40-hex sha `git rev-parse HEAD` prints — a backticked or quoted one is refused and records nothing, though a seat's board may fence its own; an accepting verdict whose seat planned against a different tree is REFUSED, naming both shas. READ THE REPLY'S `delivery:` and `file:` LINES — `NOT DELIVERED` means the seat is idle and only a `callout` reaches it. When the verdict also answers the seat's question, pass `answeringActId` — one act rules and closes it |
 | `accept` | The rev-bound FINAL receipt — and it TELLS the seat, so it carries your commit call | Put the next instruction (commit, push, close-out) in `ruling`, or write it under `## COORDINATOR ACCEPT` in the seat's `tldr.md` first — the receipt then binds to that mirrored revision. It binds to the seat's CURRENT tldr revision, so if the seat posts NEW CONTENT again your acceptance no longer covers what it publishes. **Re-accept — it is idempotent and cheap.** This receipt is what the push bar reads; prose is not a receipt. `answeringActId` closes the question it answers, as on `accept_plan` |
 | `complete` | The reap, and it is HONEST | It re-reads the seat and reports ok only after the terminal state is OBSERVED |
 | `callout` | **THE ONLY WAY YOU REACH A CHARGE** (besides the pointers `accept_plan` and `accept` send) | A charge that posted and ended its turn cannot resume any other way — without this verb it waits for a human. Your ruling must carry a DETERMINATE NEXT ACTION it can execute without inference. **Write it into the seat's `tldr.md` first and pass a one-line `ruling`:** the file is mirrored before your act and the seat is pointed at your section. Without a file, KEEP IT TO A LINE: over 600 chars the body is stored as a `ruling` artifact on the board and the seat receives a POINTER — the seat reads the body once, never twice |
@@ -171,6 +173,8 @@ and a seat's close-out. Never reconstruct it at the close.
    call out / hand the human both sides when the call is genuinely theirs.
    **The accepting verdict carries the workspace HEAD you observed, and a seat that planned against a
    different tree is REFUSED with both shas named.** So read the BELIEFS sha before you rule, not after.
+   **A seat whose row names a further repository states that tree too,** on an `ALSO WRITING` line beneath
+   its BELIEFS: diff its commit and branch against that repository's branch, with your own `git` read of it.
    **AND GRADE THE `CONTROLS` LINE — it is a required PLAN TLDR field and you are its only reader.** For
    every probe or pin the seat plans, it must name the positive control and what would make it FAIL. A
    missing or hand-wavy `CONTROLS` line is a rider, not a nit: a control that cannot fail is a green light
@@ -188,6 +192,8 @@ and a seat's close-out. Never reconstruct it at the close.
    But spot-check the riskiest claim yourself (never trust self-reported "N green"), and **verify your own
    rulings were APPLIED** — a ruling can silently drop, and a seat can rebuild the exact problem
    the ruling solved. Diff the shipped behavior against your ruling list before accepting.
+   **A seat that wrote two repositories returns two of everything:** a staging list and its receipt per
+   repository, and each repository's gate under its own name. A green in one says nothing about the other.
    **VERIFY THE CLAIM WHOSE FAILURE WOULD BE SILENT; MACHINE-COMPARE THE REST.** That is the rule that
    keeps your own share of the spend honest — a seat producing receipts that reconcile arithmetically has
    already done the work you would be repeating.
@@ -201,6 +207,10 @@ and a seat's close-out. Never reconstruct it at the close.
 
    **Advance the tracker AT EVERY CHECKPOINT.** Plan accepted: the row says so; final TLDR accepted: the
    row says so; push confirmed: SHIPPED with the hash. A stale tracker is your omission.
+
+   **WHEN A BRANCH A SEAT PUSHES HAS A PULL REQUEST OPEN, READ ITS CHECKS AT EVERY SEAT REPORT,** in
+   whichever repository it is, with your own read and not the seat's sentence about it: a check read at
+   the first commit says nothing about the tenth.
 
    **CLOSING A HUMAN STEP: TAKE THE RECEIPT, DO NOT WRITE IT.** A `step` row has no seat to post a TLDR,
    so the temptation is to transcribe the sitting into your tracker and call the step recorded. **That
@@ -330,9 +340,7 @@ and a seat's close-out. Never reconstruct it at the close.
       `docs/_meta/engineering-loop.md` § This repository's rails (repository-owned) says (when it names no
       route, ask the human once and suggest recording the answer there); if one is already open the push is
       enough. These are your own git — gated and receipted like any other publish. **The
-      push command must be the ENTIRE command** (a leading `cd` disqualifies it), and keep git-verb words
-      out of any echo label around it — the deny layer matches TEXT, not parsed verbs, and a decorative
-      `=== remote tip ===` header over a read-only block will park.
+      push command must be the ENTIRE command** (a leading `cd` disqualifies it).
    6. **Report the close:** commits, receipts, total cost with its uncosted-turn count, the findings ledger,
       and the explicit list of what the human still owns. **The merge is theirs, never yours.**
    7. **If the effort has a DOCS-PROCESS row, it runs last** — after the PR exists, as its own session,
@@ -397,7 +405,7 @@ so read them as run-time obligations, not close-out ones:
 - **Verify a query FIRES on a known-positive before you trust a clean result.** A silently-empty result
   is usually a broken query, not an empty table — and a false all-clear on an audit query is worse than
   no query.
-- **Costs: uncosted turns count $0**, so any total is a FLOOR while the uncosted-turn count is above zero.
+- **Costs: an uncosted turn counts as nothing**, so any total is a FLOOR while the uncosted-turn count is above zero.
   Report it with the count. **Never sum across instruments** — session footers ride the seats' wakes and
   omit your own spend.
 
@@ -409,8 +417,10 @@ so read them as run-time obligations, not close-out ones:
   approved seat commits and pushes its branch itself (the relay, below); hosted, the commit call rides your
   acceptance. The PR is yours at the close. The merge is the human's, always. Explicit staging only —
   never `git add -A` — and never a push to the base branch.
-- **One pipeline at a time.** A brief's GATE checks only that its predecessor merged; never gate a run on
-  another pipeline's seats, and never run two pipelines over one another.
+- **Pipelines never intertwine.** A brief's GATE checks only that its predecessor merged; never gate a run
+  on another pipeline's seats, and never make a seat wait on one. Independent pipelines may run at the same
+  time, each on its own branch; never two over the same files or on one branch. When the base branch moves
+  under your run, take it in between seats, by a merge, never under a live seat and never as a rebase.
 - **Never advise or run a runner restart while a seat is live.** A restart ends every live session on that
   runner, and the plane may not notice. "Restarting it is fine" said to the human in that state is how a
   run loses every seat at once; say instead which seats are live and that the restart waits.
@@ -426,9 +436,9 @@ so read them as run-time obligations, not close-out ones:
 - **The unattended git form, and it binds YOU as much as the seats: one git command per call, no shell
   metacharacters.** The FORM check reads the whole command string, so chaining, redirects or substitution
   disqualify it — `git add … && git commit … && git push …` parks, while the same three sent separately
-  flow. Pushes always name the refspec; a push without one parks by design. Keep git-verb words out of
-  echo text and section labels — **including `branch`**, which parks a read-only branch LISTING on the
-  branch-deletion backstop. The fence fires on the commands a careful seat runs to PROVE its work.
+  flow. Pushes always name the refspec; a push without one parks by design. The gate reads the command
+  the shell would run, not its words: an echo label or a quoted search naming a git verb is data, unless
+  a shell or an interpreter is on the same line.
 - Seats never edit `project-status.md`, `live-checks.md` or memory files; never run `docs-write` unprompted;
   respect the brief's § What this effort does NOT do; codegen only through the command `patterns/codegen.md` § Running codegen
   names (when the repo has one); component files laid out as `patterns/frontend-patterns.md` § Component files states. Run the
@@ -438,9 +448,11 @@ so read them as run-time obligations, not close-out ones:
 - **Cite symbols, not bare `file:line`.** In a seed, a ruling, or the tracker, name the symbol and use the
   line as a hint — a line number is a comment, not an address, and the seat documenting why a line matters
   is what moves it.
-- Model policy: seats run **the effort's declared default model** (allowlist-exact, set at creation);
-  investigation-heavy sessions may warrant a reasoning-heavier one. Parallel sessions only when
-  the specs share no files — and sequence the *commits* regardless.
+- Model policy: seats run **the effort's declared default model and effort** — the pair the brief's
+  `## Birth` names (allowlist-exact, set at creation); investigation-heavy sessions may warrant a
+  reasoning-heavier one. **A seat's BELIEFS line states the pair it started on, and one the brief does not
+  name is settled before you rule its plan:** re-open the seat on the named pair, or rule the difference in
+  by name. Parallel sessions only when the specs share no files — and sequence the *commits* regardless.
 - **The gate is inverted (means are free, protocol is law):** benign tools/methods flow with audit rows;
   only the ceremony's boundaries park — in EVERY tier, recon included. Reads, execs, suites, pipes,
   redirects and in-worktree writes all flow pre-accept. **Do not seed tool-avoidance rules the platform
@@ -507,6 +519,9 @@ role={backend | frontend | mixed} before anything else, and ALWAYS after `spec-s
 names `spec-seat` first, the job skill second.        <- hand-cranked only; hosted, start at the spec
 
 Your spec: {absolute path to the spec}
+{only when the seat's row names a further repository, one line each; hand-cranked only — hosted, the
+ seed says where:}
+You also write: {repository} — your tree of it is {absolute path}, on branch {branch}. Never its owner's checkout.
 Pipeline context: {brief path} — the charter: its sections down to § Platform state bind you, and the owner's
 rulings in it are settled (don't relitigate) + {project-status.md path}
 (READ-ONLY, coordinator-owned — prior rows, deferred findings, and process incidents are your contract).
@@ -529,6 +544,10 @@ Baselines (cite, don't re-measure): {per lane, from the brief's § Baselines: N 
 THE TASK: {compressed spec restatement with the load-bearing specifics inline.}
 ```
 
+**A seat that also writes a further repository is told WHERE, and nothing else about it:** what it does
+there is `spec-seat` § Git shapes, and a prompt that restates it is a second copy of the contract. A seat
+whose row names none gets no such line, and a prompt exactly as it would have been.
+
 For investigation-first work, add **STEP 0 — INVESTIGATE, REPORT, STOP** before the task, or use
 `role={...} fixit` for no-spec defect sessions (the skill carries the fix-it ceremony). Fallback: if the
 seat can't invoke skills, paste the ceremony from the `spec-build` skill inline.
@@ -546,7 +565,10 @@ second** — this is the whole point of the row.
 ```
 REVIEW row (R):
   You are the REVIEW SEAT: invoke the spec-review skill before anything else.
-  Topic: {topic} · branch: {branch} · diff range: {base}...{branch}
+  Topic: {topic} · branch: {branch} · diff range: origin/{base}...{branch}
+  {when the run wrote a further repository, one more line each:}
+  Also: {repository}, at {its path} · diff range: origin/{its base}...{its branch}, or by its release
+    tags ({the release before}...{this run's release}) when the run released it mid-run
   The brief, down to § Platform state and never past it (read as claims, not facts):
     docs/research/{topic}/00-ignition-brief.md
   Specs (read as claims, not facts): {every numbered spec path}
@@ -687,7 +709,9 @@ post-merge.
 - **The tracker is the seat — ONE ledger, and you write it live.** `project-status.md` is your journal: you
   own it, you advance it at every boundary, and the human never edits it. That file, not the chat, is the
   product of this skill. **The mechanism is ordinary file tools** — edit it exactly as a seat edits
-  `tldr.md`/`plan.md`; the gate permits the path. Git commits are the receipt: timestamped, attributed,
+  `tldr.md`/`plan.md`; the gate permits the path. **Never a shell heredoc or an interpreter one-liner,
+  for the tracker or for a seat's board:** one collapses backslashes in what it writes, and one whose
+  text quotes a publish is held as if it ran it. Git commits are the receipt: timestamped, attributed,
   carrying the diff.
 - **The session entry is a JOURNAL entry, not a status cell.** The ruling *and its reasoning*, recon
   corrections, what you verified yourself, mid-build directives, and anything you don't want to forget —

@@ -278,24 +278,19 @@ Ask what the park is protecting:
 - **A park on your own legitimate in-worktree work** — **re-request it** (no self-imposed cap, no
   workaround, no silent giving-up) AND disclose ("blocked on X, re-requested N times"). A parked call is
   the platform's turn, not your failure; routing around it hides the defect the park is surfacing.
-- **A park on a boundary command** (push to the base branch, force-push, branch delete — or a command
-  whose *text* merely tripped the scanner) — **never re-request; reshape the command.**
-  **A search is data only in one shape:** a quoted literal pattern given to a read-only search tool (`rg`,
-  `grep`, `git grep`, `Select-String`, `findstr`), with no `$`, no backtick, no interpreter and no `xargs`
-  in the pipeline. Any other command carrying boundary words parks — search for the symbol, not the verb.
-  **THE SCANNER MATCHES TEXT, NOT PARSED VERBS, AND THIS IS THE MOST-PAID FENCE IN THE CEREMONY.** It
-  fires on read-only commands a careful seat runs to PROVE its work: an `echo` label reading
-  `=== remote tip ===` on a `git status`/`git log` block, or `git branch -r --contains <sha>` — a branch
-  **listing** — tripping the *"branch deletion is human-only"* backstop. **So the discipline belongs in
-  the prose you write around a command, not only in the command:** no git-verb vocabulary (push, remote,
-  force, reset, branch delete) in any `echo`, comment, `--description` or section label. For upstream
-  verification use `git log origin/<branch>..HEAD | wc -l` and `git status -sb`, which carry no colliding
-  noun.
+- **A park on a boundary command** (push to the base branch, force-push, branch delete — or a command the
+  gate read as one) — **never re-request; reshape the command.**
+  **THE GATE READS THE COMMAND THE SHELL WOULD RUN, NOT ITS WORDS.** What parks is the operation — a
+  publish, a remote change, a branch deletion, a merge — at any depth: wrapped, chained, or named inside
+  another program's words. An `echo` label naming a git verb, a branch listing and a quoted search pattern
+  are data to it. **They stop being data when something on the line could run them:** a shell or an
+  interpreter anywhere on the line, or a `$`, a backtick or an `xargs` in the pipeline. So keep a proof
+  command plain — one program, quoted literals — and give a search to a read-only search tool (`rg`,
+  `grep`, `git grep`, `Select-String`, `findstr`).
   **RESHAPE MEANS A DIFFERENT COMMAND, NEVER A DISGUISED ONE — NEVER ROUTE AROUND A REFUSAL.** Rewriting a
-  path with a glob or a quote so the scanner no longer sees the word it matched (a `?` in place of one
-  letter of a folder name) defeats every text-scanned rule at once, and the same disguise passes a real
-  boundary command. When the only way through is to hide the word, the park is a false one: disclose it,
-  with the verbatim command and park text, and ask.
+  path with a glob or a quote so a word is no longer seen (a `?` in place of one letter of a folder name)
+  is a disguise, and the same disguise passes a real boundary command. When the only way through is to
+  hide the word, the park is a false one: disclose it, with the verbatim command and park text, and ask.
 - **A POLICY WALL is none of the three.** If the refusal says `walled-by-policy`, **an approval cannot
   grant it** and re-requesting is walking through a known fail-open. The two routes are **reshape the work**
   (do it by a path the policy allows — often: hand the text to a seat whose scope covers it) or
@@ -325,9 +320,11 @@ Plain text, BEFORE any plan-approval presentation:
 
 ```
 PLAN TLDR ({your assignment}), recon done against HEAD {sha}, anchors {verified fresh / drift: …}:
-BELIEFS: HEAD {sha}; dirty files I see: {list, whose}; tool versions: {the harness, the runtimes};
-baseline suites: {cited from the brief's § Baselines, per lane: N (+known pre-existing reds); a lane it
-does not name, measured before you edit}.
+BELIEFS: HEAD {sha}; dirty files I see: {list, whose}; tool versions: {the harness, the runtimes, and the
+model and effort this session is running on}; baseline suites: {cited from the brief's § Baselines, per
+lane: N (+known pre-existing reds); a lane it does not name, measured before you edit}.
+{when your row names a further repository, one line each:}
+ALSO WRITING {repository}: commit {sha} on {branch}; dirty files there: {list, whose}.
 CONTROLS: for each probe or pin I will build — its positive control, and what would make it FAIL.
 {one line each: "probe X — control: {the case that must go red}; fails when: {…}"}
 {5-10 lines: what you will do, anchored to real files; the surfaces you will touch; departures flagged.}
@@ -343,9 +340,18 @@ coordinator with your question text and what the re-raise keys on (the two-headi
 **BELIEFS sha — ONE line.** The build-go HEAD check scans for `HEAD` + a 40-hex token **on the same line**
 (fenced or quoted is fine); a markdown break between them reads as a malformed sha and **refuses the
 flip** (fail-closed by design). Paste the verbatim `git rev-parse HEAD` output, never hand-transcribe, no
-wrapping. **Put the BELIEFS line near the top of BOTH `plan.md` and `tldr.md`**, and keep it current on
-every revision: a checker that takes the first `HEAD <sha>` it meets reads an old line before a new one, and
-quoted command output carrying another sha above it is read as your belief.
+wrapping. **Put the BELIEFS line near the top of BOTH `plan.md` and `tldr.md`. When your HEAD moves,
+restate it by appending a new `BELIEFS:` line, never by editing the old one:** the check reads the newest
+line that carries `BELIEFS`, and with none it takes the first `HEAD <sha>` it meets, so quoted command
+output carrying another sha is then read as your belief.
+
+**A further repository's commit goes on its own `ALSO WRITING` line, beneath the BELIEFS line and never
+beside the word `HEAD`:** the BELIEFS line carries one sha, this repository's, and your coordinator diffs
+the other line against that repository's branch.
+
+**The model and effort in that line are the ones you can read, never the brief's copied back.** The brief's
+`## Birth` names the pair every seat starts on, and a seat that finds itself on another says so here, before
+its plan. Write *not visible from here* for a part your session cannot see.
 
 **Cite symbols, not line numbers.** In anything that outlives a commit — a TLDR, a working doc, a handover
 — **name the symbol and use the line as a hint.** A line number is a comment, not an address; an anchor
@@ -424,15 +430,34 @@ doorbell with no follow-through**; if you receive one bare, retry anyway and say
   disqualifier is **anything else on the line**, and a leading `cd` — harmless on every OTHER git call you
   make — disqualifies a push (the FORM check reads the whole command string). Qualifying forms, exactly:
   first `git push -u origin <your-branch>`, later `git push origin <your-branch>` (`--set-upstream` also
-  qualifies). A push without a refspec parks by design.
+  qualifies). A push without a refspec parks by design. This is your push in THIS repository; a further
+  repository's push has its own form, below.
 - **EVERY GIT COMMAND GOES ALONE — no shell metacharacters.** The FORM check reads the whole command
   string, so chaining, redirects or substitution disqualify it: `git add … && git commit … && git push …`
-  parks where the same three commands, sent one at a time, flow unattended. Keep the word "push" out of
-  echo text — the deny layer matches text, not parsed verbs.
+  parks where the same three commands, sent one at a time, flow unattended.
 - Prefer native read/glob/grep tools for reads; a shell read flows with its row like any other
   non-boundary call. On a periscope 1.4.0 runner they reach anything outside your workspace except
   credential material; on an older runner Read is jailed to your workspace, so read a file outside it —
   the runner's installed package, say — with a shell command.
+- **WHEN YOUR ROW NAMES A FURTHER REPOSITORY, YOU WORK IN TWO TREES, AND EACH KEEPS ITS OWN RULES.** Most
+  rows name none, and nothing in this bullet applies to them.
+  - **Your home is this repository:** your spec, board, plan and working doc stay here, and nothing of
+    the pipeline's record is ever written in the other repository.
+  - **The other repository takes your code, in your own tree of it — never its owner's checkout.**
+    Hosted, your seed names the environment variable holding that tree's path: read it, never build the
+    path. Hand-cranked, your prompt names the path. Read the branch in the tree itself; it need not carry
+    this repository's branch name.
+  - **This section applies once per repository:** an explicit staging list and its `verify-staged`
+    receipt, run inside that tree; its own commit; and before its push, the whole of ITS gate — the suite
+    and checks its own contributing rules name, which this repository's lanes never run.
+  - **Its commit and pull-request text follow ITS rules:** no effort ids, no board or seat words. Where it
+    checks pull requests, open a DRAFT one at your first push and read its checks after every push.
+  - **Push from inside that tree — `cd "$TREE" && git push origin <branch>`, and nothing else on the
+    line,** with the variable your seed names in `$TREE`'s place (hand-cranked, the path your prompt
+    names). It is the one push that takes a leading `cd`. Keep the variable out of the push itself:
+    `git -C "$TREE" push` cannot be read, and waits for a person. Your push may wait for one anyway: wait,
+    never reshape it, and report a refusal.
+  - **You never merge, tag or publish there.** A release is a person's act, at the pipeline's `step`.
 - **Codegen only through the command `patterns/codegen.md` § Running codegen names** (when the repo has
   one) — never hand-write a generated folder.
 - **Never improvise a qualifying path in.** If a push parks and the remedy you can think of is touching a
@@ -462,7 +487,9 @@ FINAL TLDR — {your assignment}. Built on HEAD {sha}; {hand-cranked: committed 
 (f) EXPLICIT STAGING LIST — the exact list `verify-staged` was (hand-cranked) or will be (hosted)
     run over; a path not on this list is a path nobody will notice missing — + the STAGING
     VERIFIED receipt, or hosted "commit HELD awaiting the commit call" + which dirty files are NOT
-    mine. SESSION ID + NAME.
+    mine. A seat that wrote a further repository gives a list and a receipt PER REPOSITORY, each
+    under its repository's name, and in (b) each repository's summaries under its own name.
+    SESSION ID + NAME.
 ```
 
 ## Close-out — the order is law

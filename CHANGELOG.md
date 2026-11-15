@@ -5,6 +5,100 @@ version is the one in `package.json` and `.claude-plugin/plugin.json`, which mus
 
 ## [Unreleased]
 
+## [0.9.0] - 2026-11-14
+
+A minor: the skills act differently, the doctor can newly fail a brief, and a repository's copy of the loop text
+takes one paragraph (§ Upgrading from 0.8). A pipeline that writes one repository runs as it did.
+
+### Added
+
+- **A seat may also write a second repository: the `Repository` column.** A sequence row names the repositories its
+  seat also writes in, in an optional `Repository` column: one or more names, as the runner serves them. The column
+  never moves a seat: its home is the pipeline's own repository, where its spec, its board and the tracker are, and
+  one pull request still closes the pipeline. `spec-pipeline` states the column. `init doctor` reads it the way a
+  launcher does, and fails a cell holding a kind word, `step`, a name that is not one path segment of at most 200
+  characters, a ninth name, or a name twice. **A pipeline that writes one repository has no such column and is
+  unchanged.**
+- **What a seat does in a second repository** (`spec-seat` § Git shapes, `spec-build`). Its home stays this
+  repository and nothing of the pipeline's record is written in the other one. Its code goes in its own tree of
+  that repository, never the owner's checkout: hosted, at the path the variable its seed names holds; by hand, at
+  the path its prompt names. Then a staging list, a `verify-staged` receipt, a commit and a push per repository;
+  that repository's whole gate, run in its tree; its own rules for commit and pull-request text; a draft pull
+  request where it checks them, its checks read after every push; no merge, tag or publish. Its commit there goes
+  on an `ALSO WRITING` line beneath BELIEFS, and its FINAL gives a list and a receipt per repository. A pin holds
+  every clause, because a launcher that knows this version says only where the tree is.
+- **The push in a second repository has its own form:** `cd` into the tree, then the push, and nothing else on the
+  line. `spec-seat` said a leading `cd` disqualifies every push; that is the rule for the home repository, and it
+  now says so.
+- **The coordinator's and the review's side of a second repository.** `spec-coordinator` tells such a seat where
+  its tree is and nothing else (by hand; hosted, the seed says where), diffs its `ALSO WRITING` line, checks two
+  receipts at the FINAL, reads a pull request's checks at every seat report in whichever repository the branch is,
+  and hands the review one diff range per repository (by release tags when the run released it mid-run).
+  `spec-review` reads each range and the seam between them. A pin holds every template line for a further
+  repository under a line saying when it applies.
+- **A conditional fixit that must write a further repository is listed as a row, directly after the review row**
+  (`spec-pipeline`). Listed anywhere else, a launcher reads a second fixit beside the one the review implies, and
+  the doctor names it.
+- **The model and the effort a run starts on are named in the brief and read back.** `spec-pipeline`'s `## Birth`
+  names both, each in backticks, because the launcher reads them from that section; a brief that names neither
+  leaves both to the launcher's default. A seat's BELIEFS line states the model and effort its session is running
+  on, as it can read them, and `spec-coordinator` settles a seat on a pair the brief does not name before it rules
+  that seat's plan.
+
+### Changed
+
+- **Pipelines never intertwine** replaces "one pipeline at a time", in `spec-coordinator`'s hard rules and in
+  `references/engineering-loop.md`. A brief's GATE still checks only that its predecessor merged, and no seat waits
+  on another pipeline; independent pipelines may run at the same time, each on its own branch. The coordinator takes
+  a moved base branch in between seats, by a merge. A repository's `docs/_meta/` copy takes the paragraph by hand.
+- **A review's diff range reads the remote's copy of the base branch** (`origin/{base}...{branch}`), in
+  `spec-coordinator`'s REVIEW manifest, `spec-review` and `spec-pipeline`: a local base branch can sit behind it and
+  pull another effort's commits into the range.
+- **`spec-coordinator`'s Step 0 is two numbered reads:** the seven floor docs, then every doc the repository's role
+  reading lists carry a path for. The second read was a trailing clause, and coordinators read the floor and stopped.
+  The status readback opens with how many docs each read took.
+- **The coordinator edits its tracker and a seat's board with file tools, never a shell heredoc or an interpreter
+  one-liner** (`spec-coordinator`): one collapses backslashes, and one whose text quotes a publish is held.
+
+### Fixed
+
+- `spec-coordinator` said a backticked sha is fine for the plan verdict's workspace HEAD. The verb takes only the
+  bare 40-hex sha and refuses a backticked or quoted one, recording nothing, so a coordinator that followed the skill
+  spent a refused call on every plan ruling. It now says the bare sha; a seat's board may still fence its own.
+- `spec-coordinator` wrote an amount as a dollar sign before a digit, which a harness that substitutes a skill's
+  arguments by position rewrote at load: the line about uncosted turns read with the invocation's first argument in
+  the amount's place. The amount is spelled out, and a pin holds every skill's text free of a dollar sign before a
+  digit and of the arguments token.
+- `spec-seat`, `spec-coordinator` and `spec-retro` said the gate matches text and told a seat to keep git words out
+  of echo labels, section headers and searches. The gate reads the command the shell would run: what parks is the
+  operation, at any depth, and an echo label, a branch listing and a quoted search are data unless something on the
+  line could run them. Six passages say so now, in fewer lines, and a pin keeps the old rule out.
+- `spec-seat` said the HEAD check takes the first `HEAD <sha>` it meets. It reads the newest line that carries
+  `BELIEFS`, so a seat whose HEAD moved appends a new BELIEFS line and never edits the old one.
+
+### Upgrading from 0.8
+
+In this order:
+
+1. **Take the release where every session loads it:** `claude plugin marketplace update engineering-loop`, then
+   `claude plugin update naswerks@engineering-loop --scope <scope>` for each scope that runs sessions, and a new
+   session. A runner takes `@naswerks/engineering-loop@0.9.0` in the folder its plugin directories name, and is
+   restarted by its owner with no seat live.
+2. **Replace one paragraph of loop text.** In `docs/_meta/engineering-loop.md`, the paragraph that opens
+   **One pipeline at a time.** becomes:
+
+   > **Pipelines never intertwine.** A pipeline's GATE is that its predecessor merged — never a seat of another
+   > pipeline — and no seat waits on another pipeline. Independent pipelines may run at the same time, each on
+   > its own branch, merged one after the other.
+
+   It is the only loop text that changed. `docs/_meta/docs-workflow.md` takes nothing but its stamp, and the four
+   repository-owned sections are yours and are not touched.
+3. **Restamp and check:** `init refresh` (with `--write`) restamps both copies and leaves every other line as it
+   is; then `init doctor`. A repository that read clean on 0.8.0 reads clean, unless a brief lists a `fixit` row
+   away from its `review` row or holds a `Repository` cell that is not a list of names.
+
+No pipeline folder changes shape, and a sequence with no `Repository` column reads as it always has.
+
 ## [0.8.0] - 2026-10-21
 
 A minor: the skills act differently, and a repository must act — its method docs take new text, and every
