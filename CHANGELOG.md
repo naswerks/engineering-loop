@@ -15,6 +15,12 @@ version is the one in `package.json` and `.claude-plugin/plugin.json`, which mus
   word or `step`, a runtime or endpoint that is not a name of at most 64 characters, or a model that is not a model id.
   **A sequence with none of these columns is unchanged.**
 
+### Fixed
+
+- **`spec-build` and `spec-ignite` load on a harness that reads front matter as strict YAML.** Each description held a
+  `: ` in an unquoted value, which a strict loader rejects whole, so the harness listed the skill as absent while a
+  lenient one loaded it. Both are reworded, and a pin holds every skill's front matter to what a strict loader accepts.
+
 ## [0.9.0] - 2026-11-14
 
 A minor: the skills act differently, the doctor can newly fail a brief, and a repository's copy of the loop text

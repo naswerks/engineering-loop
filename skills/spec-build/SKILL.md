@@ -1,6 +1,6 @@
 ---
 name: spec-build
-description: The BUILD JOB for a pipeline seat — one spec, the role's reading list, the pin taxonomy, the suite protocol, and the fixit variant. Composed AFTER spec-seat, which carries the seat contract (blackboard, question lane, verdicts, FINAL TLDR, close-out). Use when a prompt says you are a build or fixit session, or run spec-build {role} {spec-path}. Roles: backend | frontend | mixed.
+description: The BUILD JOB for a pipeline seat — one spec, the role's reading list, the pin taxonomy, the suite protocol, and the fixit variant. Composed AFTER spec-seat, which carries the seat contract (blackboard, question lane, verdicts, FINAL TLDR, close-out). Use when a prompt says you are a build or fixit session, or run spec-build {role} {spec-path}. The roles are backend, frontend and mixed.
 ---
 
 # spec-build
