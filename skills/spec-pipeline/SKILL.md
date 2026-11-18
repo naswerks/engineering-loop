@@ -150,6 +150,13 @@ sessions/                        WHO PUTS IT THERE
    the column out when no row needs it — most pipelines write one repository, and nothing about them
    changes.
 
+   **A seat row may name what it runs on** — in `Runtime`, `Endpoint` and `Model` columns, when its seats
+   do not all run on the launcher's default: the runtime by the runner's name for it, the model endpoint
+   it reaches its model through, and the model id as that runtime's catalog or that endpoint lists it.
+   A cell's value is its backticked word, so write each in backticks; a cell with none names nothing and
+   its words are a remark for the reader (`—`, *its own sign-in*), and the seat then takes the runtime's
+   own route or its own default model. Leave a column out when no row needs it.
+
    Then write the rows into the brief's sequence, in this order:
 
    ```
@@ -304,9 +311,10 @@ prose role.** This table is READ, not just read by people: ignition derives the 
 refuses an unknown by name, and the doctor fails a row whose kind is none of these. A cell saying "the one
 that reviews" composes nothing. An optional `Role` column carries `backend` · `frontend` · `mixed` for a
 seat whose reading list should not be left to the default. An optional `Repository` column names the
-repositories a seat also writes in, by the runner's names; a seat's home is always this repository. Neither
-column's cell may hold a kind word or `step`: the table is read by kind value, and a kind word anywhere in
-a row is read as that row's kind.
+repositories a seat also writes in, by the runner's names; a seat's home is always this repository.
+Optional `Runtime`, `Endpoint` and `Model` columns name what a seat runs on, each value in backticks. No
+such column's cell may hold a kind word or `step`: the table is read by kind value, and a kind word anywhere
+in a row is read as that row's kind.
 
 **This is the only copy of the sequence.** The tracker's status lines name these rows by id and copy
 nothing else.

@@ -202,6 +202,11 @@ const packSkills = new Set(existsSync(join(packRoot, 'skills')) ? readdirSync(jo
 const REPOSITORY_NAME = /^[A-Za-z0-9][A-Za-z0-9._-]*$/;
 const MAX_REPOSITORY_NAME = 200;
 const MAX_REPOSITORIES = 8;
+// A runtime's or a model endpoint's name as a sequence row may write it, of at most MAX_RUNNER_NAME characters;
+// a model id as a catalog or an endpoint lists it.
+const RUNNER_NAME = /^[A-Za-z0-9][A-Za-z0-9._-]*$/;
+const MAX_RUNNER_NAME = 64;
+const MODEL_ID = /^[A-Za-z0-9._:/[\]-]+$/;
 const researchDir = join(repo, 'docs', 'research');
 if (existsSync(researchDir)) {
   for (const topic of readdirSync(researchDir)) {
@@ -226,6 +231,16 @@ if (existsSync(researchDir)) {
       // seat also writes in, or is empty. The table is read by kind value, so a kind word or `step` in that
       // cell would be read as the row's kind: it fails by name, before either is looked for.
       const repositoryAt = tableRows.length ? cellsOf(tableRows[0]).findIndex((c) => c.toLowerCase() === 'repository') : -1;
+      // The optional Runtime, Endpoint and Model columns, found by their headers. A cell's value is its first
+      // backticked word; a cell with none names none, and its words are a remark for the reader. They are read
+      // after the Repository cell and before the step and the kind, for the same reason.
+      const headerAt = (name) => (tableRows.length ? cellsOf(tableRows[0]).findIndex((c) => c.toLowerCase() === name) : -1);
+      const valued = [
+        { word: 'runtime', at: headerAt('runtime'), fits: (v) => RUNNER_NAME.test(v) && v.length <= MAX_RUNNER_NAME, shape: `a name of at most ${MAX_RUNNER_NAME} characters` },
+        { word: 'endpoint', at: headerAt('endpoint'), fits: (v) => RUNNER_NAME.test(v) && v.length <= MAX_RUNNER_NAME, shape: `a name of at most ${MAX_RUNNER_NAME} characters` },
+        { word: 'model', at: headerAt('model'), fits: (v) => MODEL_ID.test(v), shape: 'a model id' },
+      ].filter((column) => column.at >= 0);
+      const rawCellsOf = (line) => line.trim().replace(/^\|/, '').replace(/\|$/, '').split('|').map((c) => c.trim());
       // The seat rows' kinds, in order: where a listed fixit sits is read from them.
       const seatKinds = [];
       for (const line of tableRows.slice(1)) {
@@ -242,6 +257,14 @@ if (existsSync(researchDir)) {
         }
         if (names.length > MAX_REPOSITORIES) problems.push(`a sequence row names ${names.length} repositories and a seat writes at most ${MAX_REPOSITORIES}: \`${line.trim()}\``);
         for (const n of new Set(names.filter((name, i) => names.indexOf(name) !== i))) problems.push(`a sequence row names the repository \`${n}\` twice: \`${line.trim()}\``);
+        const raw = rawCellsOf(line);
+        const notValues = valued
+          .map((column) => ({ ...column, value: /`([^`\s]+)`/.exec(raw[column.at] ?? '')?.[1] ?? null }))
+          .filter((column) => column.value !== null && (KINDS.includes(column.value) || column.value === STEP || !column.fits(column.value)));
+        if (notValues.length) {
+          for (const c of notValues) problems.push(`a sequence row's ${c.word} \`${c.value.length > 60 ? `${c.value.slice(0, 60)}…` : c.value}\` is not a ${c.word}'s name (${c.shape}; a kind word or \`${STEP}\` there is read as the row's kind): \`${line.trim().slice(0, 200)}\``);
+          continue;
+        }
         if (cells.includes(STEP)) continue;
         if (!cells.some((c) => KINDS.includes(c))) { problems.push(`a sequence row names no seat kind and composes nothing (a row that is not a seat says \`${STEP}\`): \`${line.trim()}\``); continue; }
         seatKinds.push(cells.find((c) => KINDS.includes(c)));
