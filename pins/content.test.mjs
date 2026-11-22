@@ -3,7 +3,7 @@
 // and line it flags; each has a control that proves the regex fires on a planted line.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { existsSync, readFileSync } from 'node:fs';
+import { existsSync, readFileSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
 import { execFileSync } from 'node:child_process';
 import { root, walk, readText } from './support.mjs';
@@ -156,7 +156,7 @@ test('the parser contracts the control plane reads still hold', () => {
     assert.ok(text.includes(`Invoke the \`${KIND_SKILLS.coordinator}\` skill`), `${skill}: the kick names the coordinator's skill`);
   }
   const pipeline = readText(join(root, 'skills', 'spec-pipeline', 'SKILL.md'));
-  for (const anchor of ['00-ignition-brief.md', '01..NN-{slice}.md', 'project-status.md', 'live-checks.md', 'sessions/', 'AN ESCAPE HATCH', 'Six things every slice carries', '## The sequence', '`step`', '## Rulings made during the run', 'An optional `Repository` column', 'directly after the']) {
+  for (const anchor of ['00-ignition-brief.md', '01..NN-{slice}.md', 'project-status.md', 'live-checks.md', 'sessions/', 'AN ESCAPE HATCH', 'Six things every slice carries', '## The sequence', '`step`', '## Rulings made during the run', 'An optional `Repository` column', 'Optional `Runtime`, `Endpoint` and `Model` columns', 'directly after the']) {
     assert.ok(pipeline.includes(anchor), `spec-pipeline: ${anchor}`);
   }
 });
@@ -183,6 +183,33 @@ const folded = (text) => text.replace(/\s+/g, ' ');
 test('spec-seat carries the whole procedure for a second repository', () => {
   const seat = folded(readText(join(root, 'skills', 'spec-seat', 'SKILL.md')));
   for (const part of SecondRepositoryProcedure) assert.ok(seat.includes(part), `spec-seat § Git shapes: ${part}`);
+});
+
+// A strict YAML loader rejects a whole front matter over one plain value holding ": " or " #", or opening on an indicator,
+// and a harness that loads skills that way then lists the skill as absent. Every front-matter value stays plain-safe.
+const PlainUnsafe = (value) => !/^["'|>]/.test(value) && (/: /.test(value) || / #/.test(value) || /^[[{&*!%@`]/.test(value));
+const frontMatterLines = (text) => (text.match(/^---\r?\n([\s\S]*?)\r?\n---/)?.[1] ?? '').split(/\r?\n/);
+
+test('every skill front matter is one a strict YAML loader accepts', () => {
+  const out = [];
+  for (const skill of readdirSync(join(root, 'skills'))) {
+    const file = join(root, 'skills', skill, 'SKILL.md');
+    if (!existsSync(file)) continue;
+    for (const line of frontMatterLines(readText(file))) {
+      const entry = line.match(/^([a-z-]+):\s*(.*)$/);
+      if (entry && PlainUnsafe(entry[2])) out.push(`${skill}: ${entry[1]}`);
+    }
+  }
+  assert.deepEqual(out, [], 'rephrase the value, or quote it');
+});
+
+test('CONTROL: the front-matter census fires on a colon-space, a comment mark and an indicator, and passes a quoted value', () => {
+  for (const planted of ['Roles: backend | frontend', 'one # two', '{role} first', '`code` first']) {
+    assert.ok(PlainUnsafe(planted), `must fire on: ${planted}`);
+  }
+  for (const allowed of ['"Roles: backend"', 'The roles are backend, frontend and mixed.', 'a — dash, and {role} inside']) {
+    assert.ok(!PlainUnsafe(allowed), `must pass: ${allowed}`);
+  }
 });
 
 test('CONTROL: the search finds a clause that wraps, and misses one that is not there', () => {

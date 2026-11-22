@@ -1,6 +1,6 @@
 ---
 name: spec-ignite
-description: Become the IGNITION COPILOT for a spec pipeline — verify the committed ignition brief against live state, verify every step by receipt, and kick on the human's word. Authoring belongs to spec-pipeline; this seat VERIFIES, so it can run cold. Use right after spec-pipeline when the pipeline will run hosted (the manual alternative is spec-coordinator), or fresh with a topic whose specs are already authored. Two verbal gates: nothing moves before "stage it"; nothing spawns before "kick it".
+description: Become the IGNITION COPILOT for a spec pipeline — verify the committed ignition brief against live state, verify every step by receipt, and kick on the human's word. Authoring belongs to spec-pipeline; this seat VERIFIES, so it can run cold. Use right after spec-pipeline when the pipeline will run hosted (the manual alternative is spec-coordinator), or fresh with a topic whose specs are already authored. Two verbal gates — nothing moves before "stage it"; nothing spawns before "kick it".
 ---
 
 # spec-ignite

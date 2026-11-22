@@ -5,6 +5,22 @@ version is the one in `package.json` and `.claude-plugin/plugin.json`, which mus
 
 ## [Unreleased]
 
+### Added
+
+- **A seat row may name what it runs on: the `Runtime`, `Endpoint` and `Model` columns.** Optional, each found by its
+  header: the runtime by the runner's name for it, the model endpoint the seat reaches its model through, and the model
+  id. A cell's value is its backticked word; a cell with none names nothing and is a remark for the reader, and the seat
+  then takes the runtime's own route or default model. `spec-pipeline` states the columns. `init doctor` reads them the
+  way a launcher does, after the `Repository` cell and before the step and the kind, and fails a value that is a kind
+  word or `step`, a runtime or endpoint that is not a name of at most 64 characters, or a model that is not a model id.
+  **A sequence with none of these columns is unchanged.**
+
+### Fixed
+
+- **`spec-build` and `spec-ignite` load on a harness that reads front matter as strict YAML.** Each description held a
+  `: ` in an unquoted value, which a strict loader rejects whole, so the harness listed the skill as absent while a
+  lenient one loaded it. Both are reworded, and a pin holds every skill's front matter to what a strict loader accepts.
+
 ## [0.9.0] - 2026-11-14
 
 A minor: the skills act differently, the doctor can newly fail a brief, and a repository's copy of the loop text
