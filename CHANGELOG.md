@@ -3,7 +3,11 @@
 All notable changes to this package are recorded here. The format follows Keep a Changelog; the
 version is the one in `package.json` and `.claude-plugin/plugin.json`, which must agree.
 
-## [Unreleased]
+## [0.10.0] - 2026-11-22
+
+A minor: the doctor can newly fail a brief, in a `Runtime`, `Endpoint` or `Model` cell. The method docs change only
+in their stamp, so a repository's copy of the loop text takes the stamp alone. A sequence with none of these columns
+runs as it did.
 
 ### Added
 
